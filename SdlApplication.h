@@ -1,8 +1,10 @@
 #ifdef __APPLE__
     #include <SDL2/SDL.h>
-#elif
+#else
     #include "SDL.h"
 #endif
+
+#include <cstdio>
 
 #ifndef Project_Z_SdlApplication_h
 #define Project_Z_SdlApplication_h
