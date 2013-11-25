@@ -1,6 +1,7 @@
 #pragma once
 #include "Position.h"
 #include <vector>
+#include <string>
 
 class Area
 {
@@ -11,7 +12,7 @@ public:
 	std::vector<Position*> getCorners();
 	void setCorners(std::vector<Position*>);
 
-	int getCornerCount();
+	unsigned long getCornerCount();
 	std::string getAreaType();
 
 private:

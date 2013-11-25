@@ -28,16 +28,16 @@ void Area::setCorners(std::vector<Position*> cornersIn)
 	corners = cornersIn;
 }
 
-int Area::getCornerCount()
+unsigned long Area::getCornerCount()
 {
-	return corners.size;
+	return corners.size();
 }
 
 std::string Area::getAreaType()
 {
-	if(corners.size == 3)
+	if(getCornerCount() == 3)
 		return "Triangle";
-	else if(corners.size == 4)
+	else if(getCornerCount() == 4)
 		return "Square";
 	else
 		return "Unidentified";
