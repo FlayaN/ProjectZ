@@ -69,21 +69,22 @@ void SdlApplication::onEvent(SDL_Event* ev)
 
 void SdlApplication::Render()
 {
-	SDL_Rect r;
 	int w,h;
 	SDL_GetWindowSize(win, &w, &h);
 	
-	r.w = 200;
-	r.h = 200;
-	r.x = w/2-(r.w/2);
-	r.y = h/2-(r.h/2);
-	
-	
-	//
-	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0, 0xff);
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
 	SDL_RenderClear(renderer);
 	
-	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0, 0xff);
-	SDL_RenderFillRect(renderer, &r);
+	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
+
+	int tileSize = 100;
+
+	for(int x = 0; x < w; x+=tileSize) {
+		SDL_RenderDrawLine(renderer, x, 0, x, h);
+		for(int y = 0; y < h; y+=tileSize/2) {
+			SDL_RenderDrawLine(renderer, 0, y, w, y);
+		}
+	}
+
 	SDL_RenderPresent(renderer);
 }
