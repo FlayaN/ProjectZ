@@ -5,6 +5,8 @@
 #endif
 
 #include <cstdio>
+#include "Tile.h"
+#include <algorithm>
 
 #ifndef Project_Z_SdlApplication_h
 #define Project_Z_SdlApplication_h
@@ -16,6 +18,10 @@ public:
     SdlApplication() : _running(false)
     {
         
+        //std::fill_n(tiles, 100, nullptr);
+        
+        
+        tiles[5][5] = new Tile(renderer);
     }
     
     ~SdlApplication()
@@ -38,6 +44,7 @@ public:
 	void Render();
 	
 private:
+    Tile* tiles[10][10];
 	bool _running;
 	SDL_Window *win;
 	SDL_Renderer *renderer;

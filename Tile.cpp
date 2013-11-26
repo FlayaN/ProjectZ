@@ -10,6 +10,21 @@ Tile::Tile(Position* positionIn, Area* northAreaIn, Area* southAreaIn, Area* wes
 	eastArea = eastAreaIn;
 }
 
+Tile::Tile(SDL_Renderer* ren)
+{
+	//texture = SDL_
+    //surface = IMG_Load("grass.png");
+    tex = IMG_LoadTexture(ren, "grass.png");
+    if (tex == nullptr)
+		std::cout << "LoadTexture";
+    /*if (surface != nullptr){
+		tex = SDL_CreateTextureFromSurface(ren, surface);
+		SDL_FreeSurface(surface);
+		//Make sure converting went ok too
+		//if (tex == nullptr)
+			//logSDLError(std::cout, "CreateTextureFromSurface");
+	}*/
+}
 
 Tile::~Tile(void)
 {
@@ -18,4 +33,8 @@ Tile::~Tile(void)
 	delete southArea;
 	delete westArea;
 	delete eastArea;
+}
+
+SDL_Texture* Tile::getTexture() {
+    return tex;
 }

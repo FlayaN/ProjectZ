@@ -12,6 +12,7 @@
 		9766954218437EBE004E8ED6 /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9766953A18437EBE004E8ED6 /* Position.cpp */; };
 		9766954318437EBE004E8ED6 /* SdlApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9766953C18437EBE004E8ED6 /* SdlApplication.cpp */; };
 		9766954418437EBE004E8ED6 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9766953E18437EBE004E8ED6 /* Tile.cpp */; };
+		97AF03F51844CB230079D4C0 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97AF03F41844CB230079D4C0 /* SDL2_image.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +38,7 @@
 		9766953D18437EBE004E8ED6 /* SdlApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SdlApplication.h; sourceTree = "<group>"; };
 		9766953E18437EBE004E8ED6 /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
 		9766953F18437EBE004E8ED6 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
+		97AF03F41844CB230079D4C0 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97AF03F51844CB230079D4C0 /* SDL2_image.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +56,7 @@
 		9766950D18437968004E8ED6 = {
 			isa = PBXGroup;
 			children = (
+				97AF03F41844CB230079D4C0 /* SDL2_image.framework */,
 				9766953718437EBE004E8ED6 /* Area.cpp */,
 				9766953818437EBE004E8ED6 /* Area.h */,
 				9766953918437EBE004E8ED6 /* main.cpp */,

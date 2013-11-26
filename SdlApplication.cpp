@@ -85,6 +85,17 @@ void SdlApplication::Render()
 			SDL_RenderDrawLine(renderer, 0, y, w, y);
 		}
 	}
-
-	SDL_RenderPresent(renderer);
+    
+    SDL_Rect dst;
+	dst.x = 200;
+	dst.y = 200;
+    dst.w = 100;
+    dst.h = 100;
+    
+    SDL_Texture* tex = tiles[5][5]->getTexture();
+	//Query the texture to get its width and height to use
+	//SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
+	SDL_RenderCopy(renderer, tex, NULL, &dst);
+    
+    SDL_RenderPresent(renderer);
 }
