@@ -3,7 +3,7 @@
 int SdlApplication::init(int width, int height)
 {
 	// Initialize the SDL library.
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		fprintf(stderr, "SDL_Init() failed: %s\n", SDL_GetError());
 		return APP_FAILED;
@@ -11,6 +11,12 @@ int SdlApplication::init(int width, int height)
 	
 	win = SDL_CreateWindow("Project Z", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	for(int x = 0; x < 10; x++) {
+		for(int y = 0; y < 10; y++) {
+			tiles[x][y] = nullptr;
+		}
+	}
+	tiles[4][2] = new Tile(renderer); //Add a tile here to tiles to render it
 
 	return APP_OK;
 }
@@ -67,6 +73,10 @@ void SdlApplication::onEvent(SDL_Event* ev)
 	}
 }
 
+void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, SDL_Rect dst) {
+	SDL_RenderCopy(ren, tex, NULL, &dst);
+}
+
 void SdlApplication::Render()
 {
 	int w,h;
@@ -87,15 +97,22 @@ void SdlApplication::Render()
 	}
     
     SDL_Rect dst;
-	dst.x = 200;
-	dst.y = 200;
-    dst.w = 100;
-    dst.h = 100;
+    dst.w = tileSize;
+    dst.h = tileSize/2;
     
-    SDL_Texture* tex = tiles[5][5]->getTexture();
-	//Query the texture to get its width and height to use
-	//SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
-	SDL_RenderCopy(renderer, tex, NULL, &dst);
-    
+	for(int x = 0; x < 10; x++) {
+		for(int y = 0; y < 10; y++) {
+
+			if(tiles[x][y] != nullptr) {
+				SDL_Texture* tex = tiles[x][y]->getTexture();
+			
+				dst.x = x*dst.w;
+				dst.y = y*dst.h;
+				renderTexture(tex, renderer, dst);
+			}
+		}
+	}
+
+	
     SDL_RenderPresent(renderer);
 }

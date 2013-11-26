@@ -1,5 +1,10 @@
 #include "Tile.h"
 
+using namespace std;
+
+void logSDLError(std::ostream &os, const std::string &msg){
+	os << msg << " error: " << SDL_GetError() << std::endl;
+}
 
 Tile::Tile(Position* positionIn, Area* northAreaIn, Area* southAreaIn, Area* westAreaIn, Area* eastAreaIn)
 {
@@ -12,18 +17,7 @@ Tile::Tile(Position* positionIn, Area* northAreaIn, Area* southAreaIn, Area* wes
 
 Tile::Tile(SDL_Renderer* ren)
 {
-	//texture = SDL_
-    //surface = IMG_Load("grass.png");
-    tex = IMG_LoadTexture(ren, "grass.png");
-    if (tex == nullptr)
-		std::cout << "LoadTexture";
-    /*if (surface != nullptr){
-		tex = SDL_CreateTextureFromSurface(ren, surface);
-		SDL_FreeSurface(surface);
-		//Make sure converting went ok too
-		//if (tex == nullptr)
-			//logSDLError(std::cout, "CreateTextureFromSurface");
-	}*/
+	tex = IMG_LoadTexture(ren, "res/grass.png");
 }
 
 Tile::~Tile(void)
