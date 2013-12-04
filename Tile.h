@@ -1,17 +1,16 @@
 #pragma once
 
 #ifdef __APPLE__
-    #include <SDL2/SDL.h>
+	#include <SDL2/SDL.h>
 	#include <SDL2_image/SDL_image.h>
 #else
-    #include "SDL.h"
+	#include "SDL.h"
 	#include "SDL_image.h"
 #endif
 
 #include "Position.h"
 #include "Area.h"
 #include <iostream>
-
 
 class Tile
 {
@@ -31,10 +30,5 @@ private:
 	Area* eastArea;
     
     SDL_Texture* tex;
-    
-    SDL_Surface* surface;
-    
-    SDL_Rect r;
-    
 };
 

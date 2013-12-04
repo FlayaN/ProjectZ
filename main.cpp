@@ -1,7 +1,7 @@
-#include "SdlApplication.h"
+#include "Game.h"
 
 int main(int argc, char* argv[])
 {
-	SdlApplication app;
+	Game app;
 	return app.run(1280, 720);
 }

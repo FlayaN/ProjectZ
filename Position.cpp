@@ -1,14 +1,14 @@
 #include "Position.h"
 
-
-Position::Position(float xIn = 0.0, float yIn = 0.0, float zIn = 0.0)
-{
+Position::Position(float xIn, float yIn, float zIn) {
 	x = xIn;
 	y = yIn;
 	z = zIn;
 }
 
 
-Position::~Position(void)
-{
+Position::~Position(void) {
+
 }
+
+

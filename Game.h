@@ -6,28 +6,27 @@
 
 #include <cstdio>
 #include "Tile.h"
+#include "EntityPlayer.h"
+#include "Renderer.h"
 #include <algorithm>
 #include <string>
 
-#ifndef Project_Z_SdlApplication_h
-#define Project_Z_SdlApplication_h
+#ifndef Project_Z_Game_h
+#define Project_Z_Game_h
 
-class SdlApplication
+class Game
 {
 public:
 	
-    SdlApplication() : _running(false)
-    {
-
-    }
+	Game() : _running(false) {
+		
+	}
     
-    ~SdlApplication()
-    {
+	~Game() {
         destroy();
     }
 	
-	enum APP_STATE
-	{
+	enum APP_STATE {
 		APP_OK = 0,
 		APP_FAILED = 1
 	};
@@ -41,10 +40,11 @@ public:
 	void Render();
 	
 private:
-    Tile* tiles[10][10];
+	Tile* tiles[10][10];
+	EntityPlayer* player;
 	bool _running;
 	SDL_Window *win;
-	SDL_Renderer *renderer;
+	Renderer* renderer;
 };
 
 
