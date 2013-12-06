@@ -1,7 +1,7 @@
 #include "Shape.h"
 
 
-Shape::Shape(Position* positionIn = NULL)
+Shape::Shape(Coordinate* positionIn = NULL)
 {
 	position = positionIn;
 }
@@ -14,7 +14,7 @@ Shape::~Shape(void)
 
 //------------------------------------------------SET ----------------------------------------------//
 
-void Shape::setPosition(Position* positionIn)
+void Shape::setPosition(Coordinate* positionIn)
 {
 	delete position;
 	position = positionIn;
@@ -52,7 +52,7 @@ float Shape::getPositionZ(void)
 	return position->z;
 }
 
-Position* Shape::getPosition(void)
+Coordinate* Shape::getPosition(void)
 {
 	return position;
 }

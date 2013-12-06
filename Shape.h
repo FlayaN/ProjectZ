@@ -1,19 +1,19 @@
 #pragma once
-#include "Position.h"
+#include "Coordinate.h"
 #include <string>
 
 class Shape
 {
 public:
-	Shape(Position*);
+	Shape(Coordinate*);
 	virtual ~Shape(void);
 
-	void setPosition(Position*);
+	void setPosition(Coordinate*);
 	void setPositionX(float);
 	void setPositionY(float);
 	void setPositionZ(float);
 
-	Position* getPosition(void);
+	Coordinate* getPosition(void);
 	float getPositionX(void);
 	float getPositionY(void);
 	float getPositionZ(void);
@@ -24,6 +24,6 @@ public:
 	virtual bool checkCollision(Shape*) = 0;
 
 protected:
-	Position* position;
+	Coordinate* position;
 };
 

@@ -1,7 +1,7 @@
 #include "Area.h"
 
 
-Area::Area(std::vector<Position*> cornersIn, bool collidableIn)
+Area::Area(std::vector<Coordinate*> cornersIn, bool collidableIn)
 {
 	corners = cornersIn;
 	collidable = collidableIn;
