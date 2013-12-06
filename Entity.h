@@ -6,18 +6,23 @@
     #include "SDL.h"
 #endif
 
-#include "Position.h"
+#include "Coordinate.h"
 
 class Entity {
 public:
 	Entity(void);
 	~Entity(void);
 
-	Position* getPosition();
-	Position* getVelocity();
+	Coordinate* getPosition();
+	Coordinate* getVelocity();
+
+	void setPosition(float, float, float);
+	void setPosition(Coordinate*);
+
+
 
 protected:
-	Position* position;
-	Position* velocity;
+	Coordinate* position;
+	Coordinate* velocity;
 };
 

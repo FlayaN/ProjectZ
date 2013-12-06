@@ -18,12 +18,12 @@ Area::~Area(void)
 	*/
 }
 
-std::vector<Position*> Area::getCorners()
+std::vector<Coordinate*> Area::getCorners()
 {
 	return corners;
 }
 
-void Area::setCorners(std::vector<Position*> cornersIn)
+void Area::setCorners(std::vector<Coordinate*> cornersIn)
 {
 	corners = cornersIn;
 }

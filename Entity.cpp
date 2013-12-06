@@ -2,8 +2,8 @@
 
 
 Entity::Entity(void) {
-	position = new Position();
-	velocity = new Position();
+	position = new Coordinate();
+	velocity = new Coordinate();
 }
 
 Entity::~Entity(void) {
@@ -11,10 +11,10 @@ Entity::~Entity(void) {
 	delete velocity;
 }
 
-Position* Entity::getPosition() {
+Coordinate* Entity::getPosition() {
 	return position;
 }
 
-Position* Entity::getVelocity() {
+Coordinate* Entity::getVelocity() {
 	return velocity;
 }

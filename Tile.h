@@ -8,21 +8,21 @@
 	#include "SDL_image.h"
 #endif
 
-#include "Position.h"
+#include "Coordinate.h"
 #include "Area.h"
 #include <iostream>
 
 class Tile
 {
 public:
-	Tile(Position*, Area*, Area*, Area*, Area*);
+	Tile(Coordinate*, Area*, Area*, Area*, Area*);
     Tile(SDL_Renderer*);
 	~Tile(void);
     
     SDL_Texture* getTexture();
 
 private:
-	Position* position;
+	Coordinate* position;
 
 	Area* northArea;
 	Area* southArea;

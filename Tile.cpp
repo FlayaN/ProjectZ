@@ -6,7 +6,7 @@ void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
-Tile::Tile(Position* positionIn, Area* northAreaIn, Area* southAreaIn, Area* westAreaIn, Area* eastAreaIn)
+Tile::Tile(Coordinate* positionIn, Area* northAreaIn, Area* southAreaIn, Area* westAreaIn, Area* eastAreaIn)
 {
 	position = positionIn;
 	northArea = northAreaIn;
