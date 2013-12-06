@@ -9,13 +9,13 @@
 #endif
 
 #include "Coordinate.h"
-#include "Area.h"
+#include "Shape.h"
 #include <iostream>
 
 class Tile
 {
 public:
-	Tile(Coordinate*, Area*, Area*, Area*, Area*);
+	Tile(Coordinate*, Shape*, Shape*, Shape*, Shape*);
     Tile(SDL_Renderer*);
 	~Tile(void);
     
@@ -24,10 +24,10 @@ public:
 private:
 	Coordinate* position;
 
-	Area* northArea;
-	Area* southArea;
-	Area* westArea;
-	Area* eastArea;
+	Shape* northArea;
+	Shape* southArea;
+	Shape* westArea;
+	Shape* eastArea;
     
     SDL_Texture* tex;
 };
