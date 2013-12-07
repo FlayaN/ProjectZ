@@ -1,9 +1,10 @@
 #include "Shape.h"
 
 
-Shape::Shape(Coordinate* positionIn = NULL)
+Shape::Shape(Coordinate* positionIn = NULL, bool solidIn = false)
 {
 	position = positionIn;
+	solid = solidIn;
 }
 
 
@@ -18,6 +19,13 @@ void Shape::setPosition(Coordinate* positionIn)
 {
 	delete position;
 	position = positionIn;
+}
+
+void Shape::setPositionXYZ(float xIn, float yIn, float zIn)
+{
+	position->x = xIn;
+	position->y = yIn;
+	position->z = zIn;
 }
 
 void Shape::setPositionX(float xIn)
