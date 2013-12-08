@@ -189,3 +189,14 @@ void Entity::addShape(Shape* shapeIn)
 {
 	shapes.push_back(shapeIn);
 }
+
+//------------------------------------------------REMOVE -------------------------------------------//
+
+void Entity::removeShapes()
+{
+	while(!shapes.empty())
+	{
+		delete shapes.back();
+		shapes.pop_back();	
+	}
+}

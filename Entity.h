@@ -49,6 +49,7 @@ public:
 
 	void updatePosition(void);
 	void addShape(Shape*);
+	void removeShapes(void);
 
 protected:
 	Coordinate* position;
