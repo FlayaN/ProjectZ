@@ -77,6 +77,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Coordinate.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="EntityPlayer.h" />
     <ClInclude Include="Coordinate.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Tile.h" />

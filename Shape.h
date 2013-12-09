@@ -1,12 +1,12 @@
 #pragma once
 #include "Coordinate.h"
+#include "Material.h"
 #include <string>
-#include <algorithm>
 
 class Shape
 {
 public:
-	Shape(Coordinate*, bool);
+	Shape(Coordinate*, int);
 	virtual ~Shape(void);
 
 	void setPosition(Coordinate*);
@@ -14,6 +14,8 @@ public:
 	void setPositionX(float);
 	void setPositionY(float);
 	void setPositionZ(float);
+
+	void setSolid(bool);
 
 	Coordinate* getPosition(void);
 	float getPositionX(void);
@@ -27,6 +29,6 @@ public:
 
 protected:
 	Coordinate* position;
-	bool solid;
+	int id;
 };
 

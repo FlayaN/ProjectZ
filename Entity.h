@@ -54,6 +54,6 @@ public:
 protected:
 	Coordinate* position;
 	Coordinate* velocity;
-	std::vector<Shape*> shapes;
+	std::vector<Shape*> shapes; // change to collision boxes based on shapes
 };
 

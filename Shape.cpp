@@ -1,10 +1,10 @@
 #include "Shape.h"
 
 
-Shape::Shape(Coordinate* positionIn = NULL, bool solidIn = false)
+Shape::Shape(Coordinate* positionIn = NULL, int idIn = NULL)
 {
 	position = positionIn;
-	solid = solidIn;
+	id = idIn;
 }
 
 
