@@ -72,7 +72,7 @@ void EntityPlayer::keyDown(SDL_Event* ev) {
 }
 
 void EntityPlayer::update() {
-	cout << "Pos X: " << position->x << " Pos Y: " << position->y << " Vel X: " << velocity->x << " Vel Y: " << velocity->y << endl;
+	//cout << "Pos X: " << position->x << " Pos Y: " << position->y << " Vel X: " << velocity->x << " Vel Y: " << velocity->y << endl;
 	/*
 	float friction = 0.01f;
 

@@ -27,7 +27,7 @@ float CircleShape::getRadius(void)
 
 float CircleShape::getArea(void)
 {
-	return 4.0*M_PI*pow(radius, 3.0)/3.0;
+	return 4.0*3.14*pow(radius, 3.0)/3.0;
 }
 
 std::string CircleShape::getShapeType(void)

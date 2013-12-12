@@ -4,12 +4,16 @@
     #include "SDL.h"
 #endif
 
-#include <cstdio>
+#include "Defines.h"
 #include "Tile.h"
 #include "EntityPlayer.h"
 #include "Renderer.h"
+#include "Chunk.h"
+
+#include <cstdio>
 #include <algorithm>
 #include <string>
+#include <sstream>
 
 #ifndef Project_Z_Game_h
 #define Project_Z_Game_h
@@ -40,7 +44,7 @@ public:
 	void Render();
 	
 private:
-	Tile* tiles[10][10];
+	HashMap<int, Chunk*> chunks;
 	EntityPlayer* player;
 	bool _running;
 	SDL_Window *win;

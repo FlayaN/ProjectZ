@@ -16,7 +16,7 @@ class Tile
 {
 public:
 	Tile(Coordinate*, Shape*, Shape*, Shape*, Shape*);
-    Tile(SDL_Renderer*);
+    Tile(SDL_Renderer*, std::string s);
 	~Tile(void);
     
     SDL_Texture* getTexture();

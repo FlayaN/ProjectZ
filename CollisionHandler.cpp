@@ -21,4 +21,6 @@ bool CollisionHandler::testCollision(Shape* shapeOne, Shape* shapeTwo)
 	{
 		// do collision check for circle circle
 	}
+
+	return true;
 }

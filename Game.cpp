@@ -11,12 +11,17 @@ int Game::init(int width, int height)
 	
 	win = SDL_CreateWindow("Project Z", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
 	renderer = new Renderer(win);
-	for(int x = 0; x < 10; x++) {
-		for(int y = 0; y < 10; y++) {
-			tiles[x][y] = nullptr;
-		}
+	for(int i = 0; i < 9; i++)
+	{
+		Chunk* chunk = new Chunk();
+
+		std::stringstream ss;
+		ss << "res/" << i+1 << ".png";
+
+		chunk->init(renderer->getRenderer(), ss.str());
+		chunks[i] = chunk;
 	}
-	tiles[4][2] = new Tile(renderer->getRenderer()); //Add a tile here to tiles to render it
+
 	player = new EntityPlayer(renderer->getRenderer());
 	return APP_OK;
 }
@@ -40,9 +45,11 @@ int Game::run(int width, int height) {
 	SDL_Event ev;
 	_running = true;
 
-	while(_running) {
+	while(_running)
+	{
 		//Events
-		while( SDL_PollEvent(&ev)) {
+		while( SDL_PollEvent(&ev)) 
+		{
 			player->keyDown(&ev);
 			onEvent(&ev);
 		}
@@ -57,20 +64,25 @@ int Game::run(int width, int height) {
 	return APP_OK;
 }
 
-void Game::onEvent(SDL_Event* ev) {
-	switch (ev->type) {
+void Game::onEvent(SDL_Event* ev)
+{
+	switch (ev->type)
+	{
 		case SDL_QUIT:
 			_running = false;
 			break;
 			
-		case SDL_KEYDOWN: {
-			if (ev->key.keysym.sym == SDLK_ESCAPE) {
+		case SDL_KEYDOWN:
+		{
+			if (ev->key.keysym.sym == SDLK_ESCAPE)
+			{
 				_running = false;
 			}
 		}
 	}
 }
 
-void Game::Render() {
-	renderer->render(tiles, player);
+void Game::Render()
+{
+	renderer->render(chunks, player);
 }

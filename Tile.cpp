@@ -15,9 +15,9 @@ Tile::Tile(Coordinate* positionIn, Shape* northAreaIn, Shape* southAreaIn, Shape
 	eastArea = eastAreaIn;
 }
 
-Tile::Tile(SDL_Renderer* ren)
+Tile::Tile(SDL_Renderer* ren, string s)
 {
-	tex = IMG_LoadTexture(ren, "res/grass.png");
+	tex = IMG_LoadTexture(ren, s.c_str());
 }
 
 Tile::~Tile(void)

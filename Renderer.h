@@ -6,7 +6,8 @@
     #include "SDL.h"
 #endif
 
-#include "Tile.h"
+#include "Defines.h"
+#include "Chunk.h"
 #include "EntityPlayer.h"
 
 class Renderer
@@ -14,10 +15,9 @@ class Renderer
 public:
 	Renderer(SDL_Window*);
 	~Renderer(void);
-	void render(Tile* tiles[10][10], EntityPlayer*);
-	SDL_Renderer* getRenderer();
+	void render(HashMap<int, Chunk*> , EntityPlayer*);
+	SDL_Renderer* getRenderer(void);
 private:
 	SDL_Renderer *renderer;
 	SDL_Window* win;
 };
-
