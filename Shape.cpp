@@ -1,10 +1,10 @@
 #include "Shape.h"
 
 
-Shape::Shape(Coordinate* positionIn = NULL, int idIn = NULL)
+Shape::Shape(Coordinate* positionIn = NULL, Entity* ownerIn = NULL)
 {
 	position = positionIn;
-	id = idIn;
+	owner = ownerIn;
 }
 
 
@@ -14,6 +14,12 @@ Shape::~Shape(void)
 }
 
 //------------------------------------------------SET ----------------------------------------------//
+
+void Shape::setOwner(Entity* ownerIn)
+{
+	delete owner;
+	owner = ownerIn;
+}
 
 void Shape::setPosition(Coordinate* positionIn)
 {
@@ -45,6 +51,11 @@ void Shape::setPositionZ(float zIn)
 
 //------------------------------------------------GET ----------------------------------------------//
 
+Entity* Shape::getOwner(void)
+{
+	return owner;
+}
+
 float Shape::getPositionX(void)
 {
 	return position->x;
@@ -67,7 +78,3 @@ Coordinate* Shape::getPosition(void)
 
 //float getArea(void) = 0;
 //std::string getShapeType(void) = 0;
-
-//-----------------------------------------------CHECK----------------------------------------------//
-
-//bool checkCollision(Shape*) = 0;
