@@ -1,5 +1,8 @@
 #pragma once
-class Vec3
+
+#include "Vec2.h"
+
+class Vec3 : public Vec2
 {
 public:
 

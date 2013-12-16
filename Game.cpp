@@ -21,7 +21,24 @@ int Game::init(int width, int height)
 	
 	win = SDL_CreateWindow("Project Z", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
 	renderer = new Renderer(win);
-	for(int i = 0; i < 9; i++)
+
+	int i = 0;
+	for(int x = 0; x < 3; x++)
+	{
+		for(int y = 0; y < 3; y++)
+		{
+			Chunk* chunk = new Chunk();
+
+			std::stringstream ss;
+			ss << "res/" << i+1 << ".png";
+
+			chunk->init(renderer->getRenderer(), ss.str());
+			chunks[Coord(x, y)] = chunk;
+			i++;
+		}
+	}
+
+	/*for(int i = 0; i < 9; i++)
 	{
 		Chunk* chunk = new Chunk();
 
@@ -30,7 +47,7 @@ int Game::init(int width, int height)
 
 		chunk->init(renderer->getRenderer(), ss.str());
 		chunks[i] = chunk;
-	}
+	}*/
 
 	player = new EntityPlayer(renderer->getRenderer());
 	return APP_OK;
@@ -101,32 +118,31 @@ void Game::render()
 
 void Game::collision(void)
 {
-	//Chunk currChunk = *getChunk(player->getPosition());
-
-	//Tile currTile = *getTile(currChunk.getTiles(), player->getPosition());
-
-	SDL_Rect test = SDL_Rect();
-	test.h = TileSize/2;
-	test.w = TileSize;
-	test.x = 0;
-	test.y = 0;
-
-	if(CollisionHandler::intersects(player->getBB(), &test))//currTile.getBB()))
-		std::cout << "COLLIDING" << std::endl;
-	else
-		std::cout << "No Collision" << std::endl;
+	Chunk* currChunk = getChunk(player->getPosition());
+	if(currChunk != nullptr)
+	{
+		Tile* currTile = getTile(currChunk->getTiles(), player->getPosition());
+		if(currTile != nullptr)
+		{
+			std::cout << "test" << std::endl;
+			if(CollisionHandler::intersects(player->getBB(), currTile->getBB()))
+				std::cout << "COLLIDING" << std::endl;
+			else
+				std::cout << "No Collision" << std::endl;
+		}
+	}
 }
 
 Chunk* Game::getChunk(Vec3* coord)
 {
-	//int chunk = (int)coord->x % (200*3);
-
-	return chunks[0];
+	Coord c = Coord((int)(coord->x/ChunkSize), (int)((coord->y/ChunkSize)));
+	std::cout << "Chunk X: " << c.x << " Chunk Y: " << c.y << std::endl;
+	return chunks[c];
 }
 
-Tile* Game::getTile(std::HashMap<int, Tile*> tiles, Vec3* coord)
+Tile* Game::getTile(std::HashMap<Coord, Tile*> tiles, Vec3* coord)
 {
-	//int chunk = (int)coord->x % (200*3);
-
-	return tiles[0];
+	Coord c = Coord((int)(coord->x/TileSize), (int)((coord->y/TileSize)*2));
+	std::cout << "Tile X: " << c.x << " Tile Y: " << c.y << std::endl;
+	return tiles[c];
 }

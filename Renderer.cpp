@@ -17,7 +17,7 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, SDL_Rect dst)
 	SDL_RenderCopy(ren, tex, NULL, &dst);
 }
 
-void Renderer::render(std::HashMap<int, Chunk*> chunks, EntityPlayer* player)
+void Renderer::render(std::HashMap<Coord, Chunk*> chunks, EntityPlayer* player)
 {
 
 	int w,h;
@@ -25,9 +25,6 @@ void Renderer::render(std::HashMap<int, Chunk*> chunks, EntityPlayer* player)
 
 	float playerX = -player->getPosition()->x;
 	float playerY = player->getPosition()->y;
-
-	//float playerChunkX = 
-	//float playerChunkY = 
 
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
 	SDL_RenderClear(renderer);
@@ -40,29 +37,30 @@ void Renderer::render(std::HashMap<int, Chunk*> chunks, EntityPlayer* player)
 
 	int size = 3;
 
-	for(std::HashMap<int, Chunk*>::const_iterator i = chunks.begin(), e = chunks.end(); i != e ; ++i )
+	for(std::HashMap<Coord, Chunk*>::const_iterator i = chunks.begin(), e = chunks.end(); i != e ; ++i )
 	{
 		Chunk* currChunk = i->second;
-		std::HashMap<int, Tile*> tiles = currChunk->getTiles();
-
-		int chunkPos = i->first;
-		int chunkPosX = chunkPos/size;
-		int chunkPosY = chunkPos%size;
-		for(std::HashMap<int, Tile*>::const_iterator j = tiles.begin(), f = tiles.end(); j != f ; ++j )
+		if(currChunk != nullptr)
 		{
-			Tile* tile = j->second;
-			int coord = j->first;
-			int x = coord/size;
-			int y = coord%size;
+			std::HashMap<Coord, Tile*> tiles = currChunk->getTiles();
 
-			if(tile != nullptr)
+			int chunkPosX = i->first.x;
+			int chunkPosY = i->first.y;
+			for(std::HashMap<Coord, Tile*>::const_iterator j = tiles.begin(), f = tiles.end(); j != f ; ++j )
 			{
-				SDL_Texture* tex = tile->getTexture();
+				Tile* tile = j->second;
+				int x = j->first.x;
+				int y = j->first.y;
 
-				dst.x = ((chunkPosX*size)+x)*dst.w + playerX;
-				dst.y = ((chunkPosY*size)+y)*dst.h + playerY;
+				if(tile != nullptr)
+				{
+					SDL_Texture* tex = tile->getTexture();
 
-				renderTexture(tex, renderer, dst);
+					dst.x = ((chunkPosX*size)+x)*dst.w + playerX;
+					dst.y = ((chunkPosY*size)+y)*dst.h + playerY;
+
+					renderTexture(tex, renderer, dst);
+				}
 			}
 		}
 	}
@@ -79,7 +77,6 @@ void Renderer::render(std::HashMap<int, Chunk*> chunks, EntityPlayer* player)
 	SDL_Rect rect = *player->getSize();
 	rect.x = w/2 - rect.w/2;
 	rect.y = h/2 - rect.h/2;
-
 	renderTexture(player->getTexture(), renderer, rect);
 
     SDL_RenderPresent(renderer);

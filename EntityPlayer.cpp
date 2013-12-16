@@ -2,7 +2,8 @@
 
 using namespace std;
 
-EntityPlayer::EntityPlayer(SDL_Renderer* ren) : Entity() {
+EntityPlayer::EntityPlayer(SDL_Renderer* ren) : Entity()
+{
 	tex = IMG_LoadTexture(ren, "res/mario.gif");
 	size = new SDL_Rect();
 	size->h = 200;
@@ -12,24 +13,27 @@ EntityPlayer::EntityPlayer(SDL_Renderer* ren) : Entity() {
 	
 
 	bb = new SDL_Rect();
-	bb->h = 50;
+	bb->h = 200;
 	bb->w = 100;
 	bb->x = 0;
 	bb->y = 0;
 }
 
-
-EntityPlayer::~EntityPlayer(void) {
+EntityPlayer::~EntityPlayer(void)
+{
 
 }
 
-void EntityPlayer::keyDown(SDL_Event* ev) {
+void EntityPlayer::keyDown(SDL_Event* ev)
+{
 	
 	float speed = 0.1;
 
-	if(ev->type == SDL_KEYDOWN) {
+	if(ev->type == SDL_KEYDOWN)
+	{
 
-		switch(ev->key.keysym.sym) {
+		switch(ev->key.keysym.sym)
+		{
 		case SDLK_w:
 			velocity->y += speed;
 			break;
@@ -43,9 +47,10 @@ void EntityPlayer::keyDown(SDL_Event* ev) {
 			velocity->x += speed;
 			break;
 		}
-	} else if(ev->type == SDL_KEYUP) {
-
-		switch(ev->key.keysym.sym) {
+	} else if(ev->type == SDL_KEYUP)
+	{
+		switch(ev->key.keysym.sym)
+		{
 		case SDLK_w:
 			velocity->y -= speed;
 			break;
@@ -80,7 +85,8 @@ void EntityPlayer::keyDown(SDL_Event* ev) {
 	}*/
 }
 
-void EntityPlayer::update() {
+void EntityPlayer::update()
+{
 	//cout << "Pos X: " << position->x << " Pos Y: " << position->y << " Vel X: " << velocity->x << " Vel Y: " << velocity->y << endl;
 	/*
 	float friction = 0.01f;
@@ -109,6 +115,9 @@ void EntityPlayer::update() {
 
 	bb->x = position->x;
 	bb->y = position->y;
+
+
+	//cout << "Pos X: " << position->x << " Pos Y: " << position->y << " Vel X: " << velocity->x << " Vel Y: " << velocity->y << endl;
 }
 
 SDL_Texture* EntityPlayer::getTexture(void)

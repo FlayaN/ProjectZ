@@ -15,7 +15,7 @@ class Renderer
 public:
 	Renderer(SDL_Window*);
 	~Renderer(void);
-	void render(std::HashMap<int, Chunk*> , EntityPlayer*);
+	void render(std::HashMap<Coord, Chunk*> , EntityPlayer*);
 	SDL_Renderer* getRenderer(void);
 private:
 	SDL_Renderer *renderer;

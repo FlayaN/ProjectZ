@@ -43,11 +43,11 @@ public:
 	void collision(void);
 
 	Chunk* getChunk(Vec3* coord);
-	
-	Tile* getTile(std::HashMap<int, Tile*> tiles, Vec3* coord);
+
+	Tile* getTile(std::HashMap<Coord, Tile*> tiles, Vec3* coord);
 	
 private:
-    std::HashMap<int, Chunk*> chunks;
+    std::HashMap<Coord, Chunk*> chunks;
 	EntityPlayer* player;
 	bool _running;
 	SDL_Window *win;

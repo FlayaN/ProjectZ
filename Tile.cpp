@@ -17,20 +17,20 @@ Tile::Tile(Vec3* positionIn, Shape* northAreaIn, Shape* southAreaIn, Shape* west
 
 Tile::Tile(SDL_Renderer* ren, std::string s)
 {
-	bb = new SDL_Rect();
+	/*bb = new SDL_Rect();
 	bb->h = TileSize/2;
-	bb->w = TileSize;
+	bb->w = TileSize;*/
 	if(Utility::getRandInt(1, 10) < 3)
 	{
 		tex = IMG_LoadTexture(ren, "res/block.png");
-		/*bb = new SDL_Rect();
+		bb = new SDL_Rect();
 		bb->h = 100;
-		bb->w = 200;*/
+		bb->w = 200;
 	}
 	else
 	{
 		tex = IMG_LoadTexture(ren, s.c_str());
-		//bb = nullptr;
+		bb = nullptr;
 	}
 }
 

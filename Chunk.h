@@ -6,6 +6,7 @@
 
 #include "Defines.h"
 #include "Tile.h"
+#include "Coord.h"
 
 class Chunk
 {
@@ -15,8 +16,8 @@ public:
 
 	void init(SDL_Renderer*, std::string);
 	
-    std::HashMap<int, Tile*> getTiles(void);
+    std::HashMap<Coord, Tile*> getTiles(void);
 
 private:
-    std::HashMap<int, Tile*> tiles;
+    std::HashMap<Coord, Tile*> tiles;
 };
