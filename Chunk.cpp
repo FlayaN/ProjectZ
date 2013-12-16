@@ -20,7 +20,7 @@ void Chunk::init(SDL_Renderer* renderer, std::string s)
 	//tiles[31] = new Tile(renderer->getRenderer()); //Add a tile here to tiles to render it
 }
 
-HashMap<int, Tile*> Chunk::getTiles(void)
+std::HashMap<int, Tile*> Chunk::getTiles(void)
 {
 	return tiles;
 }

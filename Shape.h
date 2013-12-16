@@ -11,21 +11,14 @@
 class Shape
 {
 public:
-	Shape(Coordinate*);
+	Shape(Coordinate* positionIn = nullptr);
 	virtual ~Shape(void);
 
 	//void setOwner(Entity*);
 	void setPosition(Coordinate*);
-	void setPositionXYZ(float, float, float);
-	void setPositionX(float);
-	void setPositionY(float);
-	void setPositionZ(float);
 
 	//Entity* getOwner(void);
 	Coordinate* getPosition(void);
-	float getPositionX(void);
-	float getPositionY(void);
-	float getPositionZ(void);
 
 	virtual float getArea(void) = 0;
 	virtual std::string getShapeType(void) = 0;

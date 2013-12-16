@@ -4,7 +4,7 @@
 class Material
 {
 public:
-	Material(std::string, float);
+	Material(std::string labelIn = "unknown", float densityIn = 0.0);
 	~Material(void);
 
 	void setLabel(std::string);

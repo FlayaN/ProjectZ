@@ -17,7 +17,7 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, SDL_Rect dst)
 	SDL_RenderCopy(ren, tex, NULL, &dst);
 }
 
-void Renderer::render(HashMap<int, Chunk*> chunks, EntityPlayer* player)
+void Renderer::render(std::HashMap<int, Chunk*> chunks, EntityPlayer* player)
 {
 
 	int w,h;
@@ -34,7 +34,7 @@ void Renderer::render(HashMap<int, Chunk*> chunks, EntityPlayer* player)
 	
 	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
 
-	int tileSize = 500;
+	int tileSize = 200;
 	
 	SDL_Rect dst;
 	dst.w = tileSize;
@@ -42,15 +42,15 @@ void Renderer::render(HashMap<int, Chunk*> chunks, EntityPlayer* player)
 
 	int size = 3;
 
-	for(HashMap<int, Chunk*>::const_iterator i = chunks.begin(), e = chunks.end(); i != e ; ++i )
+	for(std::HashMap<int, Chunk*>::const_iterator i = chunks.begin(), e = chunks.end(); i != e ; ++i )
 	{
 		Chunk* currChunk = i->second;
-		HashMap<int, Tile*> tiles = currChunk->getTiles();
+		std::HashMap<int, Tile*> tiles = currChunk->getTiles();
 
 		int chunkPos = i->first;
 		int chunkPosX = chunkPos/size;
 		int chunkPosY = chunkPos%size;
-		for(HashMap<int, Tile*>::const_iterator j = tiles.begin(), f = tiles.end(); j != f ; ++j )
+		for(std::HashMap<int, Tile*>::const_iterator j = tiles.begin(), f = tiles.end(); j != f ; ++j )
 		{
 			Tile* tile = j->second;
 			int coord = j->first;

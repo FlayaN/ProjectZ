@@ -1,7 +1,7 @@
 #include "Material.h"
 
 
-Material::Material(std::string labelIn = "unknown", float densityIn = 0.0)
+Material::Material(std::string labelIn, float densityIn)
 {
 	label = labelIn;
 	density = densityIn;

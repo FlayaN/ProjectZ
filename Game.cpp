@@ -1,5 +1,15 @@
 #include "Game.h"
 
+Game::Game() : _running(false)
+{
+    
+}
+
+Game::~Game()
+{
+    destroy();
+}
+
 int Game::init(int width, int height)
 {
 	// Initialize the SDL library.
@@ -36,7 +46,8 @@ void Game::destroy()
 	}
 }
 
-int Game::run(int width, int height) {
+int Game::run(int width, int height)
+{
 	// Initialize application.
 	int state = init(width, height);
 	if (state != APP_OK) return state;

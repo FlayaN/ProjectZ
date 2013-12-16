@@ -22,13 +22,9 @@ class Game
 {
 public:
 	
-	Game() : _running(false) {
-		
-	}
+	Game();
     
-	~Game() {
-        destroy();
-    }
+	~Game();
 	
 	enum APP_STATE {
 		APP_OK = 0,
@@ -44,7 +40,7 @@ public:
 	void Render();
 	
 private:
-	HashMap<int, Chunk*> chunks;
+    std::HashMap<int, Chunk*> chunks;
 	EntityPlayer* player;
 	bool _running;
 	SDL_Window *win;

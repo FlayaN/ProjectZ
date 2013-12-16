@@ -1,6 +1,6 @@
 #include "Tile.h"
 
-using namespace std;
+//using namespace std;
 
 void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
@@ -15,9 +15,10 @@ Tile::Tile(Coordinate* positionIn, Shape* northAreaIn, Shape* southAreaIn, Shape
 	eastArea = eastAreaIn;
 }
 
-Tile::Tile(SDL_Renderer* ren, string s)
+Tile::Tile(SDL_Renderer* ren, std::string s)
 {
 	tex = IMG_LoadTexture(ren, s.c_str());
+    //tex = IMG_LoadTexture(ren, "/Users/hannesfeldt/Documents/ProjectZ/res/2.png");
 }
 
 Tile::~Tile(void)
@@ -29,6 +30,7 @@ Tile::~Tile(void)
 	delete eastArea;
 }
 
-SDL_Texture* Tile::getTexture() {
+SDL_Texture* Tile::getTexture()
+{
     return tex;
 }

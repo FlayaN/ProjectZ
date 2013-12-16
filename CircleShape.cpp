@@ -1,7 +1,7 @@
 #include "CircleShape.h"
 
 
-CircleShape::CircleShape(Coordinate* positionIn = NULL, float radiusIn = 0.0) : Shape(positionIn)
+CircleShape::CircleShape(Coordinate* positionIn, float radiusIn) : Shape(positionIn)
 {
 	radius = radiusIn;
 }
