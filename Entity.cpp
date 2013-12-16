@@ -3,8 +3,8 @@
 
 Entity::Entity(void)
 {
-	position = new Coordinate();
-	velocity = new Coordinate();
+	position = new Vec3();
+	velocity = new Vec3();
 }
 
 Entity::~Entity(void) {
@@ -18,13 +18,13 @@ Entity::~Entity(void) {
 
 //------------------------------------------------SET ----------------------------------------------//
 
-void Entity::setPosition(Coordinate* positionIn)
+void Entity::setPosition(Vec3* positionIn)
 {
 	delete position;
 	position = positionIn;
 }
 
-void Entity::setVelocity(Coordinate* velocityIn)
+void Entity::setVelocity(Vec3* velocityIn)
 {
 	delete velocity;
 	velocity = velocityIn;
@@ -32,12 +32,12 @@ void Entity::setVelocity(Coordinate* velocityIn)
 
 //------------------------------------------------GET ----------------------------------------------//
 
-Coordinate* Entity::getPosition(void)
+Vec3* Entity::getPosition(void)
 {
 	return position;
 }
 
-Coordinate* Entity::getVelocity(void)
+Vec3* Entity::getVelocity(void)
 {
 	return velocity;
 }

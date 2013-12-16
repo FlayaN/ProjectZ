@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Coordinate.h"
+#include "Vec3.h"
 //#include "Material.h"
 //#include "Entity.h"
 #include <string>
@@ -11,20 +11,22 @@
 class Shape
 {
 public:
-	Shape(Coordinate* positionIn = nullptr);
+	Shape(Vec3* offset = nullptr, Vec3* parentPos = nullptr);
 	virtual ~Shape(void);
 
 	//void setOwner(Entity*);
-	void setPosition(Coordinate*);
+
+	void setPosition(Vec3*);
 
 	//Entity* getOwner(void);
-	Coordinate* getPosition(void);
+	Vec3* getPosition(void);
 
-	virtual float getArea(void) = 0;
-	virtual std::string getShapeType(void) = 0;
+	//virtual float getArea(void) = 0;
+	//virtual std::string getShapeType(void) = 0;
 
 protected:
-	Coordinate* position;
+	Vec3* offset;
+	Vec3* parentPos;
 	//Entity* owner;
 };
 

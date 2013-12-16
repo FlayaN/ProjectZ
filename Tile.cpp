@@ -6,7 +6,7 @@ void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
-Tile::Tile(Coordinate* positionIn, Shape* northAreaIn, Shape* southAreaIn, Shape* westAreaIn, Shape* eastAreaIn)
+Tile::Tile(Vec3* positionIn, Shape* northAreaIn, Shape* southAreaIn, Shape* westAreaIn, Shape* eastAreaIn)
 {
 	position = positionIn;
 	northArea = northAreaIn;
@@ -17,8 +17,21 @@ Tile::Tile(Coordinate* positionIn, Shape* northAreaIn, Shape* southAreaIn, Shape
 
 Tile::Tile(SDL_Renderer* ren, std::string s)
 {
-	tex = IMG_LoadTexture(ren, s.c_str());
-    //tex = IMG_LoadTexture(ren, "/Users/hannesfeldt/Documents/ProjectZ/res/2.png");
+	bb = new SDL_Rect();
+	bb->h = TileSize/2;
+	bb->w = TileSize;
+	if(Utility::getRandInt(1, 10) < 3)
+	{
+		tex = IMG_LoadTexture(ren, "res/block.png");
+		/*bb = new SDL_Rect();
+		bb->h = 100;
+		bb->w = 200;*/
+	}
+	else
+	{
+		tex = IMG_LoadTexture(ren, s.c_str());
+		//bb = nullptr;
+	}
 }
 
 Tile::~Tile(void)
@@ -30,7 +43,12 @@ Tile::~Tile(void)
 	delete eastArea;
 }
 
-SDL_Texture* Tile::getTexture()
+SDL_Texture* Tile::getTexture(void)
 {
     return tex;
+}
+
+SDL_Rect* Tile::getBB(void)
+{
+	return bb;
 }

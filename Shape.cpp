@@ -1,16 +1,19 @@
 #include "Shape.h"
 
 
-Shape::Shape(Coordinate* positionIn)//, Entity* ownerIn = NULL)
+Shape::Shape(Vec3* offset, Vec3* parentPos)//, Entity* ownerIn = NULL)
 {
-	position = positionIn;
+	this->offset = offset;
+	this->parentPos = parentPos;
+	//position = positionIn;
 	//owner = ownerIn;
 }
 
 
 Shape::~Shape(void)
 {
-	delete position;
+	delete offset;
+	delete parentPos;
 }
 
 //------------------------------------------------SET ----------------------------------------------//
@@ -21,10 +24,10 @@ Shape::~Shape(void)
 	owner = ownerIn;
 }*/
 
-void Shape::setPosition(Coordinate* positionIn)
+void Shape::setPosition(Vec3* positionIn)
 {
-	delete position;
-	position = positionIn;
+	delete offset;
+	this->offset = offset;
 }
 
 //------------------------------------------------GET ----------------------------------------------//
@@ -34,9 +37,9 @@ void Shape::setPosition(Coordinate* positionIn)
 	return owner;
 }*/
 
-Coordinate* Shape::getPosition(void)
+Vec3* Shape::getPosition(void)
 {
-	return position;
+	return &((*parentPos)+(*offset));
 }
 
 //float getArea(void) = 0;

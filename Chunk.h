@@ -20,4 +20,3 @@ public:
 private:
     std::HashMap<int, Tile*> tiles;
 };
-

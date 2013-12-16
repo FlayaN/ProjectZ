@@ -19,10 +19,13 @@ public:
 	void update();
 
 	SDL_Texture* getTexture();
-	SDL_Rect* getRect();
-
+	SDL_Rect* getSize();
+	SDL_Rect* getBB();
 private:
 	SDL_Texture* tex;
-	SDL_Rect* rect;
+	SDL_Rect* size;
+	//Shape* bb;
+
+	SDL_Rect* bb;
 };
 

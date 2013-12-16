@@ -33,12 +33,10 @@ void Renderer::render(std::HashMap<int, Chunk*> chunks, EntityPlayer* player)
 	SDL_RenderClear(renderer);
 	
 	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
-
-	int tileSize = 200;
 	
 	SDL_Rect dst;
-	dst.w = tileSize;
-	dst.h = tileSize/2;
+	dst.w = TileSize;
+	dst.h = TileSize/2;
 
 	int size = 3;
 
@@ -69,16 +67,16 @@ void Renderer::render(std::HashMap<int, Chunk*> chunks, EntityPlayer* player)
 		}
 	}
 
-	for(int x = 0; x < w*10; x+=tileSize)
+	for(int x = 0; x < w*10; x+=TileSize)
 	{
 		SDL_RenderDrawLine(renderer, x+playerX, 0, x+playerX, h);
-		for(int y = 0; y < h*10; y+=tileSize/2)
+		for(int y = 0; y < h*10; y+=TileSize/2)
 		{
 			SDL_RenderDrawLine(renderer, 0, y+playerY, w, y+playerY);
 		}
 	}
 
-	SDL_Rect rect = *player->getRect();
+	SDL_Rect rect = *player->getSize();
 	rect.x = w/2 - rect.w/2;
 	rect.y = h/2 - rect.h/2;
 

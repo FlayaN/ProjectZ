@@ -3,10 +3,19 @@
 using namespace std;
 
 EntityPlayer::EntityPlayer(SDL_Renderer* ren) : Entity() {
-	tex = IMG_LoadTexture(ren, "res/grass.png");
-	rect = new SDL_Rect();
-	rect->h = 200;
-	rect->w = 100;
+	tex = IMG_LoadTexture(ren, "res/mario.gif");
+	size = new SDL_Rect();
+	size->h = 200;
+	size->w = 100;
+
+	//bb = new Shape(new Vec3(), position);
+	
+
+	bb = new SDL_Rect();
+	bb->h = 50;
+	bb->w = 100;
+	bb->x = 0;
+	bb->y = 0;
 }
 
 
@@ -97,12 +106,22 @@ void EntityPlayer::update() {
 
 	position->x += velocity->x;
 	position->y += velocity->y;
+
+	bb->x = position->x;
+	bb->y = position->y;
 }
 
-SDL_Texture* EntityPlayer::getTexture() {
+SDL_Texture* EntityPlayer::getTexture(void)
+{
 	return tex;
 }
 
-SDL_Rect* EntityPlayer::getRect() {
-	return rect;
+SDL_Rect* EntityPlayer::getSize(void)
+{
+	return size;
+}
+
+SDL_Rect* EntityPlayer::getBB(void)
+{
+	return bb;
 }

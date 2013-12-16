@@ -4,7 +4,7 @@
 class CircleShape : protected Shape
 {
 public:
-	CircleShape(Coordinate* positionIn = nullptr, float radiusIn = 0.0);
+	CircleShape(Vec3* positionIn = nullptr, float radiusIn = 0.0);
 	virtual ~CircleShape(void);
 
 	void setRadius(float);

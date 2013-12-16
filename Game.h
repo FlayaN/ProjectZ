@@ -9,11 +9,13 @@
 #include "EntityPlayer.h"
 #include "Renderer.h"
 #include "Chunk.h"
+#include "CollisionHandler.h"
 
 #include <cstdio>
 #include <algorithm>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 #ifndef Project_Z_Game_h
 #define Project_Z_Game_h
@@ -37,7 +39,12 @@ public:
 	int run(int width, int height);
     
 	void onEvent(SDL_Event* ev);
-	void Render();
+	void render(void);
+	void collision(void);
+
+	Chunk* getChunk(Vec3* coord);
+	
+	Tile* getTile(std::HashMap<int, Tile*> tiles, Vec3* coord);
 	
 private:
     std::HashMap<int, Chunk*> chunks;

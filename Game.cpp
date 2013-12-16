@@ -66,10 +66,11 @@ int Game::run(int width, int height)
 		}
 
 		//Logic
+		collision();
 		player->update();
 
 		//Rendering
-		Render();
+		render();
 	}
 	
 	return APP_OK;
@@ -93,7 +94,39 @@ void Game::onEvent(SDL_Event* ev)
 	}
 }
 
-void Game::Render()
+void Game::render()
 {
 	renderer->render(chunks, player);
+}
+
+void Game::collision(void)
+{
+	//Chunk currChunk = *getChunk(player->getPosition());
+
+	//Tile currTile = *getTile(currChunk.getTiles(), player->getPosition());
+
+	SDL_Rect test = SDL_Rect();
+	test.h = TileSize/2;
+	test.w = TileSize;
+	test.x = 0;
+	test.y = 0;
+
+	if(CollisionHandler::intersects(player->getBB(), &test))//currTile.getBB()))
+		std::cout << "COLLIDING" << std::endl;
+	else
+		std::cout << "No Collision" << std::endl;
+}
+
+Chunk* Game::getChunk(Vec3* coord)
+{
+	//int chunk = (int)coord->x % (200*3);
+
+	return chunks[0];
+}
+
+Tile* Game::getTile(std::HashMap<int, Tile*> tiles, Vec3* coord)
+{
+	//int chunk = (int)coord->x % (200*3);
+
+	return tiles[0];
 }

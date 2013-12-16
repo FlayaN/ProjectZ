@@ -8,27 +8,34 @@
 	#include "SDL_image.h"
 #endif
 
-#include "Coordinate.h"
+#include "Vec3.h"
 #include "Shape.h"
-#include <iostream>
+#include <iostream> 
+#include "Utility.h"
+#include "Defines.h"
 
 class Tile
 {
 public:
-	Tile(Coordinate*, Shape*, Shape*, Shape*, Shape*);
+	Tile(Vec3*, Shape*, Shape*, Shape*, Shape*);
     Tile(SDL_Renderer*, std::string s);
 	~Tile(void);
     
-    SDL_Texture* getTexture();
+    SDL_Texture* getTexture(void);
+	SDL_Rect* getBB(void);
 
 private:
-	Coordinate* position;
+	Vec3* position;
 
 	Shape* northArea;
 	Shape* southArea;
 	Shape* westArea;
 	Shape* eastArea;
+
+	//Shape* bb;
     
+	SDL_Rect* bb;
+
     SDL_Texture* tex;
 };
 
