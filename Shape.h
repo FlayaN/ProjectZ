@@ -11,15 +11,16 @@
 class Shape
 {
 public:
-	Shape(Vec3* offset = nullptr, Vec3* parentPos = nullptr);
+	Shape(Vec3* offsetIn = nullptr, Vec3* parentPosIn = nullptr);
 	virtual ~Shape(void);
 
 	//void setOwner(Entity*);
-
-	void setPosition(Vec3*);
+	void setOffset(Vec3*);
+	void setAbsPos(Vec3*);
 
 	//Entity* getOwner(void);
-	Vec3 getPosition(void);
+	Vec3 getOffset(void);
+	Vec3 getAbsPos(void);
 
 	//virtual float getArea(void) = 0;
 	//virtual std::string getShapeType(void) = 0;

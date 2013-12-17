@@ -1,14 +1,11 @@
 #include "Shape.h"
 
 
-Shape::Shape(Vec3* offset, Vec3* parentPos)//, Entity* ownerIn = NULL)
+Shape::Shape(Vec3* offsetIn, Vec3* parentPosIn)//, Entity* ownerIn = NULL)
 {
-	this->offset = offset;
-	this->parentPos = parentPos;
-	//position = positionIn;
-	//owner = ownerIn;
+	this->offset = offsetIn;
+	this->parentPos = parentPosIn;
 }
-
 
 Shape::~Shape(void)
 {
@@ -24,10 +21,16 @@ Shape::~Shape(void)
 	owner = ownerIn;
 }*/
 
-void Shape::setPosition(Vec3* positionIn)
+void Shape::setOffset(Vec3* offsetIn)
 {
 	delete offset;
-	this->offset = offset;
+	this->offset = offsetIn;
+}
+
+void Shape::setAbsPos(Vec3* absPosIn)
+{
+	delete offset;
+	this->offset = new Vec3((*absPosIn)-(*parentPos));
 }
 
 //------------------------------------------------GET ----------------------------------------------//
@@ -37,7 +40,12 @@ void Shape::setPosition(Vec3* positionIn)
 	return owner;
 }*/
 
-Vec3 Shape::getPosition(void)
+Vec3 Shape::getOffset(void)
+{
+	return *offset;
+}
+
+Vec3 Shape::getAbsPos(void)
 {
 	return (*parentPos)+(*offset);
 }
