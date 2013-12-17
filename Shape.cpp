@@ -37,9 +37,9 @@ void Shape::setPosition(Vec3* positionIn)
 	return owner;
 }*/
 
-Vec3* Shape::getPosition(void)
+Vec3 Shape::getPosition(void)
 {
-	return &((*parentPos)+(*offset));
+	return (*parentPos)+(*offset);
 }
 
 //float getArea(void) = 0;

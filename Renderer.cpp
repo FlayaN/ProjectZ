@@ -23,11 +23,11 @@ void Renderer::render(std::HashMap<Coord, Chunk*> chunks, EntityPlayer* player)
 	int w,h;
 	SDL_GetWindowSize(win, &w, &h);
 
-	float playerX = -player->getPosition()->x;
-	float playerY = player->getPosition()->y;
+	float playerX = -player->getPosition()->x + w/2 - player->getSize()->w/2;
+	float playerY = -player->getPosition()->y + h/2 - player->getSize()->h/2;
 
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
-	SDL_RenderClear(renderer);
+	//SDL_RenderClear(renderer);
 	
 	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
 	
@@ -77,9 +77,12 @@ void Renderer::render(std::HashMap<Coord, Chunk*> chunks, EntityPlayer* player)
 	SDL_Rect rect = *player->getSize();
 	rect.x = w/2 - rect.w/2;
 	rect.y = h/2 - rect.h/2;
-	renderTexture(player->getTexture(), renderer, rect);
+	//rect.x = -playerX;
+    //rect.y = -playerY;
+    
+    renderTexture(player->getTexture(), renderer, rect);
 
-    SDL_RenderPresent(renderer);
+    //SDL_RenderPresent(renderer);
 }
 
 SDL_Renderer* Renderer::getRenderer()

@@ -34,7 +34,7 @@ void Entity::setVelocity(Vec3* velocityIn)
 
 Vec3* Entity::getPosition(void)
 {
-	return position;
+    return position;
 }
 
 Vec3* Entity::getVelocity(void)

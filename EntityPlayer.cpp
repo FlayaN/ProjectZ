@@ -13,7 +13,7 @@ EntityPlayer::EntityPlayer(SDL_Renderer* ren) : Entity()
 	
 
 	bb = new SDL_Rect();
-	bb->h = 200;
+	bb->h = 50;
 	bb->w = 100;
 	bb->x = 0;
 	bb->y = 0;
@@ -35,10 +35,10 @@ void EntityPlayer::keyDown(SDL_Event* ev)
 		switch(ev->key.keysym.sym)
 		{
 		case SDLK_w:
-			velocity->y += speed;
+			velocity->y -= speed;
 			break;
 		case SDLK_s:
-			velocity->y -= speed;
+			velocity->y += speed;
 			break;
 		case SDLK_a:
 			velocity->x -= speed;
@@ -52,10 +52,10 @@ void EntityPlayer::keyDown(SDL_Event* ev)
 		switch(ev->key.keysym.sym)
 		{
 		case SDLK_w:
-			velocity->y -= speed;
+			velocity->y += speed;
 			break;
 		case SDLK_s:
-			velocity->y += speed;
+			velocity->y -= speed;
 			break;
 		case SDLK_a:
 			velocity->x += speed;

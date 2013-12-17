@@ -19,7 +19,7 @@ public:
 	void setPosition(Vec3*);
 
 	//Entity* getOwner(void);
-	Vec3* getPosition(void);
+	Vec3 getPosition(void);
 
 	//virtual float getArea(void) = 0;
 	//virtual std::string getShapeType(void) = 0;

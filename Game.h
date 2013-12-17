@@ -16,6 +16,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <utility>
 
 #ifndef Project_Z_Game_h
 #define Project_Z_Game_h
@@ -42,9 +43,9 @@ public:
 	void render(void);
 	void collision(void);
 
-	Chunk* getChunk(Vec3* coord);
+	std::pair<Chunk*, Vec2> getChunk(Vec3* coord);
 
-	Tile* getTile(std::HashMap<Coord, Tile*> tiles, Vec3* coord);
+	std::pair<Tile*, Vec2> getTile(std::HashMap<Coord, Tile*> tiles, Vec3* coord);
 	
 private:
     std::HashMap<Coord, Chunk*> chunks;

@@ -83,11 +83,16 @@ int Game::run(int width, int height)
 		}
 
 		//Logic
+        
+        SDL_RenderClear(renderer->getRenderer());
+        render();
 		collision();
+        SDL_RenderPresent(renderer->getRenderer());
+        
 		player->update();
 
 		//Rendering
-		render();
+		//render();
 	}
 	
 	return APP_OK;
@@ -118,31 +123,89 @@ void Game::render()
 
 void Game::collision(void)
 {
-	Chunk* currChunk = getChunk(player->getPosition());
+    int w,h;
+	SDL_GetWindowSize(win, &w, &h);
+    
+    //SDL_RenderClear(renderer->getRenderer());
+    std::pair<Chunk*, Vec2> chunkPair = getChunk(player->getPosition());
+    
+	Chunk* currChunk = chunkPair.first;
+    Vec2 chunkCoord = chunkPair.second;
+    
 	if(currChunk != nullptr)
 	{
-		Tile* currTile = getTile(currChunk->getTiles(), player->getPosition());
+        std::pair<Tile*, Vec2> tilePair = getTile(currChunk->getTiles(), player->getPosition());
+        
+        Tile* currTile = tilePair.first;
+        Vec2 tileCoord = tilePair.second;
+        
 		if(currTile != nullptr)
 		{
-			std::cout << "test" << std::endl;
-			if(CollisionHandler::intersects(player->getBB(), currTile->getBB()))
-				std::cout << "COLLIDING" << std::endl;
-			else
-				std::cout << "No Collision" << std::endl;
+			//std::cout << "test" << std::endl;
+            
+            //renderTexture(player->getTexture(), renderer, rect);
+            
+            float playerX = -player->getPosition()->x + w/2 - player->getSize()->w/2;
+            float playerY = -player->getPosition()->y + h/2 - player->getSize()->h/2;
+            
+            SDL_Rect playerBB = *player->getBB();
+            //playerBB->x -= player->getSize()->w/2;
+            playerBB.y += 150;
+            
+            SDL_Rect renderPlayerBB = playerBB;
+            renderPlayerBB.x = w/2 - player->getSize()->w/2;
+            renderPlayerBB.y = h/2 + player->getSize()->h/2 - renderPlayerBB.h;
+            
+            SDL_RenderCopy(renderer->getRenderer(), IMG_LoadTexture(renderer->getRenderer(), "res/block.png"), NULL, &renderPlayerBB);
+            
+            SDL_Rect* bb = currTile->getBB();
+            
+            if(bb != nullptr)
+            {
+                //bb->x = (chunkCoord.x)*ChunkSize + (tileCoord.x+1)*TileSize;
+                //bb->y = (chunkCoord.y)*ChunkSize + (tileCoord.y+1)*TileSize;
+                
+                SDL_Rect copy = *bb;
+                
+                copy.x = ((chunkCoord.x*3)+tileCoord.x)*copy.w + playerX;
+                copy.y = ((chunkCoord.y*3)+tileCoord.y)*(copy.h) + playerY;
+                
+                bb->x = ((chunkCoord.x*3)+tileCoord.x)*bb->w;
+                bb->y = ((chunkCoord.y*3)+tileCoord.y)*(bb->h);
+                
+                //std::cout << "bbX: " << bb->x << " bbY: " << bb->y << std::endl;
+                //std::cout << "copyX: " << copy.x << " copyY: " << copy.y << std::endl;
+                //bb->x = w/2 - bb->w/2;
+                //bb->y = h/2 - bb->h/2;
+                
+                //std::cout << "bb X: " << bb->x << " bb Y: " << bb->y << " bb W: " << bb->w << " bb H: " << bb->h <<std::endl;
+                
+                SDL_RenderCopy(renderer->getRenderer(), IMG_LoadTexture(renderer->getRenderer(), "res/block.png"), NULL, &copy);
+            }
+            
+            if(CollisionHandler::intersects(&playerBB, bb))
+                std::cout << "COLLIDING" << std::endl;
+            else
+                std::cout << "No Collision" << std::endl;
 		}
 	}
+    //SDL_RenderPresent(renderer->getRenderer());
 }
 
-Chunk* Game::getChunk(Vec3* coord)
+std::pair<Chunk*, Vec2> Game::getChunk(Vec3* coord)
 {
-	Coord c = Coord((int)(coord->x/ChunkSize), (int)((coord->y/ChunkSize)));
-	std::cout << "Chunk X: " << c.x << " Chunk Y: " << c.y << std::endl;
-	return chunks[c];
+	Coord c = Coord((int)(coord->x/ChunkSize), (int)(((coord->y+200)/(ChunkSize/2))));
+    //TODO Add support for multiple chunks for detection
+	//std::cout << "Chunk X: " << c.x << " Chunk Y: " << c.y << std::endl;
+	return std::make_pair(chunks[c], Vec2(c.x, c.y));
 }
 
-Tile* Game::getTile(std::HashMap<Coord, Tile*> tiles, Vec3* coord)
+std::pair<Tile*, Vec2> Game::getTile(std::HashMap<Coord, Tile*> tiles, Vec3* coord)
 {
-	Coord c = Coord((int)(coord->x/TileSize), (int)((coord->y/TileSize)*2));
-	std::cout << "Tile X: " << c.x << " Tile Y: " << c.y << std::endl;
-	return tiles[c];
+	Coord c = Coord((int)((int)coord->x%ChunkSize), (int)(((int)(coord->y+200)%(ChunkSize/2))));
+    //TODO Add support for multiple tiles for detection
+    c.x /= TileSize;
+    c.y /= TileSize/2;
+	//std::cout << "Tile X: " << c.x << " Tile Y: " << c.y << std::endl;
+	return std::make_pair(tiles[c], Vec2(c.x, c.y));
 }
