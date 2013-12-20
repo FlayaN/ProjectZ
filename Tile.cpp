@@ -26,8 +26,8 @@ Tile::Tile(SDL_Renderer* ren, std::string s, Vec2* coord)
 	{
 		tex = IMG_LoadTexture(ren, "res/block.png");
 		bb = new SDL_Rect();
-		bb->h = 100;
-		bb->w = 200;
+		bb->h = TileHeight;
+		bb->w = TileWidth;
 	}
 	else
 	{
@@ -55,7 +55,7 @@ SDL_Rect* Tile::getBB(void)
 	return bb;
 }
 
-Vec2* Tile::getVec2(void)
+Vec2* Tile::getCoord(void)
 {
     return coord;
 }

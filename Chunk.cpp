@@ -12,20 +12,15 @@ Chunk::~Chunk(void)
 
 void Chunk::init(SDL_Renderer* renderer, std::string s)
 {
-	for(int x = coord->x*3; x < (coord->x*3)+3; x++)
+	for(int x = coord->x*TileAmount; x < (coord->x*TileAmount)+TileAmount; x++)
 	{
-		for(int y = coord->y*3; y < (coord->y*3)+3; y++)
+		for(int y = coord->y*TileAmount; y < (coord->y*TileAmount)+TileAmount; y++)
 		{
+			//std::cout << "CHUNK X " << coord->x << " Y: " << coord->y << std::endl;
+			//std::cout << "Tile X " << x << " Y: " << y << std::endl;
 			tiles[Vec2(x, y)] = new Tile(renderer, s, new Vec2(x, y));
 		}
 	}
-	/*
-	for(int i = 0; i < 9; i++)
-	{
-		tiles[i] = new Tile(renderer, s);
-	}*/
-
-	//tiles[31] = new Tile(renderer->getRenderer()); //Add a tile here to tiles to render it
 }
 
 std::HashMap<Vec2, Tile*> Chunk::getTiles(void)
@@ -35,5 +30,5 @@ std::HashMap<Vec2, Tile*> Chunk::getTiles(void)
 
 Vec2* Chunk::getCoord(void)
 {
-    return coord;
+	return coord;
 }

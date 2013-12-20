@@ -9,8 +9,8 @@ public:
 	Vec2(float xIn = 0.0, float yIn = 0.0);
 	~Vec2(void);
     
-    Vec2 inTileVec2(void);
-    Vec2 inChunkVec2(void);
+    Vec2 inTileCoord(void);
+    Vec2 inChunkCoord(void);
 
 	Vec2& operator+=(const Vec2& rhs)
 	{

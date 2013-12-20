@@ -10,13 +10,13 @@
 #include "Renderer.h"
 #include "Chunk.h"
 #include "CollisionHandler.h"
+#include "ChunkUtility.h"
 
 #include <cstdio>
 #include <algorithm>
 #include <string>
 #include <sstream>
 #include <iostream>
-#include <utility>
 
 #ifndef Project_Z_Game_h
 #define Project_Z_Game_h
@@ -43,11 +43,11 @@ public:
 	void render(void);
 	void collision(void);
 
-	std::pair<Chunk*, Vec2> getChunk(Vec2* Vec2);
+	//std::pair<Chunk*, Vec2> getChunk(Vec2* Vec2);
 
-	std::pair<Tile*, Vec2> getTile(std::HashMap<Vec2, Tile*> tiles, Vec2* Vec2);
+	//std::pair<Tile*, Vec2> getTile(std::HashMap<Vec2, Tile*> tiles, Vec2* Vec2);
     
-    std::vector<std::pair<Tile*, Vec2> > getSurroundingTiles(int radius, Vec2* centerPos);
+    //std::vector<std::pair<Tile*, Vec2> > getSurroundingTiles(int radius, Vec2* centerPos);
 private:
     std::HashMap<Vec2, Chunk*> chunks;
 	EntityPlayer* player;

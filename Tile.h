@@ -19,17 +19,17 @@ class Tile
 {
 public:
 	Tile(Vec3*, Shape*, Shape*, Shape*, Shape*);
-    Tile(SDL_Renderer*, std::string s, Vec2* coord);
+	Tile(SDL_Renderer*, std::string s, Vec2* coord);
 	~Tile(void);
-    
-    SDL_Texture* getTexture(void);
+
+	SDL_Texture* getTexture(void);
 	SDL_Rect* getBB(void);
-    Vec2* getVec2(void);
+	Vec2* getCoord(void);
 
 private:
 	Vec3* position;
-    
-    Vec2* coord;
+	
+	Vec2* coord;
 
 	Shape* northArea;
 	Shape* southArea;

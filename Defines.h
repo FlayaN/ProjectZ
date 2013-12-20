@@ -1,3 +1,9 @@
 #define HashMap unordered_map
-#define TileSize 200
-#define ChunkSize (TileSize*3)
+#define ChunkAmount 5
+#define TileAmount 5
+#define TileWidth 200
+#define TileHeight (TileWidth/2)
+#define ChunkWidth (TileWidth*TileAmount)
+#define ChunkHeight (TileHeight*TileAmount)
+#define RenderDistance 1
+#define CollisionDistance 1

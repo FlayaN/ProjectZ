@@ -7,7 +7,7 @@
 #endif
 
 #include "Defines.h"
-#include "Chunk.h"
+#include "ChunkUtility.h"
 #include "EntityPlayer.h"
 
 class Renderer

@@ -11,12 +11,18 @@ Vec2::~Vec2(void)
 
 }
 
-Vec2 Vec2::inTileVec2(void)
+Vec2 Vec2::inTileCoord(void)
 {
-    return Vec2((int)(x/TileSize), (int)(y/(TileSize/2)));
+	Vec2 tmp = Vec2(x, y);
+	tmp.x = x >= 0 ? (x/TileWidth) : (x/TileWidth)-1;
+	tmp.y = y >= 0 ? (y/TileHeight) : (y/TileHeight)-1;
+	return Vec2((int)tmp.x, (int)tmp.y);
 }
 
-Vec2 Vec2::inChunkVec2(void)
+Vec2 Vec2::inChunkCoord(void)
 {
-    return Vec2((int)(x/ChunkSize), (int)(y/(ChunkSize/2)));
+	Vec2 tmp = Vec2(x, y);
+	tmp.x = x >= 0 ? (x/ChunkWidth) : (x/ChunkWidth)-1;
+	tmp.y = y >= 0 ? (y/ChunkHeight) : (y/ChunkHeight)-1;
+	return Vec2((int)tmp.x, (int)tmp.y);
 }

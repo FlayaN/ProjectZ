@@ -18,11 +18,13 @@ public:
 	void keyDown(SDL_Event*);
 	void update();
 
-	SDL_Texture* getTexture();
-	SDL_Rect* getSize();
-	SDL_Rect* getBB();
+	SDL_Texture* getTexture(void);
+	SDL_Texture* getCollisionTexture(void);
+	SDL_Rect* getSize(void);
+	SDL_Rect* getBB(void);
 private:
 	SDL_Texture* tex;
+	SDL_Texture* collisionTex;
 	SDL_Rect* size;
 	//Shape* bb;
 

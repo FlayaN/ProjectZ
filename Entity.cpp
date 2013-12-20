@@ -3,7 +3,7 @@
 
 Entity::Entity(void)
 {
-	position = new Vec2(500, 500);
+	position = new Vec2();
 	velocity = new Vec2();
 }
 

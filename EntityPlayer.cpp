@@ -5,6 +5,7 @@ using namespace std;
 EntityPlayer::EntityPlayer(SDL_Renderer* ren) : Entity()
 {
 	tex = IMG_LoadTexture(ren, "res/mario.gif");
+	collisionTex = IMG_LoadTexture(ren, "res/block2.png");
 	size = new SDL_Rect();
 	size->h = 200;
 	size->w = 100;
@@ -123,6 +124,11 @@ void EntityPlayer::update()
 SDL_Texture* EntityPlayer::getTexture(void)
 {
 	return tex;
+}
+
+SDL_Texture* EntityPlayer::getCollisionTexture(void)
+{
+	return collisionTex;
 }
 
 SDL_Rect* EntityPlayer::getSize(void)
