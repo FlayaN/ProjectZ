@@ -16,7 +16,6 @@
 		973AE238185F35400099EAD9 /* 7.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 975CB4FD185F1F5200A4E438 /* 7.png */; };
 		973AE239185F35400099EAD9 /* 8.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 975CB4FE185F1F5200A4E438 /* 8.png */; };
 		973AE23A185F35400099EAD9 /* 9.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 975CB4FF185F1F5200A4E438 /* 9.png */; };
-		974D928A186040D90022FEED /* Coord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 974D9280186040D90022FEED /* Coord.cpp */; };
 		974D928B186040D90022FEED /* Utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 974D9284186040D90022FEED /* Utility.cpp */; };
 		974D928C186040D90022FEED /* Vec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 974D9286186040D90022FEED /* Vec2.cpp */; };
 		974D928D186040D90022FEED /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 974D9288186040D90022FEED /* Vec3.cpp */; };
@@ -61,8 +60,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		974D9280186040D90022FEED /* Coord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Coord.cpp; sourceTree = "<group>"; };
-		974D9281186040D90022FEED /* Coord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coord.h; sourceTree = "<group>"; };
 		974D9282186040D90022FEED /* block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block.png; sourceTree = "<group>"; };
 		974D9283186040D90022FEED /* mario.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = mario.gif; sourceTree = "<group>"; };
 		974D9284186040D90022FEED /* Utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utility.cpp; sourceTree = "<group>"; };
@@ -154,8 +151,6 @@
 				9757B411185EF4C000F64CDE /* CollisionHandler.h */,
 				9757B414185EF4C000F64CDE /* Defines.h */,
 				9757B415185EF4C000F64CDE /* Entity.cpp */,
-				974D9280186040D90022FEED /* Coord.cpp */,
-				974D9281186040D90022FEED /* Coord.h */,
 				974D9284186040D90022FEED /* Utility.cpp */,
 				974D9285186040D90022FEED /* Utility.h */,
 				974D9286186040D90022FEED /* Vec2.cpp */,
@@ -252,7 +247,6 @@
 				9757B427185EF4C000F64CDE /* Game.cpp in Sources */,
 				9757B428185EF4C000F64CDE /* Material.cpp in Sources */,
 				9757B429185EF4C000F64CDE /* Renderer.cpp in Sources */,
-				974D928A186040D90022FEED /* Coord.cpp in Sources */,
 				9757B42A185EF4C000F64CDE /* Shape.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

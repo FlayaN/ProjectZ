@@ -15,11 +15,13 @@ Tile::Tile(Vec3* positionIn, Shape* northAreaIn, Shape* southAreaIn, Shape* west
 	eastArea = eastAreaIn;
 }
 
-Tile::Tile(SDL_Renderer* ren, std::string s)
+Tile::Tile(SDL_Renderer* ren, std::string s, Vec2* coord)
 {
 	/*bb = new SDL_Rect();
 	bb->h = TileSize/2;
 	bb->w = TileSize;*/
+    this->coord = coord;
+    
 	if(Utility::getRandInt(1, 10) < 3)
 	{
 		tex = IMG_LoadTexture(ren, "res/block.png");
@@ -51,4 +53,9 @@ SDL_Texture* Tile::getTexture(void)
 SDL_Rect* Tile::getBB(void)
 {
 	return bb;
+}
+
+Vec2* Tile::getVec2(void)
+{
+    return coord;
 }

@@ -8,24 +8,28 @@
 	#include "SDL_image.h"
 #endif
 
+#include <iostream>
+
 #include "Vec3.h"
 #include "Shape.h"
-#include <iostream> 
 #include "Utility.h"
 #include "Defines.h"
-
+#include "Vec2.h"
 class Tile
 {
 public:
 	Tile(Vec3*, Shape*, Shape*, Shape*, Shape*);
-    Tile(SDL_Renderer*, std::string s);
+    Tile(SDL_Renderer*, std::string s, Vec2* coord);
 	~Tile(void);
     
     SDL_Texture* getTexture(void);
 	SDL_Rect* getBB(void);
+    Vec2* getVec2(void);
 
 private:
 	Vec3* position;
+    
+    Vec2* coord;
 
 	Shape* northArea;
 	Shape* southArea;

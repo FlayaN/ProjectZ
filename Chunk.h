@@ -6,18 +6,21 @@
 
 #include "Defines.h"
 #include "Tile.h"
-#include "Coord.h"
 
 class Chunk
 {
 public:
-	Chunk(void);
+	Chunk(Vec2* coord);
 	~Chunk(void);
 
 	void init(SDL_Renderer*, std::string);
 	
-    std::HashMap<Coord, Tile*> getTiles(void);
+    std::HashMap<Vec2, Tile*> getTiles(void);
+    
+    Vec2* getCoord(void);
 
 private:
-    std::HashMap<Coord, Tile*> tiles;
+    std::HashMap<Vec2, Tile*> tiles;
+    
+    Vec2* coord;
 };

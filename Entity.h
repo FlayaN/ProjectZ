@@ -6,7 +6,7 @@
     #include "SDL.h"
 #endif
 
-#include "Vec3.h"
+#include "Vec2.h"
 #include "Shape.h"
 #include <vector>
 
@@ -15,19 +15,19 @@ public:
 	Entity(void);
 	~Entity(void);
 
-	void setPosition(Vec3*);
-	void setVelocity(Vec3*);
+	void setPosition(Vec2*);
+	void setVelocity(Vec2*);
 
-	Vec3* getPosition(void);
-	Vec3* getVelocity(void);
+	Vec2* getPosition(void);
+	Vec2* getVelocity(void);
     
 	void updatePosition(void);
 	void addShape(Shape*);
 	void removeShapes(void);
 
 protected:
-	Vec3* position;
-	Vec3* velocity;
+	Vec2* position;
+	Vec2* velocity;
 	std::vector<Shape*> shapes; // change to collision boxes based on shapes
 };
 

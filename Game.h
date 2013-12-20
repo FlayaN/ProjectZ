@@ -43,12 +43,13 @@ public:
 	void render(void);
 	void collision(void);
 
-	std::pair<Chunk*, Vec2> getChunk(Vec3* coord);
+	std::pair<Chunk*, Vec2> getChunk(Vec2* Vec2);
 
-	std::pair<Tile*, Vec2> getTile(std::HashMap<Coord, Tile*> tiles, Vec3* coord);
-	
+	std::pair<Tile*, Vec2> getTile(std::HashMap<Vec2, Tile*> tiles, Vec2* Vec2);
+    
+    std::vector<std::pair<Tile*, Vec2> > getSurroundingTiles(int radius, Vec2* centerPos);
 private:
-    std::HashMap<Coord, Chunk*> chunks;
+    std::HashMap<Vec2, Chunk*> chunks;
 	EntityPlayer* player;
 	bool _running;
 	SDL_Window *win;

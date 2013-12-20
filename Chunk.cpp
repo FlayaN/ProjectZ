@@ -1,6 +1,6 @@
 #include "Chunk.h"
 
-Chunk::Chunk(void)
+Chunk::Chunk(Vec2* coord) : coord(coord)
 {
 	//init(renderer);
 }
@@ -12,11 +12,11 @@ Chunk::~Chunk(void)
 
 void Chunk::init(SDL_Renderer* renderer, std::string s)
 {
-	for(int x = 0; x < 3; x++)
+	for(int x = coord->x*3; x < (coord->x*3)+3; x++)
 	{
-		for(int y = 0; y < 3; y++)
+		for(int y = coord->y*3; y < (coord->y*3)+3; y++)
 		{
-			tiles[Coord(x, y)] = new Tile(renderer, s);
+			tiles[Vec2(x, y)] = new Tile(renderer, s, new Vec2(x, y));
 		}
 	}
 	/*
@@ -28,7 +28,12 @@ void Chunk::init(SDL_Renderer* renderer, std::string s)
 	//tiles[31] = new Tile(renderer->getRenderer()); //Add a tile here to tiles to render it
 }
 
-std::HashMap<Coord, Tile*> Chunk::getTiles(void)
+std::HashMap<Vec2, Tile*> Chunk::getTiles(void)
 {
 	return tiles;
+}
+
+Vec2* Chunk::getCoord(void)
+{
+    return coord;
 }

@@ -3,8 +3,8 @@
 
 Entity::Entity(void)
 {
-	position = new Vec3();
-	velocity = new Vec3();
+	position = new Vec2(500, 500);
+	velocity = new Vec2();
 }
 
 Entity::~Entity(void) {
@@ -18,13 +18,13 @@ Entity::~Entity(void) {
 
 //------------------------------------------------SET ----------------------------------------------//
 
-void Entity::setPosition(Vec3* positionIn)
+void Entity::setPosition(Vec2* positionIn)
 {
 	delete position;
 	position = positionIn;
 }
 
-void Entity::setVelocity(Vec3* velocityIn)
+void Entity::setVelocity(Vec2* velocityIn)
 {
 	delete velocity;
 	velocity = velocityIn;
@@ -32,12 +32,12 @@ void Entity::setVelocity(Vec3* velocityIn)
 
 //------------------------------------------------GET ----------------------------------------------//
 
-Vec3* Entity::getPosition(void)
+Vec2* Entity::getPosition(void)
 {
     return position;
 }
 
-Vec3* Entity::getVelocity(void)
+Vec2* Entity::getVelocity(void)
 {
 	return velocity;
 }
@@ -48,7 +48,7 @@ void Entity::updatePosition(void)
 {
 	position->x += velocity->x;
 	position->y += velocity->y;
-	position->z += velocity->z;
+	//position->z += velocity->z;
 }
 
 //------------------------------------------------ADD ----------------------------------------------//

@@ -17,7 +17,7 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, SDL_Rect dst)
 	SDL_RenderCopy(ren, tex, NULL, &dst);
 }
 
-void Renderer::render(std::HashMap<Coord, Chunk*> chunks, EntityPlayer* player)
+void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player)
 {
 
 	int w,h;
@@ -37,16 +37,16 @@ void Renderer::render(std::HashMap<Coord, Chunk*> chunks, EntityPlayer* player)
 
 	int size = 3;
 
-	for(std::HashMap<Coord, Chunk*>::const_iterator i = chunks.begin(), e = chunks.end(); i != e ; ++i )
+	for(std::HashMap<Vec2, Chunk*>::const_iterator i = chunks.begin(), e = chunks.end(); i != e ; ++i )
 	{
 		Chunk* currChunk = i->second;
 		if(currChunk != nullptr)
 		{
-			std::HashMap<Coord, Tile*> tiles = currChunk->getTiles();
+			std::HashMap<Vec2, Tile*> tiles = currChunk->getTiles();
 
 			int chunkPosX = i->first.x;
 			int chunkPosY = i->first.y;
-			for(std::HashMap<Coord, Tile*>::const_iterator j = tiles.begin(), f = tiles.end(); j != f ; ++j )
+			for(std::HashMap<Vec2, Tile*>::const_iterator j = tiles.begin(), f = tiles.end(); j != f ; ++j )
 			{
 				Tile* tile = j->second;
 				int x = j->first.x;
