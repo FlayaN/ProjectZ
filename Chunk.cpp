@@ -12,20 +12,18 @@ Chunk::~Chunk(void)
 
 void Chunk::init(SDL_Renderer* renderer, std::string s)
 {
-	for(int x = coord->x*TileAmount; x < (coord->x*TileAmount)+TileAmount; x++)
+	for(int x = 0; x < TileAmount; x++)
 	{
-		for(int y = coord->y*TileAmount; y < (coord->y*TileAmount)+TileAmount; y++)
+		for(int y = 0; y < TileAmount; y++)
 		{
-			//std::cout << "CHUNK X " << coord->x << " Y: " << coord->y << std::endl;
-			//std::cout << "Tile X " << x << " Y: " << y << std::endl;
-			tiles[Vec2(x, y)] = new Tile(renderer, s, new Vec2(x, y));
+			tiles[x][y] = new Tile(renderer, s, new Vec2(TileAmount*coord->x+x, TileAmount*coord->y+y));
 		}
 	}
 }
 
-std::HashMap<Vec2, Tile*> Chunk::getTiles(void)
+Tile* Chunk::getTile(const Vec2& pos)
 {
-	return tiles;
+	return tiles[(int)pos.x][(int)pos.y];
 }
 
 Vec2* Chunk::getCoord(void)

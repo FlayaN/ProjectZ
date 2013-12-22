@@ -18,7 +18,7 @@
 class Tile
 {
 public:
-	Tile(Vec3*, Shape*, Shape*, Shape*, Shape*);
+	//Tile(Vec3*, Shape*, Shape*, Shape*, Shape*);
 	Tile(SDL_Renderer*, std::string s, Vec2* coord);
 	~Tile(void);
 
@@ -27,14 +27,14 @@ public:
 	Vec2* getCoord(void);
 
 private:
-	Vec3* position;
+	//Vec3* position;
 	
 	Vec2* coord;
 
-	Shape* northArea;
+	/*Shape* northArea;
 	Shape* southArea;
 	Shape* westArea;
-	Shape* eastArea;
+	Shape* eastArea;*/
 
 	//Shape* bb;
     

@@ -6,14 +6,14 @@ void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
-Tile::Tile(Vec3* positionIn, Shape* northAreaIn, Shape* southAreaIn, Shape* westAreaIn, Shape* eastAreaIn)
+/*Tile::Tile(Vec3* positionIn, Shape* northAreaIn, Shape* southAreaIn, Shape* westAreaIn, Shape* eastAreaIn)
 {
 	position = positionIn;
 	northArea = northAreaIn;
 	southArea = southAreaIn;
 	westArea = westAreaIn;
 	eastArea = eastAreaIn;
-}
+}*/
 
 Tile::Tile(SDL_Renderer* ren, std::string s, Vec2* coord)
 {
@@ -38,16 +38,16 @@ Tile::Tile(SDL_Renderer* ren, std::string s, Vec2* coord)
 
 Tile::~Tile(void)
 {
-	delete position;
+	/*delete position;
 	delete northArea;
 	delete southArea;
 	delete westArea;
-	delete eastArea;
+	delete eastArea;*/
 }
 
 SDL_Texture* Tile::getTexture(void)
 {
-    return tex;
+	return tex;
 }
 
 SDL_Rect* Tile::getBB(void)
@@ -57,5 +57,5 @@ SDL_Rect* Tile::getBB(void)
 
 Vec2* Tile::getCoord(void)
 {
-    return coord;
+	return coord;
 }

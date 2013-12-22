@@ -26,3 +26,8 @@ Vec2 Vec2::inChunkCoord(void)
 	tmp.y = y >= 0 ? (y/ChunkHeight) : (y/ChunkHeight)-1;
 	return Vec2((int)tmp.x, (int)tmp.y);
 }
+
+Vec2 Vec2::withinRange(void)
+{
+	return Vec2(Utility::mod(x, TileAmount), Utility::mod(y, TileAmount));
+}

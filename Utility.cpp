@@ -12,3 +12,9 @@ int Utility::clamp(int value, int min, int max)
 {
 	return std::min(max, std::max(min, value));
 }
+
+int Utility::mod(int v, int m)
+{
+	int r = v% m;
+	return r<0 ? r+m : r;
+}

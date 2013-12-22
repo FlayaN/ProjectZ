@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Defines.h"
+#include "Utility.h"
 #include <iostream>
 class Vec2
 {
@@ -45,6 +46,8 @@ public:
 		return (x == other.x && y == other.y);
 	}
 
+	Vec2 withinRange(void);
+
 	float x;
 	float y;
 };
@@ -75,7 +78,7 @@ inline Vec2 operator*(Vec2 lhs, const Vec2& rhs)
 
 inline std::ostream &operator<<(std::ostream &out, Vec2 c)
 {
-    out << " Vec2 X: " << c.x << " Vec2 Y: " << c.x;
+    out << c.x << " : " << c.y << std::endl;
     return out;
 }
 

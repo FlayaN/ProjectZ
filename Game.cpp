@@ -22,7 +22,7 @@ int Game::init(int width, int height)
 	win = SDL_CreateWindow("Project Z", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
 	renderer = new Renderer(win);
 
-	int i = 0;
+	//int i = 0;
 	for(int x = -ChunkAmount/2; x <= ChunkAmount/2; x++)
 	{
 		for(int y = -ChunkAmount/2; y <= ChunkAmount/2; y++)
@@ -30,11 +30,11 @@ int Game::init(int width, int height)
 			Chunk* chunk = new Chunk(new Vec2(x, y));
 			
 			std::stringstream ss;
-			ss << "res/" << (i%9)+1 << ".png";
-
+			//ss << "res/" << (i%9)+1 << ".png";
+			ss << "res/" << Utility::getRandInt(1, 9) << ".png";
 			chunk->init(renderer->getRenderer(), ss.str());
 			chunks[Vec2(x, y)] = chunk;
-			i++;
+			//i++;
 		}
 	}
 
@@ -107,15 +107,15 @@ void Game::render()
 
 void Game::collision(void)
 {
-	std::vector<std::pair<Tile*, Vec2> > v = ChunkUtility::getSurroundingTiles(chunks, CollisionDistance, player->getPosition());
+	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, CollisionDistance, player->getPosition());
     
 	//std::cout << "surroundingTiles size: " << v.size() << std::endl;
 
     for(auto tile: v)
     {
         
-        Tile* currTile = tile.first;
-        Vec2 tileCoord = tile.second;
+        Tile* currTile = tile;
+		Vec2 tileCoord = *currTile->getCoord();
         
 		if(currTile != nullptr)
 		{

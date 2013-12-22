@@ -33,19 +33,20 @@ void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player)
 	dst.w = TileWidth;
 	dst.h = TileHeight;
 	
-	std::vector<std::pair<Tile*, Vec2> > v = ChunkUtility::getSurroundingTiles(chunks, RenderDistance, player->getPosition());
+	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, RenderDistance, player->getPosition());
 
-	for(auto tile: v)
+	for(Tile* tile: v)
 	{
-		Tile* currTile = tile.first;
-        Vec2 tileCoord = tile.second;
-		
-		if(currTile != nullptr)
+		if(tile != nullptr)
 		{
-			SDL_Texture* tex = currTile->getTexture();
-			dst.x = currTile->getCoord()->x*dst.w + playerX;
-			dst.y = currTile->getCoord()->y*dst.h + playerY;
+			SDL_Texture* tex = tile->getTexture();
+			dst.x = tile->getCoord()->x*dst.w + playerX;
+			dst.y = tile->getCoord()->y*dst.h + playerY;
 			
+			//std::cout << "Player: " << *player->getPosition();
+
+			//std::cout << "Tile: X;" << Vec2(tile->getCoord()->x*TileWidth, tile->getCoord()->y*TileHeight);
+
 			renderTexture(tex, renderer, dst);
 		}
 	}
