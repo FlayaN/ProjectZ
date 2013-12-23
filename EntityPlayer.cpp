@@ -7,15 +7,15 @@ EntityPlayer::EntityPlayer(void) : Entity()
 	tex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/mario.gif");
 	collisionTex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/block2.png");
 	size = new SDL_Rect();
-	size->h = 200;
-	size->w = 100;
+	size->h = TileWidth*2;
+	size->w = TileWidth;
 
 	//bb = new Shape(new Vec3(), position);
 	
 
 	bb = new SDL_Rect();
-	bb->h = 50;
-	bb->w = 100;
+	bb->h = TileHeight;
+	bb->w = TileWidth;
 	bb->x = 0;
 	bb->y = 0;
 }

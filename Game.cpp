@@ -21,23 +21,6 @@ int Game::init(void)
 	
 	
 	renderer = new Renderer();
-	//Graphics::getInstance().init(width, height);
-
-	//int i = 0;
-	for(int x = -ChunkAmount/2; x <= ChunkAmount/2; x++)
-	{
-		for(int y = -ChunkAmount/2; y <= ChunkAmount/2; y++)
-		{
-			Chunk* chunk = new Chunk(new Vec2(x, y));
-			
-			std::stringstream ss;
-			//ss << "res/" << (i%9)+1 << ".png";
-			ss << "res/" << Utility::getRandInt(1, 9) << ".png";
-			chunk->init(ss.str());
-			chunks[Vec2(x, y)] = chunk;
-			//i++;
-		}
-	}
 
 	player = new EntityPlayer();
 	return APP_OK;
@@ -73,6 +56,7 @@ int Game::run(void)
 		}
 		
 		//Logic
+		chunks = ChunkUtility::generateSurroundingChunk(chunks, ChunkDistance, player);
 		collision();
 		player->update();
 		

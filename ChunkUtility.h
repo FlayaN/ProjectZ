@@ -12,8 +12,8 @@
 
 namespace ChunkUtility
 {
-	std::vector<Tile*> getSurroundingTiles(std::HashMap<Vec2, Chunk*> chunks, int radius, EntityPlayer* centerPos);
-	std::HashMap<Vec2, Chunk*> generateSurroundingChunk(std::HashMap<Vec2, Chunk*> chunks, int radius, Vec2* centerPos);
+	std::vector<Tile*> getSurroundingTiles(std::HashMap<Vec2, Chunk*> chunks, int radius, EntityPlayer*);
+	std::HashMap<Vec2, Chunk*> generateSurroundingChunk(std::HashMap<Vec2, Chunk*> chunks, int radius, EntityPlayer*);
 };
 
 #endif

@@ -29,7 +29,7 @@ void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player)
 	SDL_RenderClear(renderer);
 	
 	renderTile(chunks, player);
-	renderGrid(playerOffset);
+	//renderGrid(playerOffset);
 	renderEntity(player);
 
 	//SEND STUFF TO RENDERER
