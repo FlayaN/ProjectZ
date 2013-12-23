@@ -2,6 +2,9 @@
 
 #include "Vec2.h"
 
+#ifndef VEC3_H
+#define VEC3_H
+
 class Vec3 : public Vec2
 {
 public:
@@ -73,3 +76,5 @@ inline Vec3 operator*(Vec3 lhs, const Vec3& rhs)
 	lhs *= rhs;
 	return lhs;
 }
+
+#endif

@@ -1,25 +1,20 @@
 #pragma once
 
-#ifdef __APPLE__
-	#include <SDL2/SDL.h>
-    #include <SDL2_image/SDL_image.h>
-#else
-	#include "SDL.h"
-	#include "SDL_image.h"
-#endif
-
 #include <iostream>
 
 #include "Vec3.h"
 #include "Shape.h"
 #include "Utility.h"
-#include "Defines.h"
-#include "Vec2.h"
+#include "Graphics.h"
+
+#ifndef TILE_H
+#define TILE_H
+
 class Tile
 {
 public:
 	//Tile(Vec3*, Shape*, Shape*, Shape*, Shape*);
-	Tile(SDL_Renderer*, std::string s, Vec2* coord);
+	Tile(std::string s, Vec2* coord);
 	~Tile(void);
 
 	SDL_Texture* getTexture(void);
@@ -42,4 +37,6 @@ private:
 
     SDL_Texture* tex;
 };
+
+#endif
 

@@ -1,31 +1,24 @@
 #include "ChunkUtility.h"
 
-std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<Vec2, Chunk*> chunks, int radius, Vec2* centerPos)
+std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<Vec2, Chunk*> chunks, int radius, EntityPlayer* player)
 {
+	//Vec2 centerPos = *player->getPosition();//Vec2(player->getPosition()->x + player->getBB()->w/2, player->getPosition()->y + player->getBB()->h/2);
+	Vec2 centerPos = player->getCenterPosition();
 	std::vector<Tile*> t;
-	Vec2 centerPosInChunk = centerPos->inChunkCoord();
-	Vec2 centerPosInTile = centerPos->inTileCoord();
-	//std::cout << " X: " << centerPosInTile.x << " Y: " << centerPosInTile.y << std::endl;
-	//std::vector<Chunk*> c;
-	//c.push_back(chunks[centerPosInChunk]);
-	
+	Vec2 centerPosInChunk = centerPos.inChunkCoord();
+	Vec2 centerPosInTile = centerPos.inTileCoord();
+
 	for (int x = centerPosInTile.x - radius; x <= centerPosInTile.x + radius; x++)
 	{
 		for (int y = centerPosInTile.y - radius; y <= centerPosInTile.y + radius; y++)
 		{
 			Vec2 chunkCoord = Vec2(x, y);
-			//chunkCoord.x = chunkCoord.x >= 0 ? (int)chunkCoord.x/TileAmount : (int)(chunkCoord.x/TileAmount)-1;
-			//chunkCoord.y = chunkCoord.y >= 0 ? (int)chunkCoord.y/TileAmount : (int)(chunkCoord.y/TileAmount)-1;
-			
 			chunkCoord.x = floor(chunkCoord.x/TileAmount);
 			chunkCoord.y = floor(chunkCoord.y/TileAmount);
-
-			//Vec2 tileCoord = Vec2(x, );
 
 			Tile* tmpTile = chunks[chunkCoord]->getTile(Vec2(x, y).withinRange());
 			if(tmpTile != nullptr)
 			{
-					//std::cout << "FROM TILE X: " << tmpTile->getCoord()->x << " Y: " << tmpTile->getCoord()->y << std::endl;
 				t.push_back(tmpTile);
 			}
 
@@ -91,4 +84,29 @@ std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<Vec2, Chunk*> 
     //v.push_back(std::make_pair(currTile, Vec2()));
     //TODO Push back tiles that are inside of radius (need to search through chunks)
 	return t;
+}
+
+std::HashMap<Vec2, Chunk*> ChunkUtility::generateSurroundingChunk(std::HashMap<Vec2, Chunk*> chunks, int radius, Vec2* centerPos)
+{
+	Vec2 centerPosInChunk = centerPos->inChunkCoord();
+
+	for (int x = centerPosInChunk.x - radius; x <= centerPosInChunk.x + radius; x++)
+	{
+		for (int y = centerPosInChunk.y - radius; y <= centerPosInChunk.y + radius; y++)
+		{
+			Vec2 loopCoord = Vec2(x, y);
+			if(chunks[loopCoord] != nullptr)
+				continue;
+			else
+			{
+				Chunk* tmpChunk = new Chunk(&loopCoord);
+				std::stringstream ss;
+				ss << "res/" << Utility::getRandInt(1, 9) << ".png";
+				tmpChunk->init(ss.str());
+				chunks[loopCoord] = tmpChunk;
+			}
+		}
+	}
+
+	return chunks;
 }

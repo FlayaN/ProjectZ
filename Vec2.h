@@ -1,8 +1,13 @@
 #pragma once
 
+#include <iostream>
+
 #include "Defines.h"
 #include "Utility.h"
-#include <iostream>
+
+#ifndef VEC2_H
+#define VEC2_H
+
 class Vec2
 {
 public:
@@ -78,7 +83,7 @@ inline Vec2 operator*(Vec2 lhs, const Vec2& rhs)
 
 inline std::ostream &operator<<(std::ostream &out, Vec2 c)
 {
-    out << c.x << " : " << c.y << std::endl;
+    out << c.x << " : " << c.y << " ";
     return out;
 }
 
@@ -98,3 +103,5 @@ namespace std
 		}
 	};
 }
+
+#endif

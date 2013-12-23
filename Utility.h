@@ -2,8 +2,8 @@
 
 #include <random>
 
-#ifndef Utility_H
-#define Utility_H
+#ifndef UTILITY_H
+#define UTILITY_H
 
 namespace Utility
 {

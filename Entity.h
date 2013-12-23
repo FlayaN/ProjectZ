@@ -6,9 +6,13 @@
     #include "SDL.h"
 #endif
 
+#include <vector>
+
 #include "Vec2.h"
 #include "Shape.h"
-#include <vector>
+
+#ifndef ENTITY_H
+#define ENTITY_H
 
 class Entity {
 public:
@@ -31,3 +35,4 @@ protected:
 	std::vector<Shape*> shapes; // change to collision boxes based on shapes
 };
 
+#endif

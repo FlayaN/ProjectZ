@@ -1,16 +1,16 @@
 #include "Game.h"
 
-Game::Game() : _running(false)
+Game::Game(void) : _running(false)
 {
     
 }
 
-Game::~Game()
+Game::~Game(void)
 {
     destroy();
 }
 
-int Game::init(int width, int height)
+int Game::init(void)
 {
 	// Initialize the SDL library.
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -19,8 +19,9 @@ int Game::init(int width, int height)
 		return APP_FAILED;
 	}
 	
-	win = SDL_CreateWindow("Project Z", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
-	renderer = new Renderer(win);
+	
+	renderer = new Renderer();
+	//Graphics::getInstance().init(width, height);
 
 	//int i = 0;
 	for(int x = -ChunkAmount/2; x <= ChunkAmount/2; x++)
@@ -32,30 +33,30 @@ int Game::init(int width, int height)
 			std::stringstream ss;
 			//ss << "res/" << (i%9)+1 << ".png";
 			ss << "res/" << Utility::getRandInt(1, 9) << ".png";
-			chunk->init(renderer->getRenderer(), ss.str());
+			chunk->init(ss.str());
 			chunks[Vec2(x, y)] = chunk;
 			//i++;
 		}
 	}
 
-	player = new EntityPlayer(renderer->getRenderer());
+	player = new EntityPlayer();
 	return APP_OK;
 }
 
 void Game::destroy()
 {
-	if (win)
+	/*if (win)
 	{
 		SDL_DestroyWindow(win);
 		SDL_DestroyRenderer(renderer->getRenderer());
 		SDL_Quit();
-	}
+	}*/
 }
 
-int Game::run(int width, int height)
+int Game::run(void)
 {
 	// Initialize application.
-	int state = init(width, height);
+	int state = init();
 	if (state != APP_OK) return state;
 	
 	// Enter to the SDL event loop.
@@ -107,33 +108,27 @@ void Game::render()
 
 void Game::collision(void)
 {
-	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, CollisionDistance, player->getPosition());
-    
-	//std::cout << "surroundingTiles size: " << v.size() << std::endl;
-
-    for(auto tile: v)
+	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, CollisionDistance, player);
+	
+	for(auto tile: v)
     {
-        
-        Tile* currTile = tile;
+		Tile* currTile = tile;
 		Vec2 tileCoord = *currTile->getCoord();
-        
+		
 		if(currTile != nullptr)
 		{
-			SDL_Rect playerBB = *player->getBB();
-			playerBB.y -= playerBB.h;
 			SDL_Rect* bb = currTile->getBB();
 			if(bb != nullptr)
 			{
 				bb->x = (tileCoord.x)*bb->w;
 				bb->y = (tileCoord.y)*(bb->h);
 			}
-
 			//CollisionHandler::intersects(&playerBB, bb);
 
-			if(CollisionHandler::intersects(&playerBB, bb))
-				std::cout << "COLLISION!" << std::endl;
-			//else
-			//	std::cout << "NO COLLISION!" << std::endl;
+			if(CollisionHandler::intersects(player->getBB(), bb))
+			{
+				std::cout << "Collision at X: " << bb->x << " Y: " << bb->y << std::endl;
+			}
 		}
-    }
+	}
 }

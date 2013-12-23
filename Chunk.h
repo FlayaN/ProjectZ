@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <unordered_map>
 #include <string>
 #include <assert.h>
@@ -8,13 +7,16 @@
 #include "Defines.h"
 #include "Tile.h"
 
+#ifndef CHUNK_H
+#define CHUNK_H
+
 class Chunk
 {
 public:
 	Chunk(Vec2* coord);
 	~Chunk(void);
 
-	void init(SDL_Renderer*, std::string);
+	void init(std::string);
 	
     //std::HashMap<Vec2, Tile*> getTiles(void);
     //Tile** getTiles(void);
@@ -28,3 +30,5 @@ private:
 
     Vec2* coord;
 };
+
+#endif

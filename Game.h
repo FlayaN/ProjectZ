@@ -1,8 +1,10 @@
-#ifdef __APPLE__
-    #include <SDL2/SDL.h>
-#else
-    #include "SDL.h"
-#endif
+#pragma once
+
+#include <cstdio>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include <iostream>
 
 #include "Defines.h"
 #include "Tile.h"
@@ -12,14 +14,8 @@
 #include "CollisionHandler.h"
 #include "ChunkUtility.h"
 
-#include <cstdio>
-#include <algorithm>
-#include <string>
-#include <sstream>
-#include <iostream>
-
-#ifndef Project_Z_Game_h
-#define Project_Z_Game_h
+#ifndef GAME_H
+#define GAME_H
 
 class Game
 {
@@ -34,10 +30,10 @@ public:
 		APP_FAILED = 1
 	};
 	
-	int init(int width, int height);
-	void destroy();
+	int init(void);
+	void destroy(void);
     
-	int run(int width, int height);
+	int run(void);
     
 	void onEvent(SDL_Event* ev);
 	void render(void);
@@ -52,9 +48,8 @@ private:
     std::HashMap<Vec2, Chunk*> chunks;
 	EntityPlayer* player;
 	bool _running;
-	SDL_Window *win;
+
 	Renderer* renderer;
 };
-
 
 #endif

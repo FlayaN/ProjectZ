@@ -2,10 +2,10 @@
 
 using namespace std;
 
-EntityPlayer::EntityPlayer(SDL_Renderer* ren) : Entity()
+EntityPlayer::EntityPlayer(void) : Entity()
 {
-	tex = IMG_LoadTexture(ren, "res/mario.gif");
-	collisionTex = IMG_LoadTexture(ren, "res/block2.png");
+	tex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/mario.gif");
+	collisionTex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/block2.png");
 	size = new SDL_Rect();
 	size->h = 200;
 	size->w = 100;
@@ -139,4 +139,9 @@ SDL_Rect* EntityPlayer::getSize(void)
 SDL_Rect* EntityPlayer::getBB(void)
 {
 	return bb;
+}
+
+Vec2 EntityPlayer::getCenterPosition(void)
+{
+	return Vec2(position->x + bb->w/2, position->y + bb->h/2);
 }

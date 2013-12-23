@@ -1,12 +1,14 @@
 #pragma once
 
-#include "Vec3.h"
-//#include "Material.h"
-//#include "Entity.h"
 #include <string>
 #include <math.h>
 
-// Base class for xxxShape
+#include "Vec3.h"
+//#include "Material.h"
+//#include "Entity.h"
+
+#ifndef SHAPE_H
+#define SHAPE_H
 
 class Shape
 {
@@ -31,3 +33,4 @@ protected:
 	//Entity* owner;
 };
 
+#endif

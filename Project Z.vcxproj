@@ -78,6 +78,7 @@
     <ClCompile Include="CollisionHandler.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityPlayer.cpp" />
+    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Vec3.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityPlayer.h" />
+    <ClInclude Include="Graphics.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
     <ClInclude Include="Game.h" />

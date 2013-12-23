@@ -1,5 +1,9 @@
 #pragma once
+
 #include "shape.h"
+
+#ifndef CIRCLESHAPE_H
+#define CIRCLESHAPE_H
 
 class CircleShape : protected Shape
 {
@@ -17,3 +21,4 @@ protected:
 	float radius;
 };
 
+#endif

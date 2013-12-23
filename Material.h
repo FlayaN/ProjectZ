@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 
+#ifndef MATERIAL_H
+#define MATERIAL_H
+
 class Material
 {
 public:
@@ -18,3 +21,4 @@ private:
 	float density;
 };
 
+#endif

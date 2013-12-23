@@ -15,7 +15,7 @@ void logSDLError(std::ostream &os, const std::string &msg){
 	eastArea = eastAreaIn;
 }*/
 
-Tile::Tile(SDL_Renderer* ren, std::string s, Vec2* coord)
+Tile::Tile(std::string s, Vec2* coord)
 {
 	/*bb = new SDL_Rect();
 	bb->h = TileSize/2;
@@ -24,14 +24,14 @@ Tile::Tile(SDL_Renderer* ren, std::string s, Vec2* coord)
     
 	if(Utility::getRandInt(1, 10) < 3)
 	{
-		tex = IMG_LoadTexture(ren, "res/block.png");
+		tex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/block.png");
 		bb = new SDL_Rect();
 		bb->h = TileHeight;
 		bb->w = TileWidth;
 	}
 	else
 	{
-		tex = IMG_LoadTexture(ren, s.c_str());
+		tex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), s.c_str());
 		bb = nullptr;
 	}
 }

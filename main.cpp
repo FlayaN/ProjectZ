@@ -2,6 +2,6 @@
 
 int main(int argc, char* argv[])
 {
-	Game app;
-	return app.run(800, 600);
+	Game game;
+	return game.run();
 }

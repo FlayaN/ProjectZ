@@ -1,23 +1,26 @@
 #pragma once
 
-#ifdef __APPLE__
-    #include <SDL2/SDL.h>
-#else
-    #include "SDL.h"
-#endif
-
+#include "Graphics.h"
 #include "Defines.h"
 #include "ChunkUtility.h"
 #include "EntityPlayer.h"
 
+#ifndef RENDERER_H
+#define RENDERER_H
+
 class Renderer
 {
 public:
-	Renderer(SDL_Window*);
+	Renderer(void);
 	~Renderer(void);
 	void render(std::HashMap<Vec2, Chunk*> , EntityPlayer*);
-	SDL_Renderer* getRenderer(void);
+
+	void renderTile(std::HashMap<Vec2, Chunk*>, EntityPlayer*);
+	void renderGrid(const Vec2&);
+	void renderEntity(EntityPlayer*);
+
 private:
-	SDL_Renderer *renderer;
-	SDL_Window* win;
+	int w, h;
 };
+
+#endif

@@ -10,13 +10,13 @@ Chunk::~Chunk(void)
 
 }
 
-void Chunk::init(SDL_Renderer* renderer, std::string s)
+void Chunk::init(std::string s)
 {
 	for(int x = 0; x < TileAmount; x++)
 	{
 		for(int y = 0; y < TileAmount; y++)
 		{
-			tiles[x][y] = new Tile(renderer, s, new Vec2(TileAmount*coord->x+x, TileAmount*coord->y+y));
+			tiles[x][y] = new Tile(s, new Vec2(TileAmount*coord->x+x, TileAmount*coord->y+y));
 		}
 	}
 }
