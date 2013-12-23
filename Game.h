@@ -1,5 +1,11 @@
 #pragma once
 
+#ifdef __APPLE__
+	#include <SDL2_mixer/SDL_mixer.h>
+#else
+	#include "SDL_mixer.h"
+#endif
+
 #include <cstdio>
 #include <algorithm>
 #include <string>
@@ -50,6 +56,7 @@ private:
 	bool _running;
 
 	Renderer* renderer;
+	Mix_Chunk* music;
 };
 
 #endif

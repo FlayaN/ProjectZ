@@ -8,28 +8,6 @@ std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<Vec2, Chunk*> 
 	std::vector<Tile*> t;
 	Vec2 centerPosInChunk = centerPos.inChunkCoord();
 	Vec2 centerPosInTile = centerPos.inTileCoord();
-
-	/*for (int x = centerPosInTile.x - radius; x <= centerPosInTile.x + radius; x++)
-	{
-		for (int y = centerPosInTile.y - radius; y <= centerPosInTile.y + radius; y++)
-		{
-			Vec2 chunkCoord = Vec2(x, y);
-			chunkCoord.x = floor(chunkCoord.x/TileAmount);
-			chunkCoord.y = floor(chunkCoord.y/TileAmount);
-
-			Chunk* tmpChunk = chunks[chunkCoord];
-
-			if(tmpChunk != nullptr)
-			{
-				Tile* tmpTile = tmpChunk->getTile(Vec2(x, y).withinRange());
-
-				if(tmpTile != nullptr)
-				{
-					t.push_back(tmpTile);
-				}
-			}
-		}
-	}*/
 	int diameter = radius*2;
 
 	for (int x = 1; x < diameter; x++)
@@ -76,7 +54,7 @@ std::HashMap<Vec2, Chunk*> ChunkUtility::generateSurroundingChunk(std::HashMap<V
 			{
 				Chunk* chunk = new Chunk(new Vec2(x, y));
 				std::stringstream ss;
-				ss << "res/" << Utility::getRandInt(1, 9) << ".png";
+				ss << "res/images/" << Utility::getRandInt(1, 9) << ".png";
 				chunk->init(ss.str());
 				chunks[Vec2(x, y)] = chunk;
 			}

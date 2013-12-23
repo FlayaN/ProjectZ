@@ -4,8 +4,8 @@ using namespace std;
 
 EntityPlayer::EntityPlayer(void) : Entity()
 {
-	tex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/mario.gif");
-	collisionTex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/block2.png");
+	tex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/images/mario.gif");
+	collisionTex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/images/block2.png");
 	size = new SDL_Rect();
 	size->h = TileWidth*2;
 	size->w = TileWidth;

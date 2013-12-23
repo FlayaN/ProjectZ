@@ -18,8 +18,16 @@ int Game::init(void)
 		fprintf(stderr, "SDL_Init() failed: %s\n", SDL_GetError());
 		return APP_FAILED;
 	}
-	
-	
+
+	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
+	{
+		return false;
+	}
+
+	music = Mix_LoadWAV("res/music/CSLIVE.wav");
+
+	std::cout << Mix_GetError() << std::endl;
+
 	renderer = new Renderer();
 
 	player = new EntityPlayer();
@@ -45,6 +53,10 @@ int Game::run(void)
 	// Enter to the SDL event loop.
 	SDL_Event ev;
 	_running = true;
+
+	//Mix_PlayMusic(music, -1);
+	Mix_PlayChannel(-1, music, -1);
+	
 
 	while(_running)
 	{

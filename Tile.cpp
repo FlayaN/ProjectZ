@@ -24,7 +24,7 @@ Tile::Tile(std::string s, Vec2* coord)
     
 	if(Utility::getRandInt(1, 10) < 3)
 	{
-		tex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/block.png");
+		tex = IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/images/block.png");
 		bb = new SDL_Rect();
 		bb->h = TileHeight;
 		bb->w = TileWidth;
