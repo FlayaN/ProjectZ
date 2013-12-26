@@ -18,16 +18,13 @@ public:
 
 	void init(std::string);
 	
-    //std::HashMap<Vec2, Tile*> getTiles(void);
-    //Tile** getTiles(void);
 	Tile* getTile(const Vec2& pos);
 
     Vec2* getCoord(void);
 
 private:
-    //std::HashMap<Vec2, Tile*> tiles;
-	Tile* tiles[TileAmount][TileAmount];
 
+	Tile* tiles[TileAmount][TileAmount];
     Vec2* coord;
 };
 

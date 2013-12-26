@@ -110,7 +110,7 @@ void Game::collision(void)
 	for(auto tile: v)
     {
 		Tile* currTile = tile;
-		Vec2 tileCoord = *currTile->getCoord();
+		Vec2 tileCoord = *currTile->getPosition();
 		
 		if(currTile != nullptr)
 		{

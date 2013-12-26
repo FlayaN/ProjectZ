@@ -1,53 +1,59 @@
 #include "Shape.h"
 
-
-Shape::Shape(Vec3* offsetIn, Vec3* parentPosIn)//, Entity* ownerIn = NULL)
+template<class T>
+Shape<T>::Shape(Vec2* offsetIn, T* ownerIn)
 {
 	this->offset = offsetIn;
-	this->parentPos = parentPosIn;
+	this->owner = ownerIn;
 }
 
-Shape::~Shape(void)
+template<class T>
+Shape<T>::~Shape(void)
 {
-	delete offset;
-	delete parentPos;
+	delete offset;	// delete owner separately
 }
 
 //------------------------------------------------SET ----------------------------------------------//
 
-/*void Shape::setOwner(Entity* ownerIn)
+template<class T>
+void Shape<T>::setOwner(T* ownerIn)
 {
 	delete owner;
 	owner = ownerIn;
-}*/
+}
 
-void Shape::setOffset(Vec3* offsetIn)
+template<class T>
+void Shape<T>::setOffset(Vec2* offsetIn)
 {
 	delete offset;
 	this->offset = offsetIn;
 }
 
-void Shape::setAbsPos(Vec3* absPosIn)
+template<class T>
+void Shape<T>::setAbsPos(Vec2* absPosIn)
 {
 	delete offset;
-	this->offset = new Vec3((*absPosIn)-(*parentPos));
+	this->offset = new Vec2((*absPosIn)-(*owner->getPosition()));
 }
 
 //------------------------------------------------GET ----------------------------------------------//
 
-/*Entity* Shape::getOwner(void)
+template<class T>
+T* Shape<T>::getOwner(void)
 {
 	return owner;
-}*/
+}
 
-Vec3 Shape::getOffset(void)
+template<class T>
+Vec2 Shape<T>::getOffset(void)
 {
 	return *offset;
 }
 
-Vec3 Shape::getAbsPos(void)
+template<class T>
+Vec2 Shape<T>::getAbsPos(void)
 {
-	return (*parentPos)+(*offset);
+	return (*owner->getPosition())+(*offset);
 }
 
 //float getArea(void) = 0;

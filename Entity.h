@@ -24,15 +24,15 @@ public:
 
 	Vec2* getPosition(void);
 	Vec2* getVelocity(void);
-    
+     
 	void updatePosition(void);
-	void addShape(Shape*);
+	void addShape(Shape<Entity>*);
 	void removeShapes(void);
 
 protected:
 	Vec2* position;
 	Vec2* velocity;
-	std::vector<Shape*> shapes; // change to collision boxes based on shapes
+	std::vector<Shape<Entity>*> shapes; // shapes with entity as owner
 };
 
 #endif

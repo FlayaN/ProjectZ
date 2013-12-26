@@ -49,11 +49,12 @@ void Entity::updatePosition(void)
 	position->x += velocity->x;
 	position->y += velocity->y;
 	//position->z += velocity->z;
+	// kanske uppdatera shapes
 }
 
 //------------------------------------------------ADD ----------------------------------------------//
 
-void Entity::addShape(Shape* shapeIn)
+void Entity::addShape(Shape<Entity>* shapeIn)
 {
 	shapes.push_back(shapeIn);
 }

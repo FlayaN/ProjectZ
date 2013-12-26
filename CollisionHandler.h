@@ -7,6 +7,7 @@
 #endif
 
 #include "Shape.h"
+#include "Entity.h"
 #include "CircleShape.h"
 
 #ifndef COLLISIONHANDLER_H
@@ -14,8 +15,13 @@
 
 namespace CollisionHandler
 {
-	bool testCollision(Shape*, Shape*);
+	bool testCollision(Shape<Entity>*, Shape<Entity>*);
 	bool intersects(SDL_Rect* r1, SDL_Rect* r2);
+
+	/*
+	This is the syntax used for the class template specialization:
+	template <> class mycontainer <char> { ... };
+	*/
 };
 
 #endif

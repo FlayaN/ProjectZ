@@ -5,10 +5,11 @@
 #ifndef CIRCLESHAPE_H
 #define CIRCLESHAPE_H
 
-class CircleShape : protected Shape
+template<class T>
+class CircleShape : protected Shape<T>
 {
 public:
-	CircleShape(Vec3* positionIn = nullptr, float radiusIn = 0.0);
+	CircleShape(Vec3* positionIn = nullptr, T* ownerIn = nullptr);
 	virtual ~CircleShape(void);
 
 	void setRadius(float);

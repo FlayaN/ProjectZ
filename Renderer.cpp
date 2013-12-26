@@ -51,8 +51,8 @@ void Renderer::renderTile(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* playe
 		if(tile != nullptr)
 		{
 			SDL_Texture* tex = tile->getTexture();
-			dst.x = tile->getCoord()->x*dst.w + playerOffset.x;
-			dst.y = tile->getCoord()->y*dst.h + playerOffset.y;
+			dst.x = tile->getPosition()->x*dst.w + playerOffset.x;
+			dst.y = tile->getPosition()->y*dst.h + playerOffset.y;
 			renderTexture(tex, dst);
 		}
 	}

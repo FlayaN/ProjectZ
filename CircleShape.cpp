@@ -1,36 +1,40 @@
 #include "CircleShape.h"
 
-
-CircleShape::CircleShape(Vec3* positionIn, float radiusIn) : Shape(positionIn)
+template<class T>
+CircleShape<T>::CircleShape(Vec3* positionIn, T* ownerIn = nullptr) : Shape<T>(ownerIn)
 {
 	radius = radiusIn;
 }
 
-
-CircleShape::~CircleShape(void)
+template<class T>
+CircleShape<T>::~CircleShape(void)
 {
 }
 
 //------------------------------------------------SET ----------------------------------------------//
 
-void CircleShape::setRadius(float radiusIn)
+template<class T>
+void CircleShape<T>::setRadius(float radiusIn)
 {
 	radius = radiusIn;
 }
 
 //------------------------------------------------GET ----------------------------------------------//
 
-float CircleShape::getRadius(void)
+template<class T>
+float CircleShape<T>::getRadius(void)
 {
 	return radius;
 }
 
-float CircleShape::getArea(void)
+template<class T>
+float CircleShape<T>::getArea(void)
 {
 	return 4.0*3.14*pow(radius, 3.0)/3.0;
 }
 
-std::string CircleShape::getShapeType(void)
+template<class T>
+std::string CircleShape<T>::getShapeType(void)
 {
 	return "circle";
 }

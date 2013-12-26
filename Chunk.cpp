@@ -7,7 +7,8 @@ Chunk::Chunk(Vec2* coord) : coord(coord)
 
 Chunk::~Chunk(void)
 {
-
+	delete tiles;
+	delete coord;
 }
 
 void Chunk::init(std::string s)

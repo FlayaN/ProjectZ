@@ -92,6 +92,7 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Hannes\ProjectZ\libraries\pugiconfig.hpp" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="ChunkUtility.h" />
     <ClInclude Include="CircleShape.h" />

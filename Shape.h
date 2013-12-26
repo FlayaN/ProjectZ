@@ -4,33 +4,31 @@
 #include <math.h>
 
 #include "Vec3.h"
-//#include "Material.h"
-//#include "Entity.h"
 
 #ifndef SHAPE_H
 #define SHAPE_H
 
+template<class T>
 class Shape
 {
 public:
-	Shape(Vec3* offsetIn = nullptr, Vec3* parentPosIn = nullptr);
+	Shape(Vec2* offsetIn = nullptr, T* ownerIn = nullptr);
 	virtual ~Shape(void);
 
-	//void setOwner(Entity*);
-	void setOffset(Vec3*);
-	void setAbsPos(Vec3*);
+	void setOwner(T*);
+	void setOffset(Vec2*);
+	void setAbsPos(Vec2*);
 
-	//Entity* getOwner(void);
-	Vec3 getOffset(void);
-	Vec3 getAbsPos(void);
+	T* getOwner(void);
+	Vec2 getOffset(void);
+	Vec2 getAbsPos(void);
 
 	//virtual float getArea(void) = 0;
 	//virtual std::string getShapeType(void) = 0;
 
 protected:
-	Vec3* offset;
-	Vec3* parentPos;
-	//Entity* owner;
+	Vec2* offset;
+	T* owner;
 };
 
 #endif
