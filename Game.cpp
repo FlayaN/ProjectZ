@@ -28,6 +28,8 @@ int Game::init(void)
 
 	std::cout << Mix_GetError() << std::endl;
 
+	TextureManager::getInstance();
+
 	renderer = new Renderer();
 
 	player = new EntityPlayer();

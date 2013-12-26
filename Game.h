@@ -19,6 +19,7 @@
 #include "Chunk.h"
 #include "CollisionHandler.h"
 #include "ChunkUtility.h"
+#include "TextureManager.h"
 
 #ifndef GAME_H
 #define GAME_H

@@ -5,7 +5,7 @@
 #include "Vec3.h"
 #include "Shape.h"
 #include "Utility.h"
-#include "Graphics.h"
+#include "TextureManager.h"
 
 #ifndef TILE_H
 #define TILE_H

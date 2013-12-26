@@ -79,7 +79,9 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityPlayer.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="libraries\pugixml.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Vec3.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -98,6 +100,8 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityPlayer.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="libraries\pugixml.hpp" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
     <ClInclude Include="Game.h" />

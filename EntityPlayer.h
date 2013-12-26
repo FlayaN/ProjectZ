@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "Graphics.h"
 #include "entity.h"
+#include "TextureManager.h"
 
 #ifndef ENTITYPLAYER_H
 #define ENTITYPLAYER_H

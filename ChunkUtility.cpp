@@ -55,9 +55,8 @@ std::HashMap<Vec2, Chunk*> ChunkUtility::generateSurroundingChunk(std::HashMap<V
 			else
 			{
 				Chunk* chunk = new Chunk(new Vec2(x, y));
-				std::stringstream ss;
-				ss << "res/images/" << Utility::getRandInt(1, 9) << ".png";
-				chunk->init(ss.str());
+
+				chunk->init(std::to_string(Utility::getRandInt(1, 9)));
 				newchunks[Vec2(x, y)] = chunk;
 			}
 		}
