@@ -31,7 +31,8 @@ public:
     
 	~Game();
 	
-	enum APP_STATE {
+	enum APP_STATE
+	{
 		APP_OK = 0,
 		APP_FAILED = 1
 	};

@@ -57,7 +57,6 @@ int Game::run(void)
 	//Mix_PlayMusic(music, -1);
 	Mix_PlayChannel(-1, music, -1);
 	
-
 	while(_running)
 	{
 		//Events

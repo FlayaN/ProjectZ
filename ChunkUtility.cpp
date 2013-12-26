@@ -10,11 +10,11 @@ std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<Vec2, Chunk*> 
 	Vec2 centerPosInTile = centerPos.inTileCoord();
 	int diameter = radius*2;
 
-	for (int x = 1; x < diameter; x++)
+	for (int x = 0; x <= diameter; x++)
 	{
-		for (int y = 1; y < diameter; y++)
+		for (int y = 0; y <= diameter; y++)
 		{
-			if((x-radius)*(x-radius)+(y-radius)*(y-radius) < radius*radius-1)
+			if((x-radius)*(x-radius)+(y-radius)*(y-radius) < radius*radius)
 			{
 				Vec2 offset = Vec2(centerPosInTile.x+(x-radius), centerPosInTile.y+(y-radius));
 
@@ -44,21 +44,23 @@ std::HashMap<Vec2, Chunk*> ChunkUtility::generateSurroundingChunk(std::HashMap<V
 {
 	Vec2 centerPosInChunk = player->getCenterPosition().inChunkCoord();
 
+	std::HashMap<Vec2, Chunk*> newchunks;
+
 	for (int x = centerPosInChunk.x - radius; x <= centerPosInChunk.x + radius; x++)
 	{
 		for (int y = centerPosInChunk.y - radius; y <= centerPosInChunk.y + radius; y++)
 		{
 			if(chunks[Vec2(x, y)] != nullptr)
-				continue;
+				newchunks[Vec2(x, y)] = chunks[Vec2(x, y)];
 			else
 			{
 				Chunk* chunk = new Chunk(new Vec2(x, y));
 				std::stringstream ss;
 				ss << "res/images/" << Utility::getRandInt(1, 9) << ".png";
 				chunk->init(ss.str());
-				chunks[Vec2(x, y)] = chunk;
+				newchunks[Vec2(x, y)] = chunk;
 			}
 		}
 	}
-	return chunks;
+	return newchunks;
 }
