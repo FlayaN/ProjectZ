@@ -19,12 +19,12 @@ Chunk::~Chunk(void)
 
 void Chunk::init(std::string s)
 {
-    int totAwayFromOrigin = abs(coord->x)+abs(coord->y);
+    int totAwayFromOrigin = std::max(abs(coord->x), abs(coord->y));
     totAwayFromOrigin *= 5;
     
-    int r = Utility::clamp(Utility::getRandInt(240, 255)-totAwayFromOrigin, 0, 255);
-    int g = Utility::clamp(Utility::getRandInt(240, 255)-totAwayFromOrigin, 0, 255);
-    int b = Utility::clamp(Utility::getRandInt(240, 255)-totAwayFromOrigin, 0, 255);
+    int r = Utility::clamp(Utility::getRandInt(250, 255)-totAwayFromOrigin, 0, 255);
+    int g = Utility::clamp(Utility::getRandInt(250, 255)-totAwayFromOrigin, 0, 255);
+    int b = Utility::clamp(Utility::getRandInt(250, 255)-totAwayFromOrigin, 0, 255);
     
     Vec3* colorMod = new Vec3(r, g, b);
     
