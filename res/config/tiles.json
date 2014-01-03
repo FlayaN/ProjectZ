@@ -1,4 +1,6 @@
 {
-	"texture":"grass",
-	"collision":"block"
+	"texture" : "grass",
+	"bb" : {
+		"tex" : "block"
+	}
 }

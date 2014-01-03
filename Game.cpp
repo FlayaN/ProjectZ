@@ -69,7 +69,7 @@ int Game::run(void)
 		}
 		
 		//Logic
-		chunks = ChunkUtility::generateSurroundingChunk(chunks, ChunkDistance, player);
+		ChunkUtility::generateSurroundingChunk(&chunks, ChunkDistance, player);
 		collision();
 		player->update();
 		

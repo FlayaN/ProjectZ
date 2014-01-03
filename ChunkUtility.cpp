@@ -40,27 +40,40 @@ std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<Vec2, Chunk*> 
 	return t;
 }
 
-std::HashMap<Vec2, Chunk*> ChunkUtility::generateSurroundingChunk(std::HashMap<Vec2, Chunk*> chunks, int radius, EntityPlayer* player)
+void ChunkUtility::generateSurroundingChunk(std::HashMap<Vec2, Chunk*>* chunks, int radius, EntityPlayer* player)
 {
 	Vec2 centerPosInChunk = player->getCenterPosition().inChunkCoord();
 
 	std::HashMap<Vec2, Chunk*> newchunks;
+	std::HashMap<Vec2, bool> checker;
 
 	for (int x = centerPosInChunk.x - radius; x <= centerPosInChunk.x + radius; x++)
 	{
 		for (int y = centerPosInChunk.y - radius; y <= centerPosInChunk.y + radius; y++)
 		{
-			if(chunks[Vec2(x, y)] != nullptr)
-				newchunks[Vec2(x, y)] = chunks[Vec2(x, y)];
+			if((*chunks)[Vec2(x, y)] != nullptr)
+			{
+				newchunks[Vec2(x, y)] = (*chunks)[Vec2(x, y)];
+				checker[Vec2(x, y)] = true;
+			}
 			else
 			{
 				Chunk* chunk = new Chunk(new Vec2(x, y));
 
-				//chunk->init(std::to_string(Utility::getRandInt(1, 9)));
 				chunk->init("grass");
 				newchunks[Vec2(x, y)] = chunk;
+				checker[Vec2(x, y)] = true;
 			}
 		}
 	}
-	return newchunks;
+
+	for(auto it = chunks->begin(); it != chunks->end();)
+	{
+		if(!checker[it->first])
+			it = chunks->erase(it);
+		else
+			it++;
+	}
+
+	*chunks = newchunks;
 }
