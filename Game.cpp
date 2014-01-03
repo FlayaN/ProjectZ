@@ -12,6 +12,8 @@ Game::~Game(void)
 
 int Game::init(void)
 {
+	
+
 	// Initialize the SDL library.
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
@@ -26,11 +28,11 @@ int Game::init(void)
 
 	music = Mix_LoadWAV("res/music/CSLIVE.wav");
 
-	TextureManager::getInstance();
-
 	renderer = new Renderer();
 
-	player = new EntityPlayer();
+	//Load json files
+	loadJson();
+
 	return APP_OK;
 }
 
@@ -129,4 +131,95 @@ void Game::collision(void)
 			}
 		}
 	}
+}
+
+void Game::loadJson(void)
+{
+	std::string texturePath = "res/config/textures.json";
+	std::string playerPath = "res/config/player.json";
+#ifdef __APPLE__
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef resourceURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
+    char p[PATH_MAX];
+    if(!CFURLGetFileSystemRepresentation(resourceURL, TRUE, (UInt8 *)p, PATH_MAX))
+        std::cout << "ERROROROROR" << std::endl;
+    CFRelease(resourceURL);
+    
+    chdir(p);
+    
+    std::string path = p;
+    
+    std::string texturePath = path + "/" + texturePath;
+	std::string playerPath = path + "/" + playerPath;
+#endif
+	std::cout << "--------------------Loading textures.json--------------------" << std::endl;
+	loadTextures(texturePath);
+	std::cout << "--------------------Loading player.json--------------------" << std::endl;
+	loadPlayer(playerPath);
+}
+
+void Game::loadTextures(std::string texturePath)
+{
+	FILE* pFile = fopen(texturePath.c_str(), "rb");
+    rapidjson::FileStream fs(pFile);
+    rapidjson::Document doc;
+    doc.ParseStream<0>(fs);
+    
+    const rapidjson::Value& a = doc["textures"];
+    assert(a.IsArray());
+    
+	
+
+	TextureManager::getInstance().init(a);
+
+	fclose(pFile);
+}
+
+void Game::loadPlayer(std::string playerPath)
+{
+	FILE* pFile = fopen(playerPath.c_str(), "rb");
+    rapidjson::FileStream fs(pFile);
+    rapidjson::Document doc;
+    doc.ParseStream<0>(fs);
+
+	assert(doc.IsObject());
+
+	assert(doc["startPos"]["x"].IsInt());
+	assert(doc["startPos"]["y"].IsInt());
+	Vec2* pos = new Vec2(doc["startPos"]["x"].GetInt(), doc["startPos"]["y"].GetInt());
+
+	assert(doc["size"]["width"].IsInt());
+	assert(doc["size"]["height"].IsInt());
+	Vec2* size = new Vec2(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
+	
+	assert(doc["tex"].IsString());
+	std::string tex = doc["tex"].GetString();
+	
+	assert(doc["speed"].IsDouble());
+	float speed = (float)doc["speed"].GetDouble();
+
+	const rapidjson::Value& bb = doc["bb"];
+
+	assert(bb["tex"].IsString());
+	std::string bbTex = bb["tex"].GetString();
+
+	assert(bb["size"]["width"].IsInt());
+	assert(bb["size"]["height"].IsInt());
+	Vec2* bbSize = new Vec2(bb["size"]["width"].GetInt(), bb["size"]["height"].GetInt());
+
+	assert(bb["offset"]["x"].IsInt());
+	assert(bb["offset"]["y"].IsInt());
+	Vec2* bbOffset = new Vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
+
+	std::cout << "StartPos: " << *pos << std::endl;
+	std::cout << "Size: " << *size << std::endl;
+	std::cout << "Tex: " << tex << std::endl;
+	std::cout << "Speed: " << speed << std::endl;
+	std::cout << "BBSize: " << *bbSize << std::endl;
+	std::cout << "BBOffset: " << *bbOffset << std::endl;
+	std::cout << "BBTex: " << bbTex << std::endl;
+
+	player = new EntityPlayer(pos, size, tex, speed, bbSize, bbOffset, bbTex);
+	
+	fclose(pFile);
 }

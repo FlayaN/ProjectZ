@@ -28,10 +28,11 @@ public:
 		return instance;
 	}
 
+	void init(const rapidjson::Value&);
+
 	SDL_Texture* getTexture(std::string id);
 
 private:
-	void init(void);
 
 	TextureManager(void);
 	TextureManager(TextureManager const&);

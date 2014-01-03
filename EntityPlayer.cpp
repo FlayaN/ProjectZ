@@ -2,22 +2,22 @@
 
 using namespace std;
 
-EntityPlayer::EntityPlayer(void) : Entity()
+EntityPlayer::EntityPlayer(Vec2* posIn, Vec2* sizeIn, std::string texIn, float speedIn, Vec2* bbSizeIn, Vec2* bbOffsetIn, std::string bbTexIn) : Entity()
 {
-	tex = TextureManager::getInstance().getTexture("mario");//IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/images/mario.gif");
-	collisionTex = TextureManager::getInstance().getTexture("block2");//IMG_LoadTexture(Graphics::getInstance().getRenderer(), "res/images/block2.png");
+	setPosition(posIn);
+	tex = TextureManager::getInstance().getTexture(texIn);
+	collisionTex = TextureManager::getInstance().getTexture(bbTexIn);
 	size = new SDL_Rect();
-	size->h = TileWidth*2;
-	size->w = TileWidth;
-
-	//bb = new Shape(new Vec3(), position);
-	
+	size->w = sizeIn->x;
+	size->h = sizeIn->y;
 
 	bb = new SDL_Rect();
-	bb->h = TileHeight;
-	bb->w = TileWidth;
-	bb->x = 0;
-	bb->y = 0;
+	bb->w = bbSizeIn->x;
+	bb->h = bbSizeIn->y;
+	bb->x = bbOffsetIn->x;
+	bb->y = bbOffsetIn->y;
+
+	speed = speedIn;
 }
 
 EntityPlayer::~EntityPlayer(void)
@@ -27,9 +27,6 @@ EntityPlayer::~EntityPlayer(void)
 
 void EntityPlayer::keyDown(SDL_Event* ev)
 {
-	
-	float speed = 0.1;
-
 	if(ev->type == SDL_KEYDOWN)
 	{
 

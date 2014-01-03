@@ -1,8 +1,20 @@
 {
     "textures" : [
-        {"name":"block", "file":"res/images/block.png"},
-        {"name":"block2", "file":"res/images/block2.png"},
-        {"name":"mario", "file":"res/images/mario.gif"},
-        {"name":"grass", "file":"res/images/grass.png"}
+        {
+			"name" : "block",
+			"file" : "res/images/block.png"
+		},
+        {
+			"name" : "block2",
+			"file" : "res/images/block2.png"
+		},
+        {
+			"name" : "mario",
+			"file" : "res/images/mario.gif"
+		},
+        {
+			"name" : "grass",
+			"file" : "res/images/grass.png"
+		}
     ]
 }

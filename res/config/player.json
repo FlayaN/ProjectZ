@@ -1,0 +1,23 @@
+{
+	"startPos" : {
+		"x" : 0,
+		"y" : 0
+	},
+	"size" : {
+		"width" : 80,
+		"height" : 160
+	},
+	"tex" : "mario",
+	"speed" : 0.1,
+	"bb" : {
+		"tex" : "block2",
+		"size": {
+			"width" : 80,
+			"height" : 40
+		},
+		"offset" : {
+			"x" : 0,
+			"y" : 0
+		}
+	}
+}

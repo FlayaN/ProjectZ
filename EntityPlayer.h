@@ -10,7 +10,7 @@
 
 class EntityPlayer : public Entity {
 public:
-	EntityPlayer(void);
+	EntityPlayer(Vec2*, Vec2*, std::string, float, Vec2*, Vec2*, std::string);
 	~EntityPlayer(void);
 	void keyDown(SDL_Event*);
 	void update();
@@ -28,6 +28,7 @@ private:
 	//Shape* bb;
 
 	SDL_Rect* bb;
+	float speed;
 };
 
 #endif
