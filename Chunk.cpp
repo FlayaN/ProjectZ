@@ -19,11 +19,20 @@ Chunk::~Chunk(void)
 
 void Chunk::init(std::string s)
 {
+    int totAwayFromOrigin = abs(coord->x)+abs(coord->y);
+    totAwayFromOrigin *= 5;
+    
+    int r = Utility::clamp(Utility::getRandInt(240, 255)-totAwayFromOrigin, 0, 255);
+    int g = Utility::clamp(Utility::getRandInt(240, 255)-totAwayFromOrigin, 0, 255);
+    int b = Utility::clamp(Utility::getRandInt(240, 255)-totAwayFromOrigin, 0, 255);
+    
+    Vec3* colorMod = new Vec3(r, g, b);
+    
 	for(int x = 0; x < TileAmount; x++)
 	{
 		for(int y = 0; y < TileAmount; y++)
 		{
-			tiles[x][y] = new Tile(s, new Vec2(TileAmount*coord->x+x, TileAmount*coord->y+y));
+			tiles[x][y] = new Tile(s, new Vec2(TileAmount*coord->x+x, TileAmount*coord->y+y), colorMod);
 		}
 	}
 }

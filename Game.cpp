@@ -26,8 +26,6 @@ int Game::init(void)
 
 	music = Mix_LoadWAV("res/music/CSLIVE.wav");
 
-	std::cout << Mix_GetError() << std::endl;
-
 	TextureManager::getInstance();
 
 	renderer = new Renderer();

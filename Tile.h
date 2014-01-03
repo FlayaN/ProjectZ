@@ -14,12 +14,13 @@ class Tile
 {
 public:
 	//Tile(Vec3*, Shape*, Shape*, Shape*, Shape*);
-	Tile(std::string, Vec2*);
+	Tile(std::string, Vec2*, Vec3*);
 	~Tile(void);
 
 	SDL_Texture* getTexture(void);
 	SDL_Rect* getBB(void);
 	Vec2* getPosition(void);
+    Vec3* getColorMod(void);
 
 private:
 	//Vec3* position;
@@ -31,6 +32,8 @@ private:
 	SDL_Rect* bb;
 
     SDL_Texture* tex;
+    
+    Vec3* colorMod;
 };
 
 #endif

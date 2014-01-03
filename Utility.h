@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <math.h>
 
 #ifndef UTILITY_H
 #define UTILITY_H

@@ -23,20 +23,12 @@
 		9766954018437EBE004E8ED6 /* Area.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9766953718437EBE004E8ED6 /* Area.cpp */; };
 		9766954118437EBE004E8ED6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9766953918437EBE004E8ED6 /* main.cpp */; };
 		9766954418437EBE004E8ED6 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9766953E18437EBE004E8ED6 /* Tile.cpp */; };
+		97BA8B3D1876AEFC00B9794A /* grass.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97BA8B3C1876AEED00B9794A /* grass.png */; };
 		97C2EA0518756B6B00EC5B3C /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E9FC18756B6B00EC5B3C /* Graphics.cpp */; };
 		97C2EA0718756B6B00EC5B3C /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C2EA0218756B6B00EC5B3C /* TextureManager.cpp */; };
 		97C2EA2B18756F1000EC5B3C /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C2EA2A18756F1000EC5B3C /* SDL2_mixer.framework */; };
 		97E0770218759664007BD29E /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E0770118759664007BD29E /* libxml2.dylib */; };
 		97E0772E1876014A007BD29E /* mario.gif in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA1718756B7F00EC5B3C /* mario.gif */; };
-		97E0772F1876014A007BD29E /* 1.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA0C18756B7F00EC5B3C /* 1.png */; };
-		97E077301876014A007BD29E /* 2.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA0D18756B7F00EC5B3C /* 2.png */; };
-		97E077311876014A007BD29E /* 3.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA0E18756B7F00EC5B3C /* 3.png */; };
-		97E077321876014A007BD29E /* 4.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA0F18756B7F00EC5B3C /* 4.png */; };
-		97E077331876014A007BD29E /* 5.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA1018756B7F00EC5B3C /* 5.png */; };
-		97E077341876014A007BD29E /* 6.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA1118756B7F00EC5B3C /* 6.png */; };
-		97E077351876014A007BD29E /* 7.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA1218756B7F00EC5B3C /* 7.png */; };
-		97E077361876014A007BD29E /* 8.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA1318756B7F00EC5B3C /* 8.png */; };
-		97E077371876014A007BD29E /* 9.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA1418756B7F00EC5B3C /* 9.png */; };
 		97E077381876014A007BD29E /* block.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA1518756B7F00EC5B3C /* block.png */; };
 		97E077391876014A007BD29E /* block2.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA1618756B7F00EC5B3C /* block2.png */; };
 		97E0773B1876015C007BD29E /* textures.xml in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C2EA0A18756B7F00EC5B3C /* textures.xml */; };
@@ -53,16 +45,8 @@
 			dstPath = res/images;
 			dstSubfolderSpec = 7;
 			files = (
+				97BA8B3D1876AEFC00B9794A /* grass.png in CopyFiles */,
 				97E0772E1876014A007BD29E /* mario.gif in CopyFiles */,
-				97E0772F1876014A007BD29E /* 1.png in CopyFiles */,
-				97E077301876014A007BD29E /* 2.png in CopyFiles */,
-				97E077311876014A007BD29E /* 3.png in CopyFiles */,
-				97E077321876014A007BD29E /* 4.png in CopyFiles */,
-				97E077331876014A007BD29E /* 5.png in CopyFiles */,
-				97E077341876014A007BD29E /* 6.png in CopyFiles */,
-				97E077351876014A007BD29E /* 7.png in CopyFiles */,
-				97E077361876014A007BD29E /* 8.png in CopyFiles */,
-				97E077371876014A007BD29E /* 9.png in CopyFiles */,
 				97E077381876014A007BD29E /* block.png in CopyFiles */,
 				97E077391876014A007BD29E /* block2.png in CopyFiles */,
 			);
@@ -118,26 +102,18 @@
 		9757B41F185EF4C000F64CDE /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
 		9757B420185EF4C000F64CDE /* Shape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shape.h; sourceTree = "<group>"; };
 		975CB503185F248600A4E438 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
-		9766951818437968004E8ED6 /* Project Z.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Project Z.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9766951818437968004E8ED6 /* Project Z.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "Project Z.app"; path = ProjectZ.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9766953718437EBE004E8ED6 /* Area.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Area.cpp; sourceTree = "<group>"; };
 		9766953818437EBE004E8ED6 /* Area.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Area.h; sourceTree = "<group>"; };
 		9766953918437EBE004E8ED6 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9766953E18437EBE004E8ED6 /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
 		9766953F18437EBE004E8ED6 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
+		97BA8B3C1876AEED00B9794A /* grass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grass.png; sourceTree = "<group>"; };
 		97C2E9FC18756B6B00EC5B3C /* Graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Graphics.cpp; sourceTree = "<group>"; };
 		97C2E9FD18756B6B00EC5B3C /* Graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
 		97C2EA0218756B6B00EC5B3C /* TextureManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureManager.cpp; sourceTree = "<group>"; };
 		97C2EA0318756B6B00EC5B3C /* TextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureManager.h; sourceTree = "<group>"; };
 		97C2EA0A18756B7F00EC5B3C /* textures.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = textures.xml; sourceTree = "<group>"; };
-		97C2EA0C18756B7F00EC5B3C /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
-		97C2EA0D18756B7F00EC5B3C /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
-		97C2EA0E18756B7F00EC5B3C /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
-		97C2EA0F18756B7F00EC5B3C /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4.png; sourceTree = "<group>"; };
-		97C2EA1018756B7F00EC5B3C /* 5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5.png; sourceTree = "<group>"; };
-		97C2EA1118756B7F00EC5B3C /* 6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 6.png; sourceTree = "<group>"; };
-		97C2EA1218756B7F00EC5B3C /* 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7.png; sourceTree = "<group>"; };
-		97C2EA1318756B7F00EC5B3C /* 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8.png; sourceTree = "<group>"; };
-		97C2EA1418756B7F00EC5B3C /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
 		97C2EA1518756B7F00EC5B3C /* block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block.png; sourceTree = "<group>"; };
 		97C2EA1618756B7F00EC5B3C /* block2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block2.png; sourceTree = "<group>"; };
 		97C2EA1718756B7F00EC5B3C /* mario.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = mario.gif; sourceTree = "<group>"; };
@@ -256,16 +232,8 @@
 		97C2EA0B18756B7F00EC5B3C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				97BA8B3C1876AEED00B9794A /* grass.png */,
 				97C2EA1718756B7F00EC5B3C /* mario.gif */,
-				97C2EA0C18756B7F00EC5B3C /* 1.png */,
-				97C2EA0D18756B7F00EC5B3C /* 2.png */,
-				97C2EA0E18756B7F00EC5B3C /* 3.png */,
-				97C2EA0F18756B7F00EC5B3C /* 4.png */,
-				97C2EA1018756B7F00EC5B3C /* 5.png */,
-				97C2EA1118756B7F00EC5B3C /* 6.png */,
-				97C2EA1218756B7F00EC5B3C /* 7.png */,
-				97C2EA1318756B7F00EC5B3C /* 8.png */,
-				97C2EA1418756B7F00EC5B3C /* 9.png */,
 				97C2EA1518756B7F00EC5B3C /* block.png */,
 				97C2EA1618756B7F00EC5B3C /* block2.png */,
 			);

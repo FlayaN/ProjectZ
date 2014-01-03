@@ -27,7 +27,7 @@ void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player)
 
 	//CLEAR SCREEN
 	SDL_RenderClear(renderer);
-	
+    
 	renderTile(chunks, player);
 	//renderGrid(playerOffset);
 	renderEntity(player);
@@ -53,6 +53,10 @@ void Renderer::renderTile(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* playe
 			SDL_Texture* tex = tile->getTexture();
 			dst.x = tile->getPosition()->x*dst.w + playerOffset.x;
 			dst.y = tile->getPosition()->y*dst.h + playerOffset.y;
+            
+            Vec3* tmpColorMod = tile->getColorMod();
+            SDL_SetTextureColorMod(tex, tmpColorMod->x, tmpColorMod->y, tmpColorMod->z);
+            
 			renderTexture(tex, dst);
 		}
 	}
