@@ -9,7 +9,7 @@ template<class T>
 class CircleShape : protected Shape<T>
 {
 public:
-	CircleShape(Vec3* positionIn = nullptr, T* ownerIn = nullptr);
+	CircleShape(Vec3* positionIn = nullptr, T* ownerIn = nullptr, float radiusIn = 1.0f);
 	virtual ~CircleShape(void);
 
 	void setRadius(float);

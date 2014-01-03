@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9766951718437968004E8ED6"
                BuildableName = "Project Z.app"
-               BlueprintName = "Project Z"
-               ReferencedContainer = "container:Project Z.xcodeproj">
+               BlueprintName = "ProjectZ"
+               ReferencedContainer = "container:ProjectZ.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,8 +34,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9766951718437968004E8ED6"
             BuildableName = "Project Z.app"
-            BlueprintName = "Project Z"
-            ReferencedContainer = "container:Project Z.xcodeproj">
+            BlueprintName = "ProjectZ"
+            ReferencedContainer = "container:ProjectZ.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -53,8 +53,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9766951718437968004E8ED6"
             BuildableName = "Project Z.app"
-            BlueprintName = "Project Z"
-            ReferencedContainer = "container:Project Z.xcodeproj">
+            BlueprintName = "ProjectZ"
+            ReferencedContainer = "container:ProjectZ.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -71,8 +71,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9766951718437968004E8ED6"
             BuildableName = "Project Z.app"
-            BlueprintName = "Project Z"
-            ReferencedContainer = "container:Project Z.xcodeproj">
+            BlueprintName = "ProjectZ"
+            ReferencedContainer = "container:ProjectZ.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

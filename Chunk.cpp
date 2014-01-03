@@ -7,7 +7,13 @@ Chunk::Chunk(Vec2* coord) : coord(coord)
 
 Chunk::~Chunk(void)
 {
-	delete tiles;
+	for (int x = 0; x < TileAmount; x++)
+    {
+        for (int y = 0; y < TileAmount; y++)
+        {
+            delete tiles[x][y];
+        }
+    }
 	delete coord;
 }
 

@@ -3,12 +3,19 @@
 #ifndef TEXTUREMANAGER_H
 #define TEXTUREMANAGER_H
 
+#include "rapidjson/document.h"
+#include "rapidjson/filestream.h"
+//#include "rapidjson/rapidjson.h"
+
+#ifdef __APPLE__
+    #include <CoreFoundation/CoreFoundation.h>
+#endif
 #include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <stdio.h>
 
-#include "libraries\pugixml.hpp"
 #include "Graphics.h"
 #include "Defines.h"
 

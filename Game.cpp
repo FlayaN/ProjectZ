@@ -75,6 +75,9 @@ int Game::run(void)
 		
 		//Rendering
 		render();
+        
+        if(std::strcmp(SDL_GetError(), ""))
+            std::cout << "SDL_ERROR: " << SDL_GetError() << std::endl;
 	}
 	
 	return APP_OK;

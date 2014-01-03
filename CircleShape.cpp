@@ -1,7 +1,7 @@
 #include "CircleShape.h"
 
 template<class T>
-CircleShape<T>::CircleShape(Vec3* positionIn, T* ownerIn = nullptr) : Shape<T>(ownerIn)
+CircleShape<T>::CircleShape(Vec3* offsetIn, T* ownerIn, float radiusIn) : Shape<T>(offsetIn, ownerIn)
 {
 	radius = radiusIn;
 }
