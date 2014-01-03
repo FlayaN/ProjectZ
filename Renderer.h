@@ -16,7 +16,7 @@ public:
 	void render(std::HashMap<Vec2, Chunk*> , EntityPlayer*);
 
 	void renderTile(std::HashMap<Vec2, Chunk*>, EntityPlayer*);
-	void renderGrid(const Vec2&);
+	void renderGrid(EntityPlayer* player);
 	void renderEntity(EntityPlayer*);
 
 private:

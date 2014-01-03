@@ -25,6 +25,7 @@
 *.sdf
 *.suo
 *.user
+*.vsp
 
 # XCode stuff
 
@@ -36,5 +37,4 @@
 *.pbxuser
 *.xcworkspace
 xcuserdata
-
 .DS_Store

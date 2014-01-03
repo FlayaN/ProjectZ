@@ -20,7 +20,7 @@ void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player)
 {
 	SDL_Renderer* renderer = Graphics::getInstance().getRenderer();
 	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
-	Vec2 playerOffset = Vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
+	//Vec2 playerOffset = Vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
 	//BG COLOR
 	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
@@ -29,7 +29,7 @@ void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player)
 	SDL_RenderClear(renderer);
     
 	renderTile(chunks, player);
-	//renderGrid(playerOffset);
+	renderGrid(player);
 	renderEntity(player);
 
 	//SEND STUFF TO RENDERER
@@ -62,18 +62,33 @@ void Renderer::renderTile(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* playe
 	}
 }
 
-void Renderer::renderGrid(const Vec2& playerOffset)
+void Renderer::renderGrid(EntityPlayer* player)
 {
+	Vec2 playerOffset = Vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
+
 	SDL_Renderer* renderer = Graphics::getInstance().getRenderer();
 
-	SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xff);
-
-	for(int x = -w*2; x < w*2; x+=TileWidth)
+	for(int x = player->getPosition()->x-w; x < player->getPosition()->x+w; x+=TileWidth)
 	{
-		SDL_RenderDrawLine(renderer, x+playerOffset.x, 0, x+playerOffset.x, h);
-		for(int y = -h*2; y < h*2; y+=TileHeight)
+		int tmpX = x-(x%TileWidth);
+		
+
+		SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xff);
+		if(tmpX%(TileAmount*TileWidth) == 0)
+			SDL_SetRenderDrawColor(renderer, 0xff, 0x0, 0x0, 0xff);	
+
+		SDL_RenderDrawLine(renderer, tmpX+playerOffset.x, 0, tmpX+playerOffset.x, h);
+		
+		for(int y = player->getPosition()->y-h; y < player->getPosition()->y+h; y+=TileHeight)
 		{
-			SDL_RenderDrawLine(renderer, 0, y+playerOffset.y, w, y+playerOffset.y);
+
+			int tmpY = y-(y%TileHeight);
+			
+			SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xff);
+			if(tmpY%(TileAmount*TileHeight) == 0)
+				SDL_SetRenderDrawColor(renderer, 0xff, 0x0, 0x0, 0xff);	
+
+			SDL_RenderDrawLine(renderer, 0, tmpY+playerOffset.y, w, tmpY+playerOffset.y);
 		}
 	}
 }

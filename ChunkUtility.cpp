@@ -14,8 +14,8 @@ std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<Vec2, Chunk*> 
 	{
 		for (int y = 0; y <= diameter; y++)
 		{
-			if((x-radius)*(x-radius)+(y-radius)*(y-radius) < radius*radius)
-			{
+			//if((x-radius)*(x-radius)+(y-radius)*(y-radius) < radius*radius)
+			//{
 				Vec2 offset = Vec2(centerPosInTile.x+(x-radius), centerPosInTile.y+(y-radius));
 
 				Vec2 chunkCoord = offset;
@@ -33,7 +33,7 @@ std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<Vec2, Chunk*> 
 						t.push_back(tmpTile);
 					}
 				}
-			}
+			//}
 		}
 	}
 
