@@ -3,8 +3,8 @@
 #ifndef TEXTUREMANAGER_H
 #define TEXTUREMANAGER_H
 
-#include "rapidjson/document.h"
-#include "rapidjson/filestream.h"
+#include "lib/rapidjson/document.h"
+#include "lib/rapidjson/filestream.h"
 //#include "rapidjson/rapidjson.h"
 
 #ifdef __APPLE__
