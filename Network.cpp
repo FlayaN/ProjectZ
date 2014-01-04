@@ -48,13 +48,13 @@ void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player)
 		}while(tmp[strlen(tmp) - 1] != '\n');
 		int type, id;
 		sscanf(tmp, "%d %d", &type, &id);
-		std::cout << "Packet of type: " << type << " got sent" << std::endl;
+		//std::cout << "Packet of type: " << type << " got sent" << std::endl;
 		if(type == 0)
 		{
 			player->setId(id);
 		}else if(type == 1)
 		{
-			std::cout << "Got an update from " << id << std::endl;
+			//std::cout << "Got an update from " << id << std::endl;
 			int i;
 			for(i = 0; i < players.size(); i++)
 			{
@@ -68,7 +68,10 @@ void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player)
 				}	
 			}
 			if(i >= players.size())
+			{
+				std::cout << "Adding new player: " << id << std::endl;
 				players.push_back(new PlayerMP(id));
+			}
 		}else if(type == 2)
 		{
 			for(int i = 0; i < players.size(); i++)

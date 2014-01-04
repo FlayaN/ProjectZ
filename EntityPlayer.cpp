@@ -18,6 +18,7 @@ EntityPlayer::EntityPlayer(Vec2* posIn, Vec2* sizeIn, std::string texIn, float s
 	bb->y = bbOffsetIn->y;
 
 	speed = speedIn;
+	ready = false;
 }
 
 EntityPlayer::~EntityPlayer(void)

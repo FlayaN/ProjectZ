@@ -141,7 +141,7 @@ void Game::collision(void)
 
 			if(CollisionHandler::intersects(player->getBB(), bb))
 			{
-				std::cout << "Collision at X: " << bb->x << " Y: " << bb->y << std::endl;
+				//std::cout << "Collision at X: " << bb->x << " Y: " << bb->y << std::endl;
 			}
 		}
 	}
