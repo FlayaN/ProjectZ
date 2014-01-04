@@ -12,7 +12,7 @@ Game::~Game(void)
 
 int Game::init(void)
 {
-	
+	online=true;
 
 	// Initialize the SDL library.
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -32,6 +32,11 @@ int Game::init(void)
 
 	//Load json files
 	loadJson();
+
+	if(online)
+	{
+		net = new Network("127.0.0.1");
+	}
 
 	return APP_OK;
 }
@@ -78,6 +83,15 @@ int Game::run(void)
         
         if(std::strcmp(SDL_GetError(), ""))
             std::cout << "SDL_ERROR: " << SDL_GetError() << std::endl;
+
+
+		if(online)
+		{
+			net->send(player);
+			net->recv(players, player);
+
+			//std::cout << players.size() << std::endl;
+		}
 	}
 	
 	return APP_OK;
@@ -103,7 +117,7 @@ void Game::onEvent(SDL_Event* ev)
 
 void Game::render()
 {
-	renderer->render(chunks, player);
+	renderer->render(chunks, player, players);
 }
 
 void Game::collision(void)

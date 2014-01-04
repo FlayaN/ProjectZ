@@ -20,6 +20,7 @@
 #include "CollisionHandler.h"
 #include "ChunkUtility.h"
 #include "TextureManager.h"
+#include "Network.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -52,11 +53,15 @@ public:
 	void loadPlayer(std::string);
 private:
     std::HashMap<Vec2, Chunk*> chunks;
+	std::vector<PlayerMP*> players;
 	EntityPlayer* player;
 	bool _running;
 
 	Renderer* renderer;
 	Mix_Chunk* music;
+
+	bool online;
+	Network* net;
 };
 
 #endif

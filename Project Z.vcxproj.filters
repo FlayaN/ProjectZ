@@ -49,6 +49,12 @@
     <Filter Include="Source Files\World">
       <UniqueIdentifier>{a89e9932-952e-44ef-bb39-e46a5d44c37c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Network">
+      <UniqueIdentifier>{d175bca8-7001-4685-bf2f-e8b5b8dffc10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{2d4eb67a-b3f7-4b0c-bbe5-635de38ebfee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -102,6 +108,12 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\World</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerMP.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -154,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMP.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

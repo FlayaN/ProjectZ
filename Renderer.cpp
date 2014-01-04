@@ -16,7 +16,7 @@ void renderTexture(SDL_Texture *tex, SDL_Rect dst)
 	SDL_RenderCopy(Graphics::getInstance().getRenderer(), tex, NULL, &dst);
 }
 
-void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player)
+void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player, std::vector<PlayerMP*> players)
 {
 	SDL_Renderer* renderer = Graphics::getInstance().getRenderer();
 	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
@@ -30,7 +30,7 @@ void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player)
     
 	renderTile(chunks, player);
 	renderGrid(player);
-	renderEntity(player);
+	renderEntity(player, players);
 
 	//SEND STUFF TO RENDERER
     SDL_RenderPresent(renderer);
@@ -93,8 +93,10 @@ void Renderer::renderGrid(EntityPlayer* player)
 	}
 }
 
-void Renderer::renderEntity(EntityPlayer* player)
+void Renderer::renderEntity(EntityPlayer* player, std::vector<PlayerMP*> players)
 {
+
+	//Player
 	SDL_Rect playerCollisionBox = *player->getBB();
 	playerCollisionBox.x = w/2 - playerCollisionBox.w/2;
 	playerCollisionBox.y = h/2 - playerCollisionBox.h/2;
@@ -106,4 +108,19 @@ void Renderer::renderEntity(EntityPlayer* player)
 	playerRect.y = h/2 - (playerRect.h - playerCollisionBox.h/2);
     
     renderTexture(player->getTexture(), playerRect);
+
+
+	//MP STUFF
+
+	Vec2 playerOffset = Vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
+
+	for(auto p : players)
+	{
+		
+		SDL_Rect pRect = *p->getSize();
+		pRect.x = p->getPosition()->x + playerOffset.x;
+		pRect.y = p->getPosition()->y + playerOffset.y - pRect.h/2 - pRect.h/4;
+
+		renderTexture(player->getTexture(), pRect);
+	}
 }

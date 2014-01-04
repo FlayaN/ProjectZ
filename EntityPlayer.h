@@ -21,7 +21,14 @@ public:
 	SDL_Rect* getBB(void);
 
 	Vec2 getCenterPosition(void);
+
+	void setId(int);
+	int getId(void);
+
+	bool isReady(void);
 private:
+	int id;
+	bool ready;
 	SDL_Texture* tex;
 	SDL_Texture* collisionTex;
 	SDL_Rect* size;

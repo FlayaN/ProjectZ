@@ -142,3 +142,19 @@ Vec2 EntityPlayer::getCenterPosition(void)
 {
 	return Vec2(position->x + bb->w/2, position->y + bb->h/2);
 }
+
+void EntityPlayer::setId(int idIn)
+{
+	id = idIn;
+	ready = true;
+}
+
+int EntityPlayer::getId(void)
+{
+	return id;
+}
+
+bool EntityPlayer::isReady(void)
+{
+	return ready;
+}
