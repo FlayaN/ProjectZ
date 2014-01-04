@@ -22,10 +22,12 @@ public:
 	~Network(void);
 	void send(EntityPlayer*);
 	void recv(std::vector<PlayerMP*>&, EntityPlayer*);
+	bool getSuccess(void);
 private:
 	SDLNet_SocketSet server;
 	TCPsocket connection;
 	char tmp[1400];
+	bool success;
 };
 
 

@@ -2,13 +2,20 @@
 
 Network::Network(const char* ipChar)
 {
+	success = true;
 	SDLNet_Init();
 	IPaddress ip;
 	if(SDLNet_ResolveHost(&ip, ipChar, 1234) == -1)
-		std::cout << "Could not connect to server" << std::endl;
+	{
+		std::cout << "Could not connect to server (SDLNet_ResolveHost)" << std::endl;
+		success = false;
+	}
 	connection = SDLNet_TCP_Open(&ip);
 	if(connection == NULL)
-		std::cout << "Could not connect 2 server" << std::endl;
+	{
+		std::cout << "Could not connect to server (SDLNet_TCP_Open)" << std::endl;
+		success = false;
+	}
 	server = SDLNet_AllocSocketSet(1);
 	SDLNet_TCP_AddSocket(server, connection);
 }
@@ -81,4 +88,9 @@ void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player)
 			}
 		}
 	}
+}
+
+bool Network::getSuccess(void)
+{
+	return success;
 }
