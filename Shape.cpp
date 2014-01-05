@@ -1,10 +1,11 @@
 #include "Shape.h"
 
 template<class T>
-Shape<T>::Shape(Vec2* offsetIn, T* ownerIn)
+Shape<T>::Shape(Vec2* posOffsetIn, float rotOffsetIn, T* ownerIn)
 {
-	this->offset = offsetIn;
-	this->owner = ownerIn;
+	posOffset = posOffsetIn;
+	rotOffset = rotOffsetIn;
+	owner = ownerIn;
 }
 
 template<class T>
@@ -18,22 +19,33 @@ Shape<T>::~Shape(void)
 template<class T>
 void Shape<T>::setOwner(T* ownerIn)
 {
-	delete owner;
 	owner = ownerIn;
 }
 
 template<class T>
-void Shape<T>::setOffset(Vec2* offsetIn)
+void Shape<T>::setPosOffset(Vec2* offsetIn)
 {
-	delete offset;
-	this->offset = offsetIn;
+	delete posOffset;
+	offset = offsetIn;
 }
 
 template<class T>
 void Shape<T>::setAbsPos(Vec2* absPosIn)
 {
 	delete offset;
-	this->offset = new Vec2((*absPosIn)-(*owner->getPosition()));
+	offset = new Vec2((*absPosIn)-(*owner->getPosition()));
+}
+
+template<class T>
+void Shape<T>::setRotOffset(float rotOffsetIn)
+{
+	rotOffset = rotOffsetIn;
+}
+
+template<class T>
+void Shape<T>::setAbsRot(float absRotIn)
+{
+	rotOffset = absRotIn-(*owner->getRotation());
 }
 
 //------------------------------------------------GET ----------------------------------------------//
@@ -45,15 +57,27 @@ T* Shape<T>::getOwner(void)
 }
 
 template<class T>
-Vec2 Shape<T>::getOffset(void)
+Vec2 Shape<T>::getPosOffset(void)
 {
-	return *offset;
+	return *posOffset;
 }
 
 template<class T>
 Vec2 Shape<T>::getAbsPos(void)
 {
-	return (*owner->getPosition())+(*offset);
+	return (*owner->getPosition())+(*posOffset);
+}
+
+template<class T>
+float Shape<T>::getRotOffset(void)
+{
+	return rotOffset;
+}
+
+template<class T>
+float Shape<T>::getAbsRot(void)
+{
+	return (*owner->getRotation())+rotOffset;
 }
 
 //float getArea(void) = 0;

@@ -31,7 +31,7 @@ int Game::init(void)
 	//Load json files
 	loadJson();
 
-	net = new Network("127.0.0.1");
+	net = new Network("81.237.237.250");
 	online = net->getSuccess();
 
 	return APP_OK;
