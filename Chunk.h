@@ -16,19 +16,19 @@
 class Chunk
 {
 public:
-	Chunk(Vec2* coord);
+	Chunk(glm::ivec2* coord);
 	~Chunk(void);
 
 	void init(std::string);
 	
-	Tile* getTile(const Vec2& pos);
+	Tile* getTile(const glm::ivec2& pos);
 
-    Vec2* getCoord(void);
+    glm::ivec2* getCoord(void);
 
 private:
 
 	Tile* tiles[TileAmount][TileAmount];
-    Vec2* coord;
+    glm::ivec2* coord;
 };
 
 #endif

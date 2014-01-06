@@ -5,7 +5,7 @@
 #define ChunkWidth (TileWidth*TileAmount)
 #define ChunkHeight (TileHeight*TileAmount)
 #define RenderDistance 10					//How far to render tiles around player
-#define CollisionDistance 2					//How far to calculate collision around player
+#define CollisionDistance 1					//How far to calculate collision around player
 #define ChunkDistance 2						//How many chunks to generate around the player
 #define SCREEN_WIDTH 1280					//Width of the screen
 #define SCREEN_HEIGHT 720					//Height of the screen

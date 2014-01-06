@@ -8,7 +8,8 @@
 
 #include <vector>
 
-#include "Vec2.h"
+#include "lib/glm/vec2.hpp"
+
 #include "Shape.h"
 
 #ifndef ENTITY_H
@@ -19,12 +20,12 @@ public:
 	Entity(void);
 	~Entity(void);
 
-	void setPosition(Vec2*);
-	void setVelocity(Vec2*);
+	void setPosition(glm::vec2*);
+	void setVelocity(glm::vec2*);
 	void setRotation(float);
 
-	Vec2* getPosition(void);
-	Vec2* getVelocity(void);
+	glm::vec2* getPosition(void);
+	glm::vec2* getVelocity(void);
 	float getRotation(void);
     std::vector<Shape<Entity>*> getShapes(void);
 	std::vector<Entity*> getChildren(void);
@@ -46,8 +47,8 @@ public:
 	void releaseChildren(void);
 
 protected:
-	Vec2* position;
-	Vec2* velocity;
+	glm::vec2* position;
+	glm::vec2* velocity;
 	float rotation;
 	std::vector<Shape<Entity>*> shapes; // shapes with entity as owner
 	std::vector<Entity*> children;

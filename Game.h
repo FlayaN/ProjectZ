@@ -52,7 +52,7 @@ public:
 	void loadTextures(std::string);
 	void loadPlayer(std::string);
 private:
-    std::HashMap<Vec2, Chunk*> chunks;
+    std::HashMap<glm::ivec2, Chunk*> chunks;
 	std::vector<PlayerMP*> players;
 	EntityPlayer* player;
 	bool _running;

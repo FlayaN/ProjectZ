@@ -1,7 +1,7 @@
 #include "Shape.h"
 
 template<class T>
-Shape<T>::Shape(Vec2* posOffsetIn, float rotOffsetIn, T* ownerIn)
+Shape<T>::Shape(glm::vec2* posOffsetIn, float rotOffsetIn, T* ownerIn)
 {
 	posOffset = posOffsetIn;
 	rotOffset = rotOffsetIn;
@@ -23,17 +23,17 @@ void Shape<T>::setOwner(T* ownerIn)
 }
 
 template<class T>
-void Shape<T>::setPosOffset(Vec2* offsetIn)
+void Shape<T>::setPosOffset(glm::vec2* offsetIn)
 {
 	delete posOffset;
 	offset = offsetIn;
 }
 
 template<class T>
-void Shape<T>::setAbsPos(Vec2* absPosIn)
+void Shape<T>::setAbsPos(glm::vec2* absPosIn)
 {
 	delete offset;
-	offset = new Vec2((*absPosIn)-(*owner->getPosition()));
+	offset = new glm::vec2((*absPosIn)-(*owner->getPosition()));
 }
 
 template<class T>
@@ -57,13 +57,13 @@ T* Shape<T>::getOwner(void)
 }
 
 template<class T>
-Vec2 Shape<T>::getPosOffset(void)
+glm::vec2 Shape<T>::getPosOffset(void)
 {
 	return *posOffset;
 }
 
 template<class T>
-Vec2 Shape<T>::getAbsPos(void)
+glm::vec2 Shape<T>::getAbsPos(void)
 {
 	return (*owner->getPosition())+(*posOffset);
 }

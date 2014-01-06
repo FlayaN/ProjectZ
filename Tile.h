@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-#include "Vec3.h"
+//#include "glmVec2Incl.h"
+#include "lib/glm/vec2.hpp"
+#include "lib/glm/vec3.hpp"
 #include "Shape.h"
 #include "Utility.h"
 #include "TextureManager.h"
@@ -13,19 +15,19 @@
 class Tile
 {
 public:
-	//Tile(Vec3*, Shape*, Shape*, Shape*, Shape*);
-	Tile(std::string, Vec2*, Vec3*);
+	//Tile(glm::vec3*, Shape*, Shape*, Shape*, Shape*);
+	Tile(std::string, glm::vec2*, glm::vec3*);
 	~Tile(void);
 
 	SDL_Texture* getTexture(void);
 	SDL_Rect* getBB(void);
-	Vec2* getPosition(void);
-    Vec3* getColorMod(void);
+	glm::vec2* getPosition(void);
+    glm::vec3* getColorMod(void);
 
 private:
-	//Vec3* position;
+	//glm::vec3* position;
 	
-	Vec2* position;
+	glm::vec2* position;
 
 	//Shape* bb;
     
@@ -33,7 +35,7 @@ private:
 
     SDL_Texture* tex;
     
-    Vec3* colorMod;
+    glm::vec3* colorMod;
 };
 
 #endif

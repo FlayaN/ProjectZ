@@ -16,11 +16,11 @@ void renderTexture(SDL_Texture *tex, SDL_Rect dst)
 	SDL_RenderCopy(Graphics::getInstance().getRenderer(), tex, NULL, &dst);
 }
 
-void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player, std::vector<PlayerMP*> players)
+void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player, std::vector<PlayerMP*> players)
 {
 	SDL_Renderer* renderer = Graphics::getInstance().getRenderer();
 	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
-	//Vec2 playerOffset = Vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
+	//glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
 	//BG COLOR
 	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
@@ -36,7 +36,7 @@ void Renderer::render(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player, s
     SDL_RenderPresent(renderer);
 }
 
-void Renderer::renderTile(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* player)
+void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player)
 {
 	SDL_Rect dst;
 	dst.w = TileWidth;
@@ -44,7 +44,7 @@ void Renderer::renderTile(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* playe
 	
 	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, RenderDistance, player);
 
-	Vec2 playerOffset = Vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
+	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
 	for(Tile* tile: v)
 	{
@@ -53,10 +53,10 @@ void Renderer::renderTile(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* playe
 			SDL_Texture* tex = tile->getTexture();
 			dst.x = tile->getPosition()->x*dst.w + playerOffset.x;
 			dst.y = tile->getPosition()->y*dst.h + playerOffset.y;
-            
-            Vec3* tmpColorMod = tile->getColorMod();
-            SDL_SetTextureColorMod(tex, tmpColorMod->x, tmpColorMod->y, tmpColorMod->z);
-            
+
+			glm::vec3* tmpColorMod = tile->getColorMod();
+			SDL_SetTextureColorMod(tex, tmpColorMod->x, tmpColorMod->y, tmpColorMod->z);
+
 			renderTexture(tex, dst);
 		}
 	}
@@ -64,7 +64,7 @@ void Renderer::renderTile(std::HashMap<Vec2, Chunk*> chunks, EntityPlayer* playe
 
 void Renderer::renderGrid(EntityPlayer* player)
 {
-	Vec2 playerOffset = Vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
+	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
 	SDL_Renderer* renderer = Graphics::getInstance().getRenderer();
 
@@ -112,7 +112,7 @@ void Renderer::renderEntity(EntityPlayer* player, std::vector<PlayerMP*> players
 
 	//MP STUFF
 
-	Vec2 playerOffset = Vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
+	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
 	for(auto p : players)
 	{

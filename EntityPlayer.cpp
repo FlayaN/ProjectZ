@@ -2,7 +2,7 @@
 
 using namespace std;
 
-EntityPlayer::EntityPlayer(Vec2* posIn, Vec2* sizeIn, std::string texIn, float speedIn, Vec2* bbSizeIn, Vec2* bbOffsetIn, std::string bbTexIn) : Entity()
+EntityPlayer::EntityPlayer(glm::vec2* posIn, glm::vec2* sizeIn, std::string texIn, float speedIn, glm::vec2* bbSizeIn, glm::vec2* bbOffsetIn, std::string bbTexIn) : Entity()
 {
 	setPosition(posIn);
 	tex = TextureManager::getInstance().getTexture(texIn);
@@ -139,9 +139,9 @@ SDL_Rect* EntityPlayer::getBB(void)
 	return bb;
 }
 
-Vec2 EntityPlayer::getCenterPosition(void)
+glm::vec2 EntityPlayer::getCenterPosition(void)
 {
-	return Vec2(position->x + bb->w/2, position->y + bb->h/2);
+	return glm::vec2(position->x + bb->w/2, position->y + bb->h/2);
 }
 
 void EntityPlayer::setId(int idIn)

@@ -10,7 +10,7 @@
 
 class EntityPlayer : public Entity {
 public:
-	EntityPlayer(Vec2*, Vec2*, std::string, float, Vec2*, Vec2*, std::string);
+	EntityPlayer(glm::vec2*, glm::vec2*, std::string, float, glm::vec2*, glm::vec2*, std::string);
 	~EntityPlayer(void);
 	void keyDown(SDL_Event*);
 	void update();
@@ -20,7 +20,7 @@ public:
 	SDL_Rect* getSize(void);
 	SDL_Rect* getBB(void);
 
-	Vec2 getCenterPosition(void);
+	glm::vec2 getCenterPosition(void);
 
 	void setId(int);
 	int getId(void);

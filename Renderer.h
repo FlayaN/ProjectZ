@@ -14,9 +14,9 @@ class Renderer
 public:
 	Renderer(void);
 	~Renderer(void);
-	void render(std::HashMap<Vec2, Chunk*> , EntityPlayer*, std::vector<PlayerMP*>);
+	void render(std::HashMap<glm::ivec2, Chunk*> , EntityPlayer*, std::vector<PlayerMP*>);
 
-	void renderTile(std::HashMap<Vec2, Chunk*>, EntityPlayer*);
+	void renderTile(std::HashMap<glm::ivec2, Chunk*>, EntityPlayer*);
 	void renderGrid(EntityPlayer*);
 	void renderEntity(EntityPlayer*, std::vector<PlayerMP*>);
 

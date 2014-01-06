@@ -93,12 +93,6 @@
     <ClCompile Include="ChunkUtility.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Vec2.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Vec3.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
@@ -154,12 +148,6 @@
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec2.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec3.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Chunk.h">
       <Filter>Header Files\World</Filter>

@@ -3,8 +3,8 @@
 
 Entity::Entity(void)
 {
-	position = new Vec2();
-	velocity = new Vec2();
+	position = new glm::vec2();
+	velocity = new glm::vec2();
 }
 
 Entity::~Entity(void) {
@@ -18,13 +18,13 @@ Entity::~Entity(void) {
 
 //------------------------------------------------SET ----------------------------------------------//
 
-void Entity::setPosition(Vec2* positionIn)
+void Entity::setPosition(glm::vec2* positionIn)
 {
 	delete position;
 	position = positionIn;
 }
 
-void Entity::setVelocity(Vec2* velocityIn)
+void Entity::setVelocity(glm::vec2* velocityIn)
 {
 	delete velocity;
 	velocity = velocityIn;
@@ -37,12 +37,12 @@ void Entity::setRotation(float rotationIn)
 
 //------------------------------------------------GET ----------------------------------------------//
 
-Vec2* Entity::getPosition(void)
+glm::vec2* Entity::getPosition(void)
 {
     return position;
 }
 
-Vec2* Entity::getVelocity(void)
+glm::vec2* Entity::getVelocity(void)
 {
 	return velocity;
 }

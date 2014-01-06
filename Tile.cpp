@@ -6,7 +6,7 @@ void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
-Tile::Tile(std::string s, Vec2* positionIn, Vec3* colorModIn)
+Tile::Tile(std::string s, glm::vec2* positionIn, glm::vec3* colorModIn)
 {
     //std::cout << "x: " << colorMod.x << " y: " << colorMod.y << " z: " << colorMod.z << std::endl;
 	/*bb = new SDL_Rect();
@@ -17,7 +17,7 @@ Tile::Tile(std::string s, Vec2* positionIn, Vec3* colorModIn)
 	if(Utility::getRandInt(1, 10) < 3)
 	{
 		tex = TextureManager::getInstance().getTexture("block");
-        colorMod = new Vec3(255, 255, 255);
+        colorMod = new glm::vec3(255, 255, 255);
 		bb = new SDL_Rect();
 		bb->h = TileHeight;
 		bb->w = TileWidth;
@@ -44,12 +44,12 @@ SDL_Rect* Tile::getBB(void)
 	return bb;
 }
 
-Vec2* Tile::getPosition(void)
+glm::vec2* Tile::getPosition(void)
 {
 	return position;
 }
 
-Vec3* Tile::getColorMod(void)
+glm::vec3* Tile::getColorMod(void)
 {
     return colorMod;
 }

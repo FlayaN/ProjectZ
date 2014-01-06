@@ -59,7 +59,7 @@ int Game::run(void)
 
 	//Mix_PlayMusic(music, -1);
 	Mix_PlayChannel(-1, music, -1);
-	
+
 	while(_running)
 	{
 		//Events
@@ -70,7 +70,7 @@ int Game::run(void)
 		}
 		
 		//Logic
-		ChunkUtility::generateSurroundingChunk(&chunks, ChunkDistance, player);
+		ChunkUtility::generateSurroundingChunk(chunks, ChunkDistance, player);
 		collision();
 		player->update();
 		
@@ -117,7 +117,7 @@ void Game::collision(void)
 	for(auto tile: v)
     {
 		Tile* currTile = tile;
-		Vec2 tileCoord = *currTile->getPosition();
+		glm::vec2 tileCoord = *currTile->getPosition();
 		
 		if(currTile != nullptr)
 		{
@@ -165,36 +165,33 @@ void Game::loadJson(void)
 void Game::loadTextures(std::string texturePath)
 {
 	FILE* pFile = fopen(texturePath.c_str(), "rb");
-    rapidjson::FileStream fs(pFile);
-    rapidjson::Document doc;
-    doc.ParseStream<0>(fs);
-    
-    const rapidjson::Value& a = doc["textures"];
-    assert(a.IsArray());
-    
+	rapidjson::FileStream fs(pFile);
+	rapidjson::Document doc;
+	doc.ParseStream<0>(fs);
 	
-
+	const rapidjson::Value& a = doc["textures"];
+	assert(a.IsArray());
+	
 	TextureManager::getInstance().init(a);
-
 	fclose(pFile);
 }
 
 void Game::loadPlayer(std::string playerPath)
 {
 	FILE* pFile = fopen(playerPath.c_str(), "rb");
-    rapidjson::FileStream fs(pFile);
-    rapidjson::Document doc;
-    doc.ParseStream<0>(fs);
+	rapidjson::FileStream fs(pFile);
+	rapidjson::Document doc;
+	doc.ParseStream<0>(fs);
 
 	assert(doc.IsObject());
 
 	assert(doc["startPos"]["x"].IsInt());
 	assert(doc["startPos"]["y"].IsInt());
-	Vec2* pos = new Vec2(doc["startPos"]["x"].GetInt(), doc["startPos"]["y"].GetInt());
+	glm::vec2* pos = new glm::vec2(doc["startPos"]["x"].GetInt(), doc["startPos"]["y"].GetInt());
 
 	assert(doc["size"]["width"].IsInt());
 	assert(doc["size"]["height"].IsInt());
-	Vec2* size = new Vec2(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
+	glm::vec2* size = new glm::vec2(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
 	
 	assert(doc["tex"].IsString());
 	std::string tex = doc["tex"].GetString();
@@ -209,19 +206,11 @@ void Game::loadPlayer(std::string playerPath)
 
 	assert(bb["size"]["width"].IsInt());
 	assert(bb["size"]["height"].IsInt());
-	Vec2* bbSize = new Vec2(bb["size"]["width"].GetInt(), bb["size"]["height"].GetInt());
+	glm::vec2* bbSize = new glm::vec2(bb["size"]["width"].GetInt(), bb["size"]["height"].GetInt());
 
 	assert(bb["offset"]["x"].IsInt());
 	assert(bb["offset"]["y"].IsInt());
-	Vec2* bbOffset = new Vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
-
-	std::cout << "StartPos: " << *pos << std::endl;
-	std::cout << "Size: " << *size << std::endl;
-	std::cout << "Tex: " << tex << std::endl;
-	std::cout << "Speed: " << speed << std::endl;
-	std::cout << "BBSize: " << *bbSize << std::endl;
-	std::cout << "BBOffset: " << *bbOffset << std::endl;
-	std::cout << "BBTex: " << bbTex << std::endl;
+	glm::vec2* bbOffset = new glm::vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
 
 	player = new EntityPlayer(pos, size, tex, speed, bbSize, bbOffset, bbTex);
 	
