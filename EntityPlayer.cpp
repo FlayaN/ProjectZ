@@ -5,20 +5,12 @@ using namespace std;
 EntityPlayer::EntityPlayer(glm::vec2* posIn, glm::vec2* sizeIn, std::string texIn, float speedIn, glm::vec2* bbSizeIn, glm::vec2* bbOffsetIn, std::string bbTexIn) : Entity()
 {
 	setPosition(posIn);
-	tex = TextureManager::getInstance().getTexture(texIn);
-	collisionTex = TextureManager::getInstance().getTexture(bbTexIn);
-	size = new SDL_Rect();
-	size->w = sizeIn->x;
-	size->h = sizeIn->y;
-
-	bb = new SDL_Rect();
-	bb->w = bbSizeIn->x;
-	bb->h = bbSizeIn->y;
-	bb->x = bbOffsetIn->x;
-	bb->y = bbOffsetIn->y;
 
 	speed = speedIn;
 	ready = false;
+
+	model = new RectangleShape<Entity>(new glm::vec2(0.0, 0.0), this, sizeIn, texIn);
+	bb = new RectangleShape<Entity>(bbOffsetIn, this, bbSizeIn, bbTexIn);
 }
 
 EntityPlayer::~EntityPlayer(void)
@@ -34,10 +26,10 @@ void EntityPlayer::keyDown(SDL_Event* ev)
 		switch(ev->key.keysym.sym)
 		{
 		case SDLK_w:
-			velocity->y -= speed;
+			velocity->y += speed;
 			break;
 		case SDLK_s:
-			velocity->y += speed;
+			velocity->y -= speed;
 			break;
 		case SDLK_a:
 			velocity->x -= speed;
@@ -51,10 +43,10 @@ void EntityPlayer::keyDown(SDL_Event* ev)
 		switch(ev->key.keysym.sym)
 		{
 		case SDLK_w:
-			velocity->y += speed;
+			velocity->y -= speed;
 			break;
 		case SDLK_s:
-			velocity->y -= speed;
+			velocity->y += speed;
 			break;
 		case SDLK_a:
 			velocity->x += speed;
@@ -112,36 +104,16 @@ void EntityPlayer::update()
 	position->x += velocity->x;
 	position->y += velocity->y;
 
-	bb->x = position->x;
-	bb->y = position->y;
+	//bb->x = position->x;
+	//bb->y = position->y;
 
 
 	//cout << "Pos X: " << position->x << " Pos Y: " << position->y << " Vel X: " << velocity->x << " Vel Y: " << velocity->y << endl;
 }
 
-SDL_Texture* EntityPlayer::getTexture(void)
-{
-	return tex;
-}
-
-SDL_Texture* EntityPlayer::getCollisionTexture(void)
-{
-	return collisionTex;
-}
-
-SDL_Rect* EntityPlayer::getSize(void)
-{
-	return size;
-}
-
-SDL_Rect* EntityPlayer::getBB(void)
-{
-	return bb;
-}
-
 glm::vec2 EntityPlayer::getCenterPosition(void)
 {
-	return glm::vec2(position->x + bb->w/2, position->y + bb->h/2);
+	return glm::vec2(position->x + bb->getWidth()/2, position->y + bb->getHeight()/2);
 }
 
 void EntityPlayer::setId(int idIn)
@@ -158,4 +130,14 @@ int EntityPlayer::getId(void)
 bool EntityPlayer::isReady(void)
 {
 	return ready;
+}
+
+RectangleShape<Entity>* EntityPlayer::getModel(void)
+{
+	return model;
+}
+
+RectangleShape<Entity>* EntityPlayer::getBB(void)
+{
+	return bb;
 }

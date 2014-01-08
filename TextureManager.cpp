@@ -16,11 +16,15 @@ void TextureManager::init(const rapidjson::Value& a)
 
 		assert(a[i]["name"].IsString());
 		assert(a[i]["file"].IsString());
-        textures[a[i]["name"].GetString()] = IMG_LoadTexture(Graphics::getInstance().getRenderer(), a[i]["file"].GetString());
+		SDL_Surface* tmp = IMG_Load(a[i]["file"].GetString());
+		if(tmp != nullptr)
+			surfaces[a[i]["name"].GetString()] = tmp;
+		else
+			std::cout << "couldn't find : " << a[i]["file"].GetString() << std::endl;
     }
 }
 
-SDL_Texture* TextureManager::getTexture(std::string id)
+SDL_Surface* TextureManager::getSurface(std::string id)
 {
-	return textures[id];
+	return surfaces[id];
 }

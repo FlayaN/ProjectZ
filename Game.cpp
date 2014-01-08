@@ -19,17 +19,19 @@ int Game::init(void)
 		return APP_FAILED;
 	}
 
-	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
+	if(Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1)
 	{
 		return false;
 	}
 
-	music = Mix_LoadWAV("res/music/CSLIVE.wav");
+	//music = Mix_LoadWAV("res/music/CSLIVE.wav");
 
-	renderer = new Renderer();
+	Graphics::getInstance();
 
 	//Load json files
 	loadJson();
+	cam = new Camera(player);
+	renderer = new Renderer(player, cam);
 
 	net = new Network("81.237.237.250");
 	online = net->getSuccess();
@@ -57,8 +59,7 @@ int Game::run(void)
 	SDL_Event ev;
 	_running = true;
 
-	//Mix_PlayMusic(music, -1);
-	Mix_PlayChannel(-1, music, -1);
+	//Mix_PlayChannel(-1, music, 0);
 
 	while(_running)
 	{
@@ -121,7 +122,7 @@ void Game::collision(void)
 		
 		if(currTile != nullptr)
 		{
-			SDL_Rect* bb = currTile->getBB();
+			/*SDL_Rect* bb = currTile->getBB();
 			if(bb != nullptr)
 			{
 				bb->x = (tileCoord.x)*bb->w;
@@ -132,7 +133,7 @@ void Game::collision(void)
 			if(CollisionHandler::intersects(player->getBB(), bb))
 			{
 				//std::cout << "Collision at X: " << bb->x << " Y: " << bb->y << std::endl;
-			}
+			}*/
 		}
 	}
 }

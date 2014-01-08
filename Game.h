@@ -62,6 +62,7 @@ private:
 
 	bool online;
 	Network* net;
+	Camera* cam;
 };
 
 #endif

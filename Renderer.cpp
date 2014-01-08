@@ -1,9 +1,17 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(void)
+Renderer::Renderer(EntityPlayer* player, Camera* camIn)
 {
+	entityProg = loadShaders("res/shaders/entity.vert", "res/shaders/entity.frag");
+	glUniform1i(glGetUniformLocation(entityProg, "texUnit"), 0);
 
+	playerModel = player->getModel();
+	playerVao = generateModel(playerModel, entityProg);
+	playerTex = surfaceToOGLTexture(player->getModel()->getSurface());
+
+	printError("Renderer|Renderer");
+	cam = camIn;
 }
 
 Renderer::~Renderer(void) 
@@ -11,37 +19,31 @@ Renderer::~Renderer(void)
 
 }
 
-void renderTexture(SDL_Texture *tex, SDL_Rect dst)
-{
-	SDL_RenderCopy(Graphics::getInstance().getRenderer(), tex, NULL, &dst);
-}
-
 void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player, std::vector<PlayerMP*> players)
 {
-	SDL_Renderer* renderer = Graphics::getInstance().getRenderer();
 	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
-	//glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClearColor(1.0, 1.0, 1.0, 1.0);
 
-	//BG COLOR
-	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
 
-	//CLEAR SCREEN
-	SDL_RenderClear(renderer);
-    
-	renderTile(chunks, player);
-	renderGrid(player);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	renderEntity(player, players);
+	//renderGrid(player);
+	renderTile(chunks, player);
 
-	//SEND STUFF TO RENDERER
-    SDL_RenderPresent(renderer);
+	SDL_GL_SwapWindow(Graphics::getInstance().getWindow());
 }
 
 void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player)
 {
-	SDL_Rect dst;
+	/*SDL_Rect dst;
 	dst.w = TileWidth;
-	dst.h = TileHeight;
-	
+	dst.h = TileHeight;*/
+	/*
 	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, RenderDistance, player);
 
 	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
@@ -59,68 +61,138 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer*
 
 			renderTexture(tex, dst);
 		}
-	}
+	}*/
 }
 
 void Renderer::renderGrid(EntityPlayer* player)
 {
 	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
-	SDL_Renderer* renderer = Graphics::getInstance().getRenderer();
+	//SDL_Renderer* renderer = Graphics::getInstance().getRenderer();
+
+	std::vector<glm::vec2> points;
 
 	for(int x = player->getPosition()->x-w; x < player->getPosition()->x+w; x+=TileWidth)
 	{
 		int tmpX = x-(x%TileWidth);
 		
 
-		SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xff);
+		/*SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xff);
 		if(tmpX%(TileAmount*TileWidth) == 0)
-			SDL_SetRenderDrawColor(renderer, 0xff, 0x0, 0x0, 0xff);	
+			SDL_SetRenderDrawColor(renderer, 0xff, 0x0, 0x0, 0xff);*/	
 
-		SDL_RenderDrawLine(renderer, tmpX+playerOffset.x, 0, tmpX+playerOffset.x, h);
+		//SDL_RenderDrawLine(renderer, tmpX+playerOffset.x, 0, tmpX+playerOffset.x, h);
 		
 		for(int y = player->getPosition()->y-h; y < player->getPosition()->y+h; y+=TileHeight)
 		{
 
 			int tmpY = y-(y%TileHeight);
 			
-			SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xff);
+			/*SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xff);
 			if(tmpY%(TileAmount*TileHeight) == 0)
-				SDL_SetRenderDrawColor(renderer, 0xff, 0x0, 0x0, 0xff);	
+				SDL_SetRenderDrawColor(renderer, 0xff, 0x0, 0x0, 0xff);	*/
 
-			SDL_RenderDrawLine(renderer, 0, tmpY+playerOffset.y, w, tmpY+playerOffset.y);
+			//SDL_RenderDrawLine(renderer, 0, tmpY+playerOffset.y, w, tmpY+playerOffset.y);
+			
+			points.push_back(glm::vec2(tmpX+playerOffset.x, tmpY+playerOffset.y));
+
+			std::cout << "X: " << tmpX+playerOffset.x << " Y: " << tmpY+playerOffset.y << std::endl;
 		}
 	}
+
+
 }
 
 void Renderer::renderEntity(EntityPlayer* player, std::vector<PlayerMP*> players)
 {
+	glUseProgram(entityProg);
+	glUniformMatrix4fv(glGetUniformLocation(entityProg, "projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+	glBindTexture(GL_TEXTURE_2D, playerTex);
+	glBindVertexArray(playerVao);
 
-	//Player
-	SDL_Rect playerCollisionBox = *player->getBB();
-	playerCollisionBox.x = w/2 - playerCollisionBox.w/2;
-	playerCollisionBox.y = h/2 - playerCollisionBox.h/2;
+	glm::mat4 modelMat(1.0);
+	modelMat = glm::translate(modelMat, glm::vec3(w/2 - player->getModel()->getWidth()/2, h/2 + player->getModel()->getHeight()/2 + player->getBB()->getHeight()/2, 0.0));
 
-	renderTexture(player->getCollisionTexture(), playerCollisionBox);
+	glUniformMatrix4fv(glGetUniformLocation(entityProg, "modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+	glDrawArrays(GL_TRIANGLES, 0, playerModel->getNumVertices());
+	
+	printError("Renderer|renderEntity2");
+}
 
-	SDL_Rect playerRect = *player->getSize();
-	playerRect.x = w/2 - playerRect.w/2;
-	playerRect.y = h/2 - (playerRect.h - playerCollisionBox.h/2);
-    
-    renderTexture(player->getTexture(), playerRect);
+GLuint Renderer::surfaceToOGLTexture(SDL_Surface* tex)
+{
+	GLuint texture;
+	GLint nbOfColors;
+	GLenum textureFormat = 0;
 
+	nbOfColors = tex->format->BytesPerPixel;
 
-	//MP STUFF
-
-	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
-
-	for(auto p : players)
+	switch(nbOfColors)
 	{
-		
-		SDL_Rect pRect = *p->getSize();
-		pRect.x = p->getPosition()->x + playerOffset.x;
-		pRect.y = p->getPosition()->y + playerOffset.y - pRect.h/2 - pRect.h/4;
-
-		renderTexture(player->getTexture(), pRect);
+		case 1:
+			textureFormat = GL_ALPHA;
+			break;
+		case 3: //no alpha
+			if(tex->format->Rmask == 0x000000ff)
+				textureFormat = GL_RGB;
+			else
+				textureFormat = GL_BGR;
+			break;
+		case 4: //contains alpha
+			if(tex->format->Rmask == 0x000000ff)
+				textureFormat = GL_RGBA;
+			else
+				textureFormat = GL_BGRA;
+			break;
+		default:
+			break;
 	}
+
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+		
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, nbOfColors, tex->w, tex->h, 0, textureFormat, GL_UNSIGNED_BYTE, tex->pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	printError("Renderer|loadImg");
+	return texture;
+}
+
+unsigned int Renderer::generateModel(RectangleShape<Entity>* model, GLuint prog)
+{
+	glUseProgram(prog);
+	unsigned int vertexArrayObjID;
+	unsigned int vertexBufferObjID;
+	unsigned int textureBufferObjID;
+
+	glGenVertexArrays(1, &vertexArrayObjID);
+	glBindVertexArray(vertexArrayObjID);
+
+	glGenBuffers(1, &vertexBufferObjID);
+	glGenBuffers(1, &textureBufferObjID);
+
+	if(model->getVertexArray() != nullptr)
+	{
+		std::cout << "Adding inPosition" << std::endl;
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjID);
+		glBufferData(GL_ARRAY_BUFFER, model->getNumVertices()*2*sizeof(GLfloat), model->getVertexArray(), GL_STATIC_DRAW);
+		glVertexAttribPointer(glGetAttribLocation(prog, "inPosition"), 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(glGetAttribLocation(prog, "inPosition"));
+	}
+
+	if(model->getTexCoordArray() != nullptr)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, textureBufferObjID);
+		glBufferData(GL_ARRAY_BUFFER, model->getNumVertices()*2*sizeof(GLfloat), model->getTexCoordArray(), GL_STATIC_DRAW);
+		glVertexAttribPointer(glGetAttribLocation(prog, "inTexCoord"), 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(glGetAttribLocation(prog, "inTexCoord"));
+	}
+	std::cout << "returning vao: " << vertexArrayObjID << std::endl;
+	return vertexArrayObjID;
 }

@@ -49,7 +49,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\lib\sdl-2.0.1\lib\x86;$(ProjectDir)\lib\glew\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;glew32.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;glew32.lib;glu32.lib;opengl32.lib</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -67,17 +67,18 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)\lib\sdl-2.0.1\lib\x86;$(ProjectDir)\lib\glew\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;glew32.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;glew32.lib;glu32.lib;opengl32.lib</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkUtility.cpp" />
-    <ClCompile Include="CircleShape.cpp" />
     <ClCompile Include="CollisionHandler.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityPlayer.cpp" />
+    <ClCompile Include="GL_utilities.c" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Network.cpp" />
@@ -86,7 +87,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
@@ -98,9 +98,12 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityPlayer.h" />
+    <ClInclude Include="GL_utilities.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="PlayerMP.h" />
+    <ClInclude Include="RectangleShape.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Material.h" />
@@ -112,6 +115,10 @@
   <ItemGroup>
     <None Include="res\config\player.json" />
     <None Include="res\config\textures.json" />
+    <None Include="res\shaders\entity.frag" />
+    <None Include="res\shaders\entity.vert" />
+    <None Include="res\shaders\line.frag" />
+    <None Include="res\shaders\line.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

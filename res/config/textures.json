@@ -1,6 +1,10 @@
 {
     "textures" : [
         {
+			"name" : "default",
+			"file" : "res/images/default.png"
+		},
+		{
 			"name" : "block",
 			"file" : "res/images/block.png"
 		},
@@ -10,7 +14,7 @@
 		},
         {
 			"name" : "mario",
-			"file" : "res/images/mario.gif"
+			"file" : "res/images/mario.png"
 		},
         {
 			"name" : "grass",

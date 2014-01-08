@@ -30,7 +30,7 @@ public:
 
 	void init(const rapidjson::Value&);
 
-	SDL_Texture* getTexture(std::string id);
+	SDL_Surface* getSurface(std::string id);
 
 private:
 
@@ -40,8 +40,7 @@ private:
 	~TextureManager(){}
 
 
-	std::HashMap<std::string, SDL_Texture*> textures;
-	//std::vector<SDL_Texture*> textures;
+	std::HashMap<std::string, SDL_Surface*> surfaces;
 };
 
 #endif

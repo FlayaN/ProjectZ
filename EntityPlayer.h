@@ -1,12 +1,14 @@
 #pragma once
 
-#include <iostream>
-
-#include "entity.h"
-#include "TextureManager.h"
-
 #ifndef ENTITYPLAYER_H
 #define ENTITYPLAYER_H
+
+#include <iostream>
+
+#include "RectangleShape.h"
+#include "Entity.h"
+#include "TextureManager.h"
+#include "lib/glm/vec2.hpp"
 
 class EntityPlayer : public Entity {
 public:
@@ -15,27 +17,21 @@ public:
 	void keyDown(SDL_Event*);
 	void update();
 
-	SDL_Texture* getTexture(void);
-	SDL_Texture* getCollisionTexture(void);
-	SDL_Rect* getSize(void);
-	SDL_Rect* getBB(void);
-
 	glm::vec2 getCenterPosition(void);
 
 	void setId(int);
 	int getId(void);
 
 	bool isReady(void);
+
+	RectangleShape<Entity>* getModel(void);
+	RectangleShape<Entity>* getBB(void);
 private:
 	int id;
 	bool ready;
-	SDL_Texture* tex;
-	SDL_Texture* collisionTex;
-	SDL_Rect* size;
-	//Shape* bb;
-
-	SDL_Rect* bb;
 	float speed;
+	RectangleShape<Entity>* model;
+	RectangleShape<Entity>* bb;
 };
 
 #endif

@@ -16,9 +16,6 @@
     <Filter Include="Header Files\Shapes">
       <UniqueIdentifier>{2c5579b6-f222-494a-88d8-d85efa38a82c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shapes">
-      <UniqueIdentifier>{c665aaba-36d8-4bbc-8fbb-9b465ac46860}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Entities">
       <UniqueIdentifier>{f57491ff-cc7c-40ad-b1bd-45fd9f14e883}</UniqueIdentifier>
     </Filter>
@@ -37,12 +34,6 @@
     <Filter Include="Source Files\Items">
       <UniqueIdentifier>{281ed474-5727-4a01-a064-10c0f99400ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Libraries">
-      <UniqueIdentifier>{18374421-6e6c-4e5e-ab42-c1cb9f3f539a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Libraries">
-      <UniqueIdentifier>{cf72a821-e7b7-486b-94c1-160e03a8cf85}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\World">
       <UniqueIdentifier>{a7c0c416-5492-43e3-adec-39367e786964}</UniqueIdentifier>
     </Filter>
@@ -55,6 +46,12 @@
     <Filter Include="Source Files\Network">
       <UniqueIdentifier>{2d4eb67a-b3f7-4b0c-bbe5-635de38ebfee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\config">
+      <UniqueIdentifier>{8c006b53-1a78-499c-a530-69f4ef05a907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{30a4b512-df89-4520-a22b-0d42301571c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,12 +62,6 @@
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>Source Files\Shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="CircleShape.cpp">
-      <Filter>Source Files\Shapes</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Entities</Filter>
@@ -107,6 +98,12 @@
     </ClCompile>
     <ClCompile Include="Network.cpp">
       <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="GL_utilities.c">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,13 +158,34 @@
     <ClInclude Include="Network.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
+    <ClInclude Include="RectangleShape.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="GL_utilities.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\config\textures.json">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="res\config\player.json">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\config</Filter>
+    </None>
+    <None Include="res\config\textures.json">
+      <Filter>Resource Files\config</Filter>
+    </None>
+    <None Include="res\shaders\entity.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="res\shaders\entity.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="res\shaders\line.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="res\shaders\line.vert">
+      <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
