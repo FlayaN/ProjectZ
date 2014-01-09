@@ -6,19 +6,18 @@ void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
-Tile::Tile(std::string s, glm::vec2* positionIn, glm::vec3* colorModIn)
+Tile::Tile(std::string s, glm::vec2* positionIn)
 {
     position = positionIn;
-    
+	size = glm::vec2(TileWidth, TileHeight);
 	if(Utility::getRandInt(1, 10) < 3)
 	{
 		bb = new RectangleShape<Tile>(new glm::vec2(), this, new glm::vec2(TileWidth, TileHeight), "block");
-        colorMod = new glm::vec3(255, 255, 255);
 	}
 	else
 	{
-		bb = new RectangleShape<Tile>(new glm::vec2(), this, new glm::vec2(TileWidth, TileHeight), s);
-        colorMod = colorModIn;
+		//bb = new RectangleShape<Tile>(new glm::vec2(), this, new glm::vec2(TileWidth, TileHeight), s);
+		bb = nullptr;
 	}
 }
 
@@ -31,12 +30,12 @@ glm::vec2* Tile::getPosition(void)
 	return position;
 }
 
-glm::vec3* Tile::getColorMod(void)
-{
-    return colorMod;
-}
-
 RectangleShape<Tile>* Tile::getBB(void)
 {
 	return bb;
+}
+
+glm::vec2 Tile::getSize(void)
+{
+	return size;
 }

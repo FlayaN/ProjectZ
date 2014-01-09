@@ -12,7 +12,7 @@
 
 class EntityPlayer : public Entity {
 public:
-	EntityPlayer(glm::vec2*, glm::vec2*, std::string, float, glm::vec2*, glm::vec2*, std::string);
+	EntityPlayer(glm::vec2*, glm::vec2, std::string, float, glm::vec2*, glm::vec2*, std::string);
 	~EntityPlayer(void);
 	void keyDown(SDL_Event*);
 	void update();
@@ -22,15 +22,17 @@ public:
 	void setId(int);
 	int getId(void);
 
-	bool isReady(void);
+	bool isOnline(void);
 
-	RectangleShape<Entity>* getModel(void);
+	//RectangleShape<Entity>* getModel(void);
+	glm::vec2 getSize(void);
 	RectangleShape<Entity>* getBB(void);
 private:
 	int id;
-	bool ready;
+	bool online;
 	float speed;
-	RectangleShape<Entity>* model;
+	//RectangleShape<Entity>* model;
+	glm::vec2 size;
 	RectangleShape<Entity>* bb;
 };
 

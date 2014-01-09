@@ -5,17 +5,14 @@ Renderer::Renderer(EntityPlayer* player, Camera* camIn)
 {
 	cam = camIn;
 
-	//progEntity = new ShaderProgram("res/shaders/entity.vert", "res/shaders/entity.frag");
 	modelPlayer = new ModelSquare("res/shaders/entity.vert", "res/shaders/entity.frag");
-
-	glUseProgram(modelPlayer->getProg());
-
+	modelOnlinePlayer = new ModelSquare("res/shaders/entity.vert", "res/shaders/entity.frag");
+	modelTile = new ModelSquare("res/shaders/entity.vert", "res/shaders/entity.frag");
 	initShaders();
 
-	playerTex = surfaceToOGLTexture(TextureManager::getInstance().getSurface("mario"));
-	//glUniform1i(progEntity->getUniform("texUnit"), 0);
-	//playerTex = surfaceToOGLTexture(player->getModel()->getSurface());
-	//glUniform1i(glGetUniformLocation(entityProg, "texUnit"), 0);
+	texPlayer = surfaceToOGLTexture(TextureManager::getInstance().getSurface("mario"));
+	texOnlinePlayer = surfaceToOGLTexture(TextureManager::getInstance().getSurface("default"));
+	texTile = surfaceToOGLTexture(TextureManager::getInstance().getSurface("grass"));
 
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -34,12 +31,29 @@ Renderer::~Renderer(void)
 
 void Renderer::initShaders(void)
 {
+	//------------------------------PLAYER BUFFER INITIALIZATION----------------------------//
 	modelPlayer->addAttrib(BUFFTYPE::VERTEX, "inPosition");
 	modelPlayer->addAttrib(BUFFTYPE::TEXCOORD, "inTexCoord");
 
 	modelPlayer->addUniform("projMatrix");
 	modelPlayer->addUniform("modelViewMatrix");
 	modelPlayer->addUniform("texUnit");
+
+	//---------------------------ONLINE PLAYERS BUFFER INITIALIZATION-----------------------//
+	modelOnlinePlayer->addAttrib(BUFFTYPE::VERTEX, "inPosition");
+	modelOnlinePlayer->addAttrib(BUFFTYPE::TEXCOORD, "inTexCoord");
+
+	modelOnlinePlayer->addUniform("projMatrix");
+	modelOnlinePlayer->addUniform("modelViewMatrix");
+	modelOnlinePlayer->addUniform("texUnit");
+
+	//------------------------------TILE BUFFER INITIALIZATION-----------------------------//
+	modelTile->addAttrib(BUFFTYPE::VERTEX, "inPosition");
+	modelTile->addAttrib(BUFFTYPE::TEXCOORD, "inTexCoord");
+
+	modelTile->addUniform("projMatrix");
+	modelTile->addUniform("modelViewMatrix");
+	modelTile->addUniform("texUnit");
 }
 
 void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player, std::vector<PlayerMP*> players)
@@ -47,16 +61,18 @@ void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* pla
 	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	
-	renderEntity(player, players);
-	//renderGrid(player);
-	//renderTile(chunks, player);
+	renderTile(chunks, player);
+	renderPlayer(player);
+	if(player->isOnline())
+		renderOnlinePlayers(players, player);
 
 	SDL_GL_SwapWindow(Graphics::getInstance().getWindow());
 }
 
 void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player)
 {
-	/*std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, RenderDistance, player);
+	glUseProgram(modelTile->getProg());
+	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, RenderDistance, player);
 
 	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
@@ -64,16 +80,20 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer*
 	{
 		if(tile != nullptr)
 		{
-			SDL_Texture* tex = tile->getTexture();
-			dst.x = tile->getPosition()->x*dst.w + playerOffset.x;
-			dst.y = tile->getPosition()->y*dst.h + playerOffset.y;
+			glm::mat4 modelMat(1.0);
+			modelMat = glm::translate(modelMat, glm::vec3(tile->getPosition()->x*tile->getSize().x + playerOffset.x, tile->getPosition()->y*tile->getSize().y + playerOffset.y, 0.0));
+			modelMat = glm::scale(modelMat, glm::vec3(tile->getSize().x, tile->getSize().y, 1.0));
+			glUniformMatrix4fv(modelTile->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+			glUniformMatrix4fv(modelTile->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+	
+			glUniform1i(modelTile->getUniform("texUnit"), 0);
+			glBindTexture(GL_TEXTURE_2D, texTile);
+			glBindVertexArray(modelTile->getVAO());
 
-			glm::vec3* tmpColorMod = tile->getColorMod();
-			SDL_SetTextureColorMod(tex, tmpColorMod->x, tmpColorMod->y, tmpColorMod->z);
-
-			renderTexture(tex, dst);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelTile->getNumVertices());
 		}
-	}*/
+	}
+	printError("Renderer|renderPlayer");
 }
 
 void Renderer::renderGrid(EntityPlayer* player)
@@ -115,22 +135,44 @@ void Renderer::renderGrid(EntityPlayer* player)
 
 }
 
-void Renderer::renderEntity(EntityPlayer* player, std::vector<PlayerMP*> players)
+void Renderer::renderPlayer(EntityPlayer* player)
 {
 	glUseProgram(modelPlayer->getProg());
 	
 	glm::mat4 modelMat(1.0);
-	modelMat = glm::translate(modelMat, glm::vec3(w/2 - player->getModel()->getWidth()/2, h/2 + player->getModel()->getHeight()/2 + player->getBB()->getHeight()/2, 0.0));
-	modelMat = glm::scale(modelMat, glm::vec3(player->getModel()->getWidth(), player->getModel()->getHeight(), 1.0));
+	modelMat = glm::translate(modelMat, glm::vec3(w/2 - player->getSize().x/2, h/2 - player->getBB()->getHeight()/2, 0.0));
+	modelMat = glm::scale(modelMat, glm::vec3(player->getSize().x, player->getSize().y, 1.0));
 	glUniformMatrix4fv(modelPlayer->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
 	glUniformMatrix4fv(modelPlayer->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
 	
 	glUniform1i(modelPlayer->getUniform("texUnit"), 0);
-	glBindTexture(GL_TEXTURE_2D, playerTex);
+	glBindTexture(GL_TEXTURE_2D, texPlayer);
 	glBindVertexArray(modelPlayer->getVAO());
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, modelPlayer->getNumVertices());
-	printError("Renderer|renderEntity");
+	printError("Renderer|renderPlayer");
+}
+
+void Renderer::renderOnlinePlayers(std::vector<PlayerMP*> players, EntityPlayer* player)
+{
+	glUseProgram(modelOnlinePlayer->getProg());
+	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
+
+	for (auto p : players)
+	{
+		glm::mat4 modelMat(1.0);
+		modelMat = glm::translate(modelMat, glm::vec3(p->getPosition()->x + playerOffset.x, p->getPosition()->y + playerOffset.y, 0.0));
+		modelMat = glm::scale(modelMat, glm::vec3(p->getSize().x, p->getSize().y, 1.0));
+		glUniformMatrix4fv(modelOnlinePlayer->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+		glUniformMatrix4fv(modelOnlinePlayer->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+	
+		glUniform1i(modelOnlinePlayer->getUniform("texUnit"), 0);
+		glBindTexture(GL_TEXTURE_2D, texOnlinePlayer);
+		glBindVertexArray(modelOnlinePlayer->getVAO());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, modelOnlinePlayer->getNumVertices());
+	}
+	
+	printError("Renderer|renderOnlinePlayers");
 }
 
 GLuint Renderer::surfaceToOGLTexture(SDL_Surface* tex)

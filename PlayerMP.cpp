@@ -2,12 +2,10 @@
 
 PlayerMP::PlayerMP(int idIn) : id(idIn), Entity()
 {
-	size = new SDL_Rect();
-	size->w = TileWidth;
-	size->h = TileWidth*2;
+	size = glm::vec2(80, 160);
 }
 
-SDL_Rect* PlayerMP::getSize(void)
+glm::vec2 PlayerMP::getSize(void)
 {
 	return size;
 }

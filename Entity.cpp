@@ -24,6 +24,12 @@ void Entity::setPosition(glm::vec2* positionIn)
 	position = positionIn;
 }
 
+void Entity::setPosition(float x, float y)
+{
+	position->x = x;
+	position->y = y;
+}
+
 void Entity::setVelocity(glm::vec2* velocityIn)
 {
 	delete velocity;

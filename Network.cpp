@@ -28,7 +28,7 @@ Network::~Network(void)
 }
 void Network::send(EntityPlayer* player)
 {
-	if(player->isReady())
+	if(player->isOnline())
 	{
 		glm::vec2 pos = *player->getPosition();
 		//1 id posX posY
@@ -70,7 +70,7 @@ void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player)
 					int tmp2;
 					float x, y;
 					sscanf(tmp, "1 %d %f %f \n", &tmp2, &x, &y);
-					players[i]->setPosition(new glm::vec2(x, y));
+					players[i]->setPosition(x, y);
 					break;
 				}	
 			}

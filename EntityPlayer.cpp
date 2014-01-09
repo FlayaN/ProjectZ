@@ -2,14 +2,15 @@
 
 using namespace std;
 
-EntityPlayer::EntityPlayer(glm::vec2* posIn, glm::vec2* sizeIn, std::string texIn, float speedIn, glm::vec2* bbSizeIn, glm::vec2* bbOffsetIn, std::string bbTexIn) : Entity()
+EntityPlayer::EntityPlayer(glm::vec2* posIn, glm::vec2 sizeIn, std::string texIn, float speedIn, glm::vec2* bbSizeIn, glm::vec2* bbOffsetIn, std::string bbTexIn) : Entity()
 {
 	setPosition(posIn);
 
 	speed = speedIn;
-	ready = false;
+	online = false;
 
-	model = new RectangleShape<Entity>(new glm::vec2(0.0, 0.0), this, sizeIn, texIn);
+	//model = new RectangleShape<Entity>(new glm::vec2(0.0, 0.0), this, sizeIn, texIn);
+	size = sizeIn;
 	bb = new RectangleShape<Entity>(bbOffsetIn, this, bbSizeIn, bbTexIn);
 }
 
@@ -119,7 +120,7 @@ glm::vec2 EntityPlayer::getCenterPosition(void)
 void EntityPlayer::setId(int idIn)
 {
 	id = idIn;
-	ready = true;
+	online = true;
 }
 
 int EntityPlayer::getId(void)
@@ -127,14 +128,14 @@ int EntityPlayer::getId(void)
 	return id;
 }
 
-bool EntityPlayer::isReady(void)
+bool EntityPlayer::isOnline(void)
 {
-	return ready;
+	return online;
 }
 
-RectangleShape<Entity>* EntityPlayer::getModel(void)
+glm::vec2 EntityPlayer::getSize(void)
 {
-	return model;
+	return size;
 }
 
 RectangleShape<Entity>* EntityPlayer::getBB(void)

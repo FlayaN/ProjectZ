@@ -21,6 +21,7 @@ public:
 	~Entity(void);
 
 	void setPosition(glm::vec2*);
+	void setPosition(float x, float y);
 	void setVelocity(glm::vec2*);
 	void setRotation(float);
 

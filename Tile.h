@@ -16,19 +16,20 @@
 class Tile
 {
 public:
-	Tile(std::string, glm::vec2*, glm::vec3*);
+	Tile(std::string, glm::vec2*);
 	~Tile(void);
 
 	RectangleShape<Tile>* getBB(void);
 	glm::vec2* getPosition(void);
     glm::vec3* getColorMod(void);
+	glm::vec2 getSize(void);
 
 private:
 	glm::vec2* position;
 
 	RectangleShape<Tile>* bb;
-    
-    glm::vec3* colorMod;
+
+	glm::vec2 size;
 };
 
 #endif

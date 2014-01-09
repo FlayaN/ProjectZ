@@ -192,7 +192,7 @@ void Game::loadPlayer(std::string playerPath)
 
 	assert(doc["size"]["width"].IsInt());
 	assert(doc["size"]["height"].IsInt());
-	glm::vec2* size = new glm::vec2(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
+	glm::vec2 size(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
 	
 	assert(doc["tex"].IsString());
 	std::string tex = doc["tex"].GetString();

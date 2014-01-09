@@ -25,9 +25,8 @@ public:
 
 	void renderTile(std::HashMap<glm::ivec2, Chunk*>, EntityPlayer*);
 	void renderGrid(EntityPlayer*);
-	void renderEntity(EntityPlayer*, std::vector<PlayerMP*>);
-
-	unsigned int generateModel(RectangleShape<Entity>*, GLuint);
+	void renderPlayer(EntityPlayer*);
+	void renderOnlinePlayers(std::vector<PlayerMP*>, EntityPlayer*);
 
 	GLuint surfaceToOGLTexture(SDL_Surface* tex);
 private:
@@ -36,22 +35,13 @@ private:
 	int w, h;
 
 	ModelSquare* modelPlayer;
-	GLint playerTex;
+	GLint texPlayer;
 
+	ModelSquare* modelOnlinePlayer;
+	GLuint texOnlinePlayer;
 
-
-	/*unsigned int entityProg;
-	unsigned int playerVao;
-	
-	RectangleShape<Entity>* playerModel;
-
-	unsigned int tileVao;
-	GLint tileTex;
-	RectangleShape<Tile>* tileModel;
-
-	unsigned int tileBBVao;
-	GLint tileBBTex;
-	RectangleShape<Tile>* tileBBModel;*/
+	ModelSquare* modelTile;
+	GLuint texTile;
 
 	Camera* cam;
 };
