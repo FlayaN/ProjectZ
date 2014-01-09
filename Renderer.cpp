@@ -88,7 +88,7 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer*
 	
 			glUniform1i(modelTile->getUniform("texUnit"), 0);
 			glBindTexture(GL_TEXTURE_2D, texTile);
-			glBindVertexArray(modelTile->getVAO());
+			//glBindVertexArray(modelTile->getVAO()); Only need to bind if you use glVertexAttribPointer
 
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelTile->getNumVertices());
 		}

@@ -61,8 +61,17 @@ int Game::run(void)
 
 	//Mix_PlayChannel(-1, music, 0);
 
+	Uint32 oldTime, currTime;
+	float delta;
+
+	currTime = SDL_GetTicks();
+
 	while(_running)
 	{
+		oldTime = currTime;
+		currTime = SDL_GetTicks();
+		delta = (currTime - oldTime) / 1000.0f;
+
 		//Events
 		while( SDL_PollEvent(&ev)) 
 		{
@@ -73,7 +82,7 @@ int Game::run(void)
 		//Logic
 		ChunkUtility::generateSurroundingChunk(chunks, ChunkDistance, player);
 		collision();
-		player->update();
+		player->update(delta);
 		
 		//Rendering
 		render();
@@ -197,8 +206,14 @@ void Game::loadPlayer(std::string playerPath)
 	assert(doc["tex"].IsString());
 	std::string tex = doc["tex"].GetString();
 	
-	assert(doc["speed"].IsDouble());
-	float speed = (float)doc["speed"].GetDouble();
+	assert(doc["acceleration"].IsDouble());
+	float acceleration = (float)doc["acceleration"].GetDouble();
+
+	assert(doc["maxSpeed"].IsDouble());
+	float maxSpeed = (float)doc["maxSpeed"].GetDouble();
+
+	//assert(doc["friction"].IsDouble());
+	//float friction = (float)doc["friction"].GetDouble();
 
 	const rapidjson::Value& bb = doc["bb"];
 
@@ -213,7 +228,7 @@ void Game::loadPlayer(std::string playerPath)
 	assert(bb["offset"]["y"].IsInt());
 	glm::vec2* bbOffset = new glm::vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
 
-	player = new EntityPlayer(pos, size, tex, speed, bbSize, bbOffset, bbTex);
+	player = new EntityPlayer(pos, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, 0.0);
 	
 	fclose(pFile);
 }

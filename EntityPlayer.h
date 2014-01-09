@@ -5,17 +5,18 @@
 
 #include <iostream>
 
+#include "lib/glm/vec2.hpp"
+
 #include "RectangleShape.h"
 #include "Entity.h"
 #include "TextureManager.h"
-#include "lib/glm/vec2.hpp"
 
 class EntityPlayer : public Entity {
 public:
-	EntityPlayer(glm::vec2*, glm::vec2, std::string, float, glm::vec2*, glm::vec2*, std::string);
+	EntityPlayer(glm::vec2*, glm::vec2, std::string, glm::vec2*, glm::vec2*, std::string, float, float, float);
 	~EntityPlayer(void);
 	void keyDown(SDL_Event*);
-	void update();
+	void update(float);
 
 	glm::vec2 getCenterPosition(void);
 
@@ -24,14 +25,14 @@ public:
 
 	bool isOnline(void);
 
-	//RectangleShape<Entity>* getModel(void);
 	glm::vec2 getSize(void);
 	RectangleShape<Entity>* getBB(void);
 private:
 	int id;
 	bool online;
-	float speed;
-	//RectangleShape<Entity>* model;
+	float maxSpeed;
+	float acceleration;
+	float friction;
 	glm::vec2 size;
 	RectangleShape<Entity>* bb;
 };

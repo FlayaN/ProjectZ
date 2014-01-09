@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef CHUNK_H
+#define CHUNK_H
+
 #include <unordered_map>
 #include <string>
 #include <assert.h>
@@ -8,10 +11,6 @@
 
 #include "Defines.h"
 #include "Tile.h"
-
-
-#ifndef CHUNK_H
-#define CHUNK_H
 
 class Chunk
 {
