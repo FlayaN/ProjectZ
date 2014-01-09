@@ -3,26 +3,20 @@
 
 Renderer::Renderer(EntityPlayer* player, Camera* camIn)
 {
-	entityProg = loadShaders("res/shaders/entity.vert", "res/shaders/entity.frag");
-	glUniform1i(glGetUniformLocation(entityProg, "texUnit"), 0);
-
-	playerModel = player->getModel();
-	playerVao = generateModel(playerModel, entityProg);
-	playerTex = surfaceToOGLTexture(player->getModel()->getSurface());
-
-	printError("Renderer|Renderer");
 	cam = camIn;
-}
 
-Renderer::~Renderer(void) 
-{
+	//progEntity = new ShaderProgram("res/shaders/entity.vert", "res/shaders/entity.frag");
+	modelPlayer = new ModelSquare("res/shaders/entity.vert", "res/shaders/entity.frag");
 
-}
+	glUseProgram(modelPlayer->getProg());
 
-void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player, std::vector<PlayerMP*> players)
-{
-	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	initShaders();
+
+	playerTex = surfaceToOGLTexture(TextureManager::getInstance().getSurface("mario"));
+	//glUniform1i(progEntity->getUniform("texUnit"), 0);
+	//playerTex = surfaceToOGLTexture(player->getModel()->getSurface());
+	//glUniform1i(glGetUniformLocation(entityProg, "texUnit"), 0);
+
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
 	glDisable(GL_DEPTH_TEST);
@@ -30,21 +24,39 @@ void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* pla
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	printError("Renderer|Renderer");
+}
 
+Renderer::~Renderer(void) 
+{
+
+}
+
+void Renderer::initShaders(void)
+{
+	modelPlayer->addAttrib(BUFFTYPE::VERTEX, "inPosition");
+	modelPlayer->addAttrib(BUFFTYPE::TEXCOORD, "inTexCoord");
+
+	modelPlayer->addUniform("projMatrix");
+	modelPlayer->addUniform("modelViewMatrix");
+	modelPlayer->addUniform("texUnit");
+}
+
+void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player, std::vector<PlayerMP*> players)
+{
+	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	
 	renderEntity(player, players);
 	//renderGrid(player);
-	renderTile(chunks, player);
+	//renderTile(chunks, player);
 
 	SDL_GL_SwapWindow(Graphics::getInstance().getWindow());
 }
 
 void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player)
 {
-	/*SDL_Rect dst;
-	dst.w = TileWidth;
-	dst.h = TileHeight;*/
-	/*
-	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, RenderDistance, player);
+	/*std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, RenderDistance, player);
 
 	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
@@ -105,18 +117,20 @@ void Renderer::renderGrid(EntityPlayer* player)
 
 void Renderer::renderEntity(EntityPlayer* player, std::vector<PlayerMP*> players)
 {
-	glUseProgram(entityProg);
-	glUniformMatrix4fv(glGetUniformLocation(entityProg, "projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
-	glBindTexture(GL_TEXTURE_2D, playerTex);
-	glBindVertexArray(playerVao);
-
+	glUseProgram(modelPlayer->getProg());
+	
 	glm::mat4 modelMat(1.0);
 	modelMat = glm::translate(modelMat, glm::vec3(w/2 - player->getModel()->getWidth()/2, h/2 + player->getModel()->getHeight()/2 + player->getBB()->getHeight()/2, 0.0));
-
-	glUniformMatrix4fv(glGetUniformLocation(entityProg, "modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
-	glDrawArrays(GL_TRIANGLES, 0, playerModel->getNumVertices());
+	modelMat = glm::scale(modelMat, glm::vec3(player->getModel()->getWidth(), player->getModel()->getHeight(), 1.0));
+	glUniformMatrix4fv(modelPlayer->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+	glUniformMatrix4fv(modelPlayer->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
 	
-	printError("Renderer|renderEntity2");
+	glUniform1i(modelPlayer->getUniform("texUnit"), 0);
+	glBindTexture(GL_TEXTURE_2D, playerTex);
+	glBindVertexArray(modelPlayer->getVAO());
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, modelPlayer->getNumVertices());
+	printError("Renderer|renderEntity");
 }
 
 GLuint Renderer::surfaceToOGLTexture(SDL_Surface* tex)
@@ -160,39 +174,6 @@ GLuint Renderer::surfaceToOGLTexture(SDL_Surface* tex)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	printError("Renderer|loadImg");
+	printError("Renderer|surfaceToOGLTexture");
 	return texture;
-}
-
-unsigned int Renderer::generateModel(RectangleShape<Entity>* model, GLuint prog)
-{
-	glUseProgram(prog);
-	unsigned int vertexArrayObjID;
-	unsigned int vertexBufferObjID;
-	unsigned int textureBufferObjID;
-
-	glGenVertexArrays(1, &vertexArrayObjID);
-	glBindVertexArray(vertexArrayObjID);
-
-	glGenBuffers(1, &vertexBufferObjID);
-	glGenBuffers(1, &textureBufferObjID);
-
-	if(model->getVertexArray() != nullptr)
-	{
-		std::cout << "Adding inPosition" << std::endl;
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjID);
-		glBufferData(GL_ARRAY_BUFFER, model->getNumVertices()*2*sizeof(GLfloat), model->getVertexArray(), GL_STATIC_DRAW);
-		glVertexAttribPointer(glGetAttribLocation(prog, "inPosition"), 2, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(glGetAttribLocation(prog, "inPosition"));
-	}
-
-	if(model->getTexCoordArray() != nullptr)
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, textureBufferObjID);
-		glBufferData(GL_ARRAY_BUFFER, model->getNumVertices()*2*sizeof(GLfloat), model->getTexCoordArray(), GL_STATIC_DRAW);
-		glVertexAttribPointer(glGetAttribLocation(prog, "inTexCoord"), 2, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(glGetAttribLocation(prog, "inTexCoord"));
-	}
-	std::cout << "returning vao: " << vertexArrayObjID << std::endl;
-	return vertexArrayObjID;
 }

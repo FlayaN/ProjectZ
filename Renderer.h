@@ -1,19 +1,20 @@
 #pragma once
 
+#ifndef RENDERER_H
+#define RENDERER_H
+
+#include "lib/glm/gtc/type_ptr.hpp"
+#include "lib/glm/mat4x4.hpp"
+#include "lib/glm/gtc/matrix_transform.hpp"
+
 #include "Graphics.h"
 #include "Defines.h"
 #include "ChunkUtility.h"
 #include "EntityPlayer.h"
 #include "PlayerMP.h"
 #include "RectangleShape.h"
-#include "GL_utilities.h"
-#include "lib/glm/gtc/type_ptr.hpp"
-#include "lib/glm/mat4x4.hpp"
-#include "lib/glm/gtc/matrix_transform.hpp"
 #include "Camera.h"
-
-#ifndef RENDERER_H
-#define RENDERER_H
+#include "ModelSquare.h"
 
 class Renderer
 {
@@ -30,10 +31,18 @@ public:
 
 	GLuint surfaceToOGLTexture(SDL_Surface* tex);
 private:
+	void initShaders(void);
+
 	int w, h;
-	unsigned int entityProg;
-	unsigned int playerVao;
+
+	ModelSquare* modelPlayer;
 	GLint playerTex;
+
+
+
+	/*unsigned int entityProg;
+	unsigned int playerVao;
+	
 	RectangleShape<Entity>* playerModel;
 
 	unsigned int tileVao;
@@ -42,7 +51,7 @@ private:
 
 	unsigned int tileBBVao;
 	GLint tileBBTex;
-	RectangleShape<Tile>* tileBBModel;
+	RectangleShape<Tile>* tileBBModel;*/
 
 	Camera* cam;
 };
