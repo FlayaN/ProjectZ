@@ -24,7 +24,7 @@ int Game::init(void)
 		return false;
 	}
 
-	//music = Mix_LoadWAV("res/music/CSLIVE.wav");
+	//music = Mix_LoadWAV("../assets/music/CSLIVE.wav");
 
 	Graphics::getInstance();
 
@@ -151,8 +151,8 @@ void Game::collision(void)
 
 void Game::loadJson(void)
 {
-	std::string texturePath = "res/config/textures.json";
-	std::string playerPath = "res/config/player.json";
+	std::string texturePath = "../assets/config/textures.json";
+	std::string playerPath = "../assets/config/player.json";
 #ifdef __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourceURL = CFBundleCopyResourcesDirectoryURL(mainBundle);

@@ -1,0 +1,24 @@
+{
+    "textures" : [
+        {
+			"name" : "default",
+			"file" : "../assets/images/default.png"
+		},
+		{
+			"name" : "block",
+			"file" : "../assets/images/block.png"
+		},
+        {
+			"name" : "block2",
+			"file" : "../assets/images/block2.png"
+		},
+        {
+			"name" : "mario",
+			"file" : "../assets/images/mario.png"
+		},
+        {
+			"name" : "grass",
+			"file" : "../assets/images/grass.png"
+		}
+    ]
+}

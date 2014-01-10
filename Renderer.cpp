@@ -5,9 +5,9 @@ Renderer::Renderer(EntityPlayer* player, Camera* camIn)
 {
 	cam = camIn;
 
-	modelPlayer = new ModelSquare("res/shaders/entity.vert", "res/shaders/entity.frag");
-	modelOnlinePlayer = new ModelSquare("res/shaders/entity.vert", "res/shaders/entity.frag");
-	modelTile = new ModelSquare("res/shaders/entity.vert", "res/shaders/entity.frag");
+	modelPlayer = new ModelSquare("../assets/shaders/entity.vert", "../assets/shaders/entity.frag");
+	modelOnlinePlayer = new ModelSquare("../assets/shaders/entity.vert", "../assets/shaders/entity.frag");
+	modelTile = new ModelSquare("../assets/shaders/entity.vert", "../assets/shaders/entity.frag");
 	initShaders();
 
 	texPlayer = surfaceToOGLTexture(TextureManager::getInstance().getSurface("mario"));
