@@ -66,6 +66,9 @@ int Game::run(void)
 
 	currTime = SDL_GetTicks();
 
+	const Uint8* keystates = SDL_GetKeyboardState(NULL);
+
+	
 	while(_running)
 	{
 		oldTime = currTime;
@@ -75,14 +78,13 @@ int Game::run(void)
 		//Events
 		while( SDL_PollEvent(&ev)) 
 		{
-			player->keyDown(&ev);
 			onEvent(&ev);
 		}
 		
 		//Logic
 		ChunkUtility::generateSurroundingChunk(chunks, ChunkDistance, player);
 		collision();
-		player->update(delta);
+		player->update(delta, keystates);
 		
 		//Rendering
 		render();
@@ -212,8 +214,8 @@ void Game::loadPlayer(std::string playerPath)
 	assert(doc["maxSpeed"].IsDouble());
 	float maxSpeed = (float)doc["maxSpeed"].GetDouble();
 
-	//assert(doc["friction"].IsDouble());
-	//float friction = (float)doc["friction"].GetDouble();
+	assert(doc["friction"].IsDouble());
+	float friction = (float)doc["friction"].GetDouble();
 
 	const rapidjson::Value& bb = doc["bb"];
 
@@ -228,7 +230,7 @@ void Game::loadPlayer(std::string playerPath)
 	assert(bb["offset"]["y"].IsInt());
 	glm::vec2* bbOffset = new glm::vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
 
-	player = new EntityPlayer(pos, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, 0.0);
+	player = new EntityPlayer(pos, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, friction);
 	
 	fclose(pFile);
 }

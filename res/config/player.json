@@ -8,8 +8,9 @@
 		"height" : 160
 	},
 	"tex" : "mario",
-	"acceleration" : 10.0,
-	"maxSpeed" : 1000.0,
+	"acceleration" : 30.0,
+	"maxSpeed" : 100.0,
+	"friction" : 90.0,
 	"bb" : {
 		"tex" : "block2",
 		"size": {

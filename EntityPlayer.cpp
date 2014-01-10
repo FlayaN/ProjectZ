@@ -20,57 +20,49 @@ EntityPlayer::~EntityPlayer(void)
 
 }
 
-void EntityPlayer::keyDown(SDL_Event* ev)
+void EntityPlayer::update(float delta, const Uint8* keyCode)
 {
-	glm::vec2 tmpVel = *velocity;
+	if(keyCode[SDL_SCANCODE_W])
+		velocity->y += acceleration;
+	if(keyCode[SDL_SCANCODE_S])
+		velocity->y -= acceleration;
+	if(keyCode[SDL_SCANCODE_A])
+		velocity->x -= acceleration;
+	if(keyCode[SDL_SCANCODE_D])
+		velocity->x += acceleration;
 
-	if(ev->type == SDL_KEYDOWN)
+	if(std::abs(velocity->x) > maxSpeed)
 	{
-		switch(ev->key.keysym.sym)
-		{
-		case SDLK_w:
-			tmpVel.y += acceleration;
-			break;
-		case SDLK_s:
-			tmpVel.y -= acceleration;
-			break;
-		case SDLK_a:
-			tmpVel.x -= acceleration;
-			break;
-		case SDLK_d:
-			tmpVel.x += acceleration;
-			break;
-		}
-	} else if(ev->type == SDL_KEYUP)
-	{
-		switch(ev->key.keysym.sym)
-		{
-		case SDLK_w:
-			tmpVel.y -= acceleration;
-			break;
-		case SDLK_s:
-			tmpVel.y += acceleration;
-			break;
-		case SDLK_a:
-			tmpVel.x += acceleration;
-			break;
-		case SDLK_d:
-			tmpVel.x -= acceleration;
-			break;
-		}
+		if(velocity->x > 0)
+			velocity->x = maxSpeed;
+		else if(velocity->x < 0)
+			velocity->x = -maxSpeed;
 	}
 
-	std::cout << "tmpVel.x: " << tmpVel.x << " tmpVel.y: " << tmpVel.y << std::endl;
+	if(std::abs(velocity->y) > maxSpeed)
+	{
+		if(velocity->y > 0)
+			velocity->y = maxSpeed;
+		else if(velocity->y < 0)
+			velocity->y = -maxSpeed;
+	}
 
-	if(std::abs(tmpVel.x) < maxSpeed)
-		velocity->x = tmpVel.x;
+	if(!keyCode[SDL_SCANCODE_A] && !keyCode[SDL_SCANCODE_D])
+	{
+		if(velocity->x > 0)
+			velocity->x -= friction*delta;
+		else if(velocity->x < 0)
+			velocity->x += friction*delta;
+	}
 
-	if(std::abs(tmpVel.y) < maxSpeed)
-		velocity->y = tmpVel.y;
-}
-
-void EntityPlayer::update(float delta)
-{
+	if(!keyCode[SDL_SCANCODE_W] && !keyCode[SDL_SCANCODE_S])
+	{
+		if(velocity->y > 0)
+			velocity->y -= friction*delta;
+		else if(velocity->y < 0)
+			velocity->y += friction*delta;
+	}
+	
 	position->x += velocity->x * delta;
 	position->y += velocity->y * delta;
 }

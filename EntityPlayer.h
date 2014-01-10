@@ -15,8 +15,7 @@ class EntityPlayer : public Entity {
 public:
 	EntityPlayer(glm::vec2*, glm::vec2, std::string, glm::vec2*, glm::vec2*, std::string, float, float, float);
 	~EntityPlayer(void);
-	void keyDown(SDL_Event*);
-	void update(float);
+	void update(float, const Uint8*);
 
 	glm::vec2 getCenterPosition(void);
 
@@ -33,6 +32,7 @@ private:
 	float maxSpeed;
 	float acceleration;
 	float friction;
+
 	glm::vec2 size;
 	RectangleShape<Entity>* bb;
 };
