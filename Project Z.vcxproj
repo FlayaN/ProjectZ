@@ -93,6 +93,7 @@
     <ClCompile Include="ModelSquare.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="PlayerMP.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="Network.h" />
     <ClInclude Include="PlayerMP.h" />
     <ClInclude Include="RectangleShape.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Material.h" />

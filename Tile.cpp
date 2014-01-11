@@ -9,10 +9,10 @@ void logSDLError(std::ostream &os, const std::string &msg){
 Tile::Tile(std::string s, glm::vec2* positionIn)
 {
     position = positionIn;
-	size = glm::vec2(TileWidth, TileHeight);
+	size = glm::vec2(Settings::Tile::width, Settings::Tile::height);
 	if(Utility::getRandInt(1, 10) < 3)
 	{
-		bb = new RectangleShape<Tile>(new glm::vec2(), this, new glm::vec2(TileWidth, TileHeight), "block");
+		bb = new RectangleShape<Tile>(new glm::vec2(), this, new glm::vec2(Settings::Tile::width, Settings::Tile::height), "block");
 	}
 	else
 	{

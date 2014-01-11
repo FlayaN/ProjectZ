@@ -21,8 +21,8 @@ int Utility::mod(int v, int m)
 
 glm::ivec2 Utility::inTileCoord(glm::vec2 inPos)
 {
-	inPos.x = inPos.x >= 0 ? (inPos.x/TileWidth) : (inPos.x/TileWidth)-1;
-	inPos.y = inPos.y >= 0 ? (inPos.y/TileHeight) : (inPos.y/TileHeight)-1;
+	inPos.x = inPos.x >= 0 ? (inPos.x/Settings::Tile::width) : (inPos.x/Settings::Tile::width)-1;
+	inPos.y = inPos.y >= 0 ? (inPos.y/Settings::Tile::height) : (inPos.y/Settings::Tile::height)-1;
 	return (glm::ivec2)inPos;
 }
 

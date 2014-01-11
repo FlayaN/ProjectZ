@@ -1,0 +1,5 @@
+{
+	"renderDistance" : 10,
+	"collisionDistance" : 1,
+	"chunkDistance" : 2
+}

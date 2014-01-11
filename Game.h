@@ -21,7 +21,7 @@
 #include "ChunkUtility.h"
 #include "TextureManager.h"
 #include "Network.h"
-
+#include "Settings.h"
 #ifndef GAME_H
 #define GAME_H
 

@@ -72,7 +72,7 @@ void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* pla
 void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player)
 {
 	glUseProgram(modelTile->getProg());
-	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, RenderDistance, player);
+	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, Settings::Engine::renderDistance, player);
 
 	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
@@ -104,9 +104,9 @@ void Renderer::renderGrid(EntityPlayer* player)
 
 	std::vector<glm::vec2> points;
 
-	for(int x = player->getPosition()->x-w; x < player->getPosition()->x+w; x+=TileWidth)
+	for(int x = player->getPosition()->x-w; x < player->getPosition()->x+w; x+=Settings::Tile::width)
 	{
-		int tmpX = x-(x%TileWidth);
+		int tmpX = x-(x%Settings::Tile::width);
 		
 
 		/*SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xff);
@@ -115,10 +115,10 @@ void Renderer::renderGrid(EntityPlayer* player)
 
 		//SDL_RenderDrawLine(renderer, tmpX+playerOffset.x, 0, tmpX+playerOffset.x, h);
 		
-		for(int y = player->getPosition()->y-h; y < player->getPosition()->y+h; y+=TileHeight)
+		for(int y = player->getPosition()->y-h; y < player->getPosition()->y+h; y+=Settings::Tile::height)
 		{
 
-			int tmpY = y-(y%TileHeight);
+			int tmpY = y-(y%Settings::Tile::height);
 			
 			/*SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xff);
 			if(tmpY%(TileAmount*TileHeight) == 0)

@@ -48,7 +48,7 @@ private:
 		//SDL_CreateWindowAndRenderer(800, 600, SDL_WINDOW_OPENGL, &win, &renderer);
 
 
-		win = SDL_CreateWindow("Project Z", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);	// create window
+		win = SDL_CreateWindow("Project Z", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Settings::Graphics::screenWidth, Settings::Graphics::screenHeight, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);	// create window
 		renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		
 		context = SDL_GL_CreateContext(win);

@@ -3,8 +3,9 @@
 Camera::Camera(EntityPlayer* playerIn)
 {
 	player = playerIn;
-	orthoMatrix = glm::ortho(0.0f, (float)SCREEN_WIDTH, 0.0f, (float)SCREEN_HEIGHT);
+	orthoMatrix = glm::ortho(0.0f, (float)Settings::Graphics::screenWidth, 0.0f, (float)Settings::Graphics::screenHeight);
 }
+
 Camera::~Camera(void)
 {
 
