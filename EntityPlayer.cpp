@@ -2,17 +2,17 @@
 
 using namespace std;
 
-EntityPlayer::EntityPlayer(glm::vec2* posIn, glm::vec2 sizeIn, std::string texIn, glm::vec2* bbSizeIn, glm::vec2* bbOffsetIn, std::string bbTexIn, float accelerationIn, float maxSpeedIn, float frictionIn) : Entity()
+EntityPlayer::EntityPlayer(glm::vec2* posIn, float rotIn, glm::vec2 sizeIn, std::string texIn, glm::vec2* bbSizeIn, glm::vec2* bbOffsetIn, std::string bbTexIn, float accelerationIn, float maxSpeedIn, float frictionIn) : MovingEntity()
 {
 	setPosition(posIn);
-
+	setRotation(rotIn);
 	acceleration = accelerationIn;
 	maxSpeed = maxSpeedIn;
 	friction = frictionIn;
 	online = false;
 
 	size = sizeIn;
-	bb = new RectangleShape<Entity>(bbOffsetIn, this, bbSizeIn, bbTexIn);
+	bb = new RectangleShape(bbOffsetIn, 0.0, bbSizeIn, bbTexIn);
 }
 
 EntityPlayer::~EntityPlayer(void)
@@ -23,48 +23,48 @@ EntityPlayer::~EntityPlayer(void)
 void EntityPlayer::update(float delta, const Uint8* keyCode)
 {
 	if(keyCode[SDL_SCANCODE_W])
-		velocity->y += acceleration;
+		getVelocity()->y += acceleration;
 	if(keyCode[SDL_SCANCODE_S])
-		velocity->y -= acceleration;
+		getVelocity()->y -= acceleration;
 	if(keyCode[SDL_SCANCODE_A])
-		velocity->x -= acceleration;
+		getVelocity()->x -= acceleration;
 	if(keyCode[SDL_SCANCODE_D])
-		velocity->x += acceleration;
+		getVelocity()->x += acceleration;
 
-	if(std::abs(velocity->x) > maxSpeed)
+	if(std::abs(getVelocity()->x) > maxSpeed)
 	{
-		if(velocity->x > 0)
-			velocity->x = maxSpeed;
-		else if(velocity->x < 0)
-			velocity->x = -maxSpeed;
+		if(getVelocity()->x > 0)
+			getVelocity()->x = maxSpeed;
+		else if(getVelocity()->x < 0)
+			getVelocity()->x = -maxSpeed;
 	}
 
-	if(std::abs(velocity->y) > maxSpeed)
+	if(std::abs(getVelocity()->y) > maxSpeed)
 	{
-		if(velocity->y > 0)
-			velocity->y = maxSpeed;
-		else if(velocity->y < 0)
-			velocity->y = -maxSpeed;
+		if(getVelocity()->y > 0)
+			getVelocity()->y = maxSpeed;
+		else if(getVelocity()->y < 0)
+			getVelocity()->y = -maxSpeed;
 	}
 
 	if(!keyCode[SDL_SCANCODE_A] && !keyCode[SDL_SCANCODE_D])
 	{
-		if(velocity->x > 0)
-			velocity->x -= friction*delta;
-		else if(velocity->x < 0)
-			velocity->x += friction*delta;
+		if(getVelocity()->x > 0)
+			getVelocity()->x -= friction*delta;
+		else if(getVelocity()->x < 0)
+			getVelocity()->x += friction*delta;
 	}
 
 	if(!keyCode[SDL_SCANCODE_W] && !keyCode[SDL_SCANCODE_S])
 	{
-		if(velocity->y > 0)
-			velocity->y -= friction*delta;
-		else if(velocity->y < 0)
-			velocity->y += friction*delta;
+		if(getVelocity()->y > 0)
+			getVelocity()->y -= friction*delta;
+		else if(getVelocity()->y < 0)
+			getVelocity()->y += friction*delta;
 	}
 	
-	position->x += velocity->x * delta;
-	position->y += velocity->y * delta;
+	position->x += getVelocity()->x * delta;
+	position->y += getVelocity()->y * delta;
 }
 
 glm::vec2 EntityPlayer::getCenterPosition(void)
@@ -93,7 +93,7 @@ glm::vec2 EntityPlayer::getSize(void)
 	return size;
 }
 
-RectangleShape<Entity>* EntityPlayer::getBB(void)
+RectangleShape* EntityPlayer::getBB(void)
 {
 	return bb;
 }

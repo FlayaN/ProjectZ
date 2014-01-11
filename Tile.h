@@ -19,7 +19,7 @@ public:
 	Tile(std::string, glm::vec2*);
 	~Tile(void);
 
-	RectangleShape<Tile>* getBB(void);
+	RectangleShape* getBB(void);
 	glm::vec2* getPosition(void);
     glm::vec3* getColorMod(void);
 	glm::vec2 getSize(void);
@@ -27,7 +27,7 @@ public:
 private:
 	glm::vec2* position;
 
-	RectangleShape<Tile>* bb;
+	RectangleShape* bb;
 
 	glm::vec2 size;
 };

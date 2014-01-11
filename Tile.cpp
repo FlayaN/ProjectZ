@@ -12,7 +12,7 @@ Tile::Tile(std::string s, glm::vec2* positionIn)
 	size = glm::vec2(Settings::Tile::width, Settings::Tile::height);
 	if(Utility::getRandInt(1, 10) < 3)
 	{
-		bb = new RectangleShape<Tile>(new glm::vec2(), this, new glm::vec2(Settings::Tile::width, Settings::Tile::height), "block");
+		bb = new RectangleShape(new glm::vec2(), 0.0, new glm::vec2(Settings::Tile::width, Settings::Tile::height), "block");
 	}
 	else
 	{
@@ -30,7 +30,7 @@ glm::vec2* Tile::getPosition(void)
 	return position;
 }
 
-RectangleShape<Tile>* Tile::getBB(void)
+RectangleShape* Tile::getBB(void)
 {
 	return bb;
 }

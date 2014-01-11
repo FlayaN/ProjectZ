@@ -4,12 +4,10 @@
 Entity::Entity(void)
 {
 	position = new glm::vec2();
-	velocity = new glm::vec2();
 }
 
 Entity::~Entity(void) {
 	delete position;
-	delete velocity;
 	for(int i = 0; i < shapes.size(); i++)
 	{
 		delete shapes[i];
@@ -30,12 +28,6 @@ void Entity::setPosition(float x, float y)
 	position->y = y;
 }
 
-void Entity::setVelocity(glm::vec2* velocityIn)
-{
-	delete velocity;
-	velocity = velocityIn;
-}
-
 void Entity::setRotation(float rotationIn)
 {
 	rotation = rotationIn;
@@ -48,17 +40,12 @@ glm::vec2* Entity::getPosition(void)
     return position;
 }
 
-glm::vec2* Entity::getVelocity(void)
-{
-	return velocity;
-}
-
 float Entity::getRotation(void)
 {
 	return rotation;
 }
 
-std::vector<Shape<Entity>*> Entity::getShapes(void)
+std::vector<Shape*> Entity::getShapes(void)
 {
 	return shapes;
 }
@@ -68,22 +55,9 @@ std::vector<Entity*> Entity::getChildren(void)
 	return children;
 }
 
-//------------------------------------------------UPDATE -------------------------------------------//
-
-void Entity::updatePosition(void)
-{
-	position->x += velocity->x;
-	position->y += velocity->y;
-
-	for each (Entity* child in children)
-	{
-		child->updatePosition();
-	}
-}
-
 //------------------------------------------------ADD ----------------------------------------------//
 
-void Entity::addShape(Shape<Entity>* shapeIn)
+void Entity::addShape(Shape* shapeIn)
 {
 	shapes.push_back(shapeIn);
 }
@@ -93,7 +67,7 @@ void Entity::addChild(Entity* childIn)
 	children.push_back(childIn);
 }
 
-void Entity::insertShapeAt(int indexIn, Shape<Entity>* shapeIn)
+void Entity::insertShapeAt(int indexIn, Shape* shapeIn)
 {
 	shapes.insert(shapes.begin()+indexIn, shapeIn);
 }

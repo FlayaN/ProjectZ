@@ -15,7 +15,7 @@
 
 namespace CollisionHandler
 {
-	bool testCollision(Shape<Entity>*, Shape<Entity>*);
+	bool testCollision(Shape*, Shape*);
 	bool intersects(SDL_Rect* r1, SDL_Rect* r2);
 
 	/*

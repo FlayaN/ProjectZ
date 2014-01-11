@@ -242,7 +242,7 @@ void Game::loadJson(void)
 	assert(bb["offset"]["y"].IsInt());
 	glm::vec2* bbOffset = new glm::vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
 
-	player = new EntityPlayer(pos, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, friction);
+	player = new EntityPlayer(pos, 0.0, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, friction); // change 0.0 to rot
 
 	fclose(pFile3);
 
@@ -335,7 +335,7 @@ void Game::loadPlayer(std::string playerPath)
 	assert(bb["offset"]["y"].IsInt());
 	glm::vec2* bbOffset = new glm::vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
 
-	player = new EntityPlayer(pos, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, friction);
+	player = new EntityPlayer(pos, 0.0, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, friction); // change 0.0 to rot
 	
 	fclose(pFile);
 }
