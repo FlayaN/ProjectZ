@@ -11,6 +11,7 @@
 
 #include "Defines.h"
 #include "Tile.h"
+#include "PerlinNoise.h"
 
 class Chunk
 {

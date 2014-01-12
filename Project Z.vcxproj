@@ -94,6 +94,7 @@
     <ClCompile Include="ModelSquare.cpp" />
     <ClCompile Include="MovingEntity.cpp" />
     <ClCompile Include="Network.cpp" />
+    <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="PlayerMP.cpp" />
     <ClCompile Include="RectangleShape.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="ModelSquare.h" />
     <ClInclude Include="MovingEntity.h" />
     <ClInclude Include="Network.h" />
+    <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="PlayerMP.h" />
     <ClInclude Include="RectangleShape.h" />
     <ClInclude Include="Settings.h" />

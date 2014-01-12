@@ -22,6 +22,8 @@
 #include "TextureManager.h"
 #include "Network.h"
 #include "Settings.h"
+#include "PerlinNoise.h"
+
 #ifndef GAME_H
 #define GAME_H
 

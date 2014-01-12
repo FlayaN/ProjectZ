@@ -6,7 +6,8 @@ Entity::Entity(void)
 	position = new glm::vec2();
 }
 
-Entity::~Entity(void) {
+Entity::~Entity(void)
+{
 	delete position;
 	for(int i = 0; i < shapes.size(); i++)
 	{

@@ -26,7 +26,7 @@ int Game::init(void)
 
 	//music = Mix_LoadWAV("../assets/music/CSLIVE.wav");
 
-	
+	PerlinNoise::getInstance().SetValues(1.0, 1.0, 1.0, 1.0, 1337.0);
 
 	//Load json files
 	loadJson();

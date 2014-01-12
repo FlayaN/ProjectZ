@@ -23,6 +23,7 @@ void Chunk::init(std::string s)
 	{
 		for(int y = 0; y < TileAmount; y++)
 		{
+			std::cout << PerlinNoise::getInstance().GetHeight(TileAmount*coord->x+x, TileAmount*coord->y+y);
 			tiles[x][y] = new Tile(s, new glm::vec2(TileAmount*coord->x+x, TileAmount*coord->y+y));
 		}
 	}
