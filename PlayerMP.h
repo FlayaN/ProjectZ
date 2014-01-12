@@ -22,7 +22,7 @@ public:
 	SnapShot getLatestSnapShot(void);
 	SnapShot getPrevSnapShot(void);
 
-	void update(float);
+	void update(void);
 private:
 	int id;
 	glm::vec2 size;
@@ -30,6 +30,7 @@ private:
 	SnapShot latestSnapShot;
 	SnapShot prevSnapShot;
 	float timer;
+	Uint32 oldTime, currTime;
 };
 
 #endif

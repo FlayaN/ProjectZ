@@ -80,7 +80,7 @@ int Game::run(void)
 		{
 			for(auto p : players)
 			{
-				p->update(delta);
+				p->update();
 			}
 		}
 		
@@ -216,6 +216,9 @@ void Game::loadJson(void)
 	assert(doc["startPos"]["y"].IsInt());
 	glm::vec2* pos = new glm::vec2(doc["startPos"]["x"].GetInt(), doc["startPos"]["y"].GetInt());
 
+	assert(doc["rotation"].IsDouble());
+	float rotation = (float)doc["rotation"].GetDouble();
+
 	assert(doc["size"]["width"].IsInt());
 	assert(doc["size"]["height"].IsInt());
 	glm::vec2 size(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
@@ -245,7 +248,7 @@ void Game::loadJson(void)
 	assert(bb["offset"]["y"].IsInt());
 	glm::vec2* bbOffset = new glm::vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
 
-	player = new EntityPlayer(pos, 0.0, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, friction); // change 0.0 to rot
+	player = new EntityPlayer(pos, rotation, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, friction); // change 0.0 to rot
 
 	fclose(pFile3);
 
@@ -274,71 +277,4 @@ void Game::loadJson(void)
 
 	fclose(pFile5);
 
-
-	/*std::cout << "--------------------Loading textures.json--------------------" << std::endl;
-
-	loadTextures(texturePath);
-	std::cout << "--------------------Loading player.json--------------------" << std::endl;
-	loadPlayer(playerPath);*/
-}
-
-void Game::loadTextures(std::string texturePath)
-{
-	FILE* pFile = fopen(texturePath.c_str(), "rb");
-	rapidjson::FileStream fs(pFile);
-	rapidjson::Document doc;
-	doc.ParseStream<0>(fs);
-	
-	const rapidjson::Value& a = doc["textures"];
-	assert(a.IsArray());
-	
-	TextureManager::getInstance().init(a);
-	fclose(pFile);
-}
-
-void Game::loadPlayer(std::string playerPath)
-{
-	FILE* pFile = fopen(playerPath.c_str(), "rb");
-	rapidjson::FileStream fs(pFile);
-	rapidjson::Document doc;
-	doc.ParseStream<0>(fs);
-
-	assert(doc.IsObject());
-
-	assert(doc["startPos"]["x"].IsInt());
-	assert(doc["startPos"]["y"].IsInt());
-	glm::vec2* pos = new glm::vec2(doc["startPos"]["x"].GetInt(), doc["startPos"]["y"].GetInt());
-
-	assert(doc["size"]["width"].IsInt());
-	assert(doc["size"]["height"].IsInt());
-	glm::vec2 size(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
-	
-	assert(doc["tex"].IsString());
-	std::string tex = doc["tex"].GetString();
-	
-	assert(doc["acceleration"].IsDouble());
-	float acceleration = (float)doc["acceleration"].GetDouble();
-
-	assert(doc["maxSpeed"].IsDouble());
-	float maxSpeed = (float)doc["maxSpeed"].GetDouble();
-
-	assert(doc["friction"].IsDouble());
-	float friction = (float)doc["friction"].GetDouble();
-
-	const rapidjson::Value& bb = doc["bb"];
-
-	assert(bb["tex"].IsString());
-	std::string bbTex = bb["tex"].GetString();
-
-	assert(bb["size"]["width"].IsInt());
-	assert(bb["size"]["height"].IsInt());
-	glm::vec2* bbSize = new glm::vec2(bb["size"]["width"].GetInt(), bb["size"]["height"].GetInt());
-
-	assert(bb["offset"]["x"].IsInt());
-	assert(bb["offset"]["y"].IsInt());
-	glm::vec2* bbOffset = new glm::vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
-
-	player = new EntityPlayer(pos, 0.0, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, friction); // change 0.0 to rot
-	
-	fclose(pFile);
 }

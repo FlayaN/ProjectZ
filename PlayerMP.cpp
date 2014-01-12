@@ -5,6 +5,7 @@ PlayerMP::PlayerMP(int idIn) : id(idIn), Entity()
 	prevSnapShot = SnapShot();
 	latestSnapShot = SnapShot();
 	size = glm::vec2(80, 160);
+	currTime = SDL_GetTicks();
 }
 
 void PlayerMP::setLatestSnapShot(float x, float y, int tick)
@@ -34,8 +35,11 @@ int PlayerMP::getId(void)
 	return id;
 }
 
-void PlayerMP::update(float delta)
+void PlayerMP::update(void)
 {
-	timer += delta;
+	oldTime = currTime;
+	currTime = SDL_GetTicks();
+	float tmp = (currTime - oldTime) / (float)(latestSnapShot.time - prevSnapShot.time);
+	timer += tmp;
 	*position =  prevSnapShot.pos + ((latestSnapShot.pos-prevSnapShot.pos) * timer);
 }

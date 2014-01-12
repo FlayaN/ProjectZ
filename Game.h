@@ -48,8 +48,7 @@ public:
 	void collision(void);
 
 	void loadJson(void);
-	void loadTextures(std::string);
-	void loadPlayer(std::string);
+
 private:
     std::HashMap<glm::ivec2, Chunk*> chunks;
 	std::vector<PlayerMP*> players;
