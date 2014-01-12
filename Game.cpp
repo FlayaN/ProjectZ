@@ -7,7 +7,7 @@ Game::Game(void) : _running(false)
 
 Game::~Game(void)
 {
-    destroy();
+	delete net;
 }
 
 int Game::init(void)
@@ -40,16 +40,6 @@ int Game::init(void)
 	return APP_OK;
 }
 
-void Game::destroy()
-{
-	/*if (win)
-	{
-		SDL_DestroyWindow(win);
-		SDL_DestroyRenderer(renderer->getRenderer());
-		SDL_Quit();
-	}*/
-}
-
 int Game::run(void)
 {
 	// Initialize application.
@@ -64,7 +54,7 @@ int Game::run(void)
 
 	Uint32 oldTime, currTime;
 	float delta;
-
+	float tmpTime = 0;
 	currTime = SDL_GetTicks();
 
 	const Uint8* keystates = SDL_GetKeyboardState(NULL);
@@ -86,14 +76,27 @@ int Game::run(void)
 		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, player);
 		collision();
 		player->update(delta, keystates);
+		if(online)
+		{
+			for(auto p : players)
+			{
+				p->update(delta);
+			}
+		}
 		
 		//Rendering
 		render();
 
+		//Network
 		if(online)
 		{
-			net->send(player);
-			net->recv(players, player);
+			tmpTime += (currTime - oldTime);
+			if(tmpTime >= 50) //How often to send data to the server in ms (50 = 20times/second)
+			{
+				net->send(player, currTime);
+				tmpTime = 0;
+			}
+			net->recv(players, player, currTime);
 		}
 	}
 	

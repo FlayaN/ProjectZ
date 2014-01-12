@@ -19,6 +19,7 @@ Network::Network(const char* ipChar)
 	server = SDLNet_AllocSocketSet(1);
 	SDLNet_TCP_AddSocket(server, connection);
 }
+
 Network::~Network(void)
 {
 	SDLNet_TCP_Send(connection, "2 \n", 4);
@@ -26,13 +27,14 @@ Network::~Network(void)
 	SDLNet_FreeSocketSet(server);
 	SDLNet_Quit();
 }
-void Network::send(EntityPlayer* player)
+
+void Network::send(EntityPlayer* player, int ticks)
 {
 	if(player->isOnline())
 	{
 		glm::vec2 pos = *player->getPosition();
 		//1 id posX posY
-		sprintf(tmp, "1 %d %f %f \n", player->getId(), pos.x, pos.y);
+		sprintf(tmp, "1 %d %f %f %d \n", player->getId(), pos.x, pos.y, ticks);
 
 		int size = 0;
 		int len = strlen(tmp)+1;
@@ -42,7 +44,8 @@ void Network::send(EntityPlayer* player)
 		}
 	}
 }
-void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player)
+
+void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player, int ticks)
 {
 	while(SDLNet_CheckSockets(server, 0)>0 && SDLNet_SocketReady(connection))
 	{
@@ -69,8 +72,9 @@ void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player)
 				{
 					int tmp2;
 					float x, y;
-					sscanf(tmp, "1 %d %f %f \n", &tmp2, &x, &y);
-					players[i]->setPosition(x, y);
+					int tick;
+					sscanf(tmp, "1 %d %f %f %d \n", &tmp2, &x, &y, &tick);
+					players[i]->setLatestSnapShot(x, y, tick);
 					break;
 				}	
 			}

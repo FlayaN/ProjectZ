@@ -40,7 +40,6 @@ public:
 	};
 	
 	int init(void);
-	void destroy(void);
     
 	int run(void);
     

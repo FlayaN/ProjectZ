@@ -197,6 +197,9 @@
     <ClInclude Include="MovingEntity.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="SnapShot.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\config\player.json">
