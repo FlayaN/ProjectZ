@@ -30,6 +30,7 @@
 #include "TypeTile.h"
 #include "TypePlayer.h"
 #include "Settings.h"
+#include "SimplexNoise.h"
 
 class Game
 {

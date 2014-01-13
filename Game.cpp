@@ -27,10 +27,11 @@ int Game::init(void)
 
 	//music = Mix_LoadWAV("../assets/music/CSLIVE.wav");
 
-	PerlinNoise::getInstance().SetValues(1.0, 1.0, 1.0, 1, 1337);
-
 	//Load json files
 	loadJson();
+
+	PerlinNoise::getInstance().SetValues(1.0, 1.0, (double)tileTypes.size(), 10, 1337);
+	SimplexNoise::init();
 
 	combineTileTextures();
 
