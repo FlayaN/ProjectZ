@@ -22,7 +22,8 @@ Network::Network(const char* ipChar)
 
 Network::~Network(void)
 {
-	SDLNet_TCP_Send(connection, "2 \n", 4);
+	sprintf(tmp, "2 %d \n", pId);
+	SDLNet_TCP_Send(connection, tmp, strlen(tmp)+1);
 	SDLNet_TCP_Close(connection);
 	SDLNet_FreeSocketSet(server);
 	SDLNet_Quit();
@@ -61,7 +62,9 @@ void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player, int ti
 		//std::cout << "Packet of type: " << type << " got sent" << std::endl;
 		if(type == 0)
 		{
+			std::cout << "You are id: " << id << std::endl;
 			player->setId(id);
+			pId = id;
 		}else if(type == 1)
 		{
 			//std::cout << "Got an update from " << id << std::endl;
@@ -80,15 +83,22 @@ void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player, int ti
 			}
 			if(i >= players.size())
 			{
-				std::cout << "Adding new player: " << id << std::endl;
-				players.push_back(new PlayerMP(id));
+				if(id != pId)
+				{
+					std::cout << "Adding new player: " << id << std::endl;
+					players.push_back(new PlayerMP(id));
+				}
 			}
 		}else if(type == 2)
 		{
+			std::cout << "remove onlinePlayer with id: " << id << std::endl;
 			for(int i = 0; i < players.size(); i++)
 			{
 				if(players[i]->getId() == id)
+				{
+					std::cout << "removed onlinePlayer with id: " << id << std::endl;
 					players.erase(players.begin()+i);
+				}
 			}
 		}
 	}

@@ -26,6 +26,7 @@ private:
 	TCPsocket connection;
 	char tmp[1400];
 	bool success;
+	int pId;
 };
 
 
