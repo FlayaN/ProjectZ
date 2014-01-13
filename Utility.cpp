@@ -19,6 +19,14 @@ int Utility::mod(int v, int m)
 	return r<0 ? r+m : r;
 }
 
+bool Utility::hasEnding(std::string const &fullString, std::string const &ending)
+{
+	if (fullString.length() >= ending.length())
+		return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
+	else
+		return false;
+}
+
 glm::ivec2 Utility::inTileCoord(glm::vec2 inPos)
 {
 	inPos.x = inPos.x >= 0 ? (inPos.x/Settings::Tile::width) : (inPos.x/Settings::Tile::width)-1;

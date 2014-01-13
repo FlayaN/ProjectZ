@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef ENTITYPLAYER_H
 #define ENTITYPLAYER_H
 
@@ -9,12 +7,12 @@
 
 #include "RectangleShape.h"
 #include "MovingEntity.h"
-#include "TextureManager.h"
+#include "TypePlayer.h"
 
 class EntityPlayer : public MovingEntity
 {
 public:
-	EntityPlayer(glm::vec2*, float, glm::vec2, std::string, glm::vec2*, glm::vec2*, std::string, float, float, float);
+	EntityPlayer(TypePlayer);
 	~EntityPlayer(void);
 	void update(float, const Uint8*);
 
@@ -22,17 +20,19 @@ public:
 
 	void setId(int);
 	int getId(void);
-
 	bool isOnline(void);
 
 	glm::vec2 getSize(void);
 	RectangleShape* getBB(void);
+	std::string getTexture(void);
+	void setFriction(float);
 private:
 	int id;
 	bool online;
 	float maxSpeed;
 	float acceleration;
 	float friction;
+	std::string texture;
 
 	glm::vec2 size;
 	RectangleShape* bb;

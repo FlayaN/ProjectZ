@@ -1,9 +1,8 @@
 #include "RectangleShape.h"
 
-RectangleShape::RectangleShape(glm::vec2* posOffsetIn, float rotOffsetIn, glm::vec2* sizeIn, std::string tex) : Shape(posOffsetIn, rotOffsetIn)
+RectangleShape::RectangleShape(glm::vec2* posOffsetIn, float rotOffsetIn, glm::vec2* sizeIn) : Shape(posOffsetIn, rotOffsetIn)
 {
 	size = sizeIn;
-	surface = TextureManager::getInstance().getSurface(tex);
 }
 
 RectangleShape::~RectangleShape(void)
@@ -42,9 +41,4 @@ float RectangleShape::getArea(void)
 std::string RectangleShape::getShapeType(void)
 {
 	return "rectangle";
-}
-
-SDL_Surface* RectangleShape::getSurface(void)
-{
-	return surface;
 }

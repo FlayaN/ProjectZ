@@ -6,17 +6,18 @@ void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
-Tile::Tile(std::string s, glm::vec2* positionIn)
+Tile::Tile(int tId, float frictionIn, glm::ivec2* positionIn)
 {
+	textureId = tId;
+	friction = frictionIn;
     position = positionIn;
-	size = glm::vec2(Settings::Tile::width, Settings::Tile::height);
+	size = glm::ivec2(Settings::Tile::width, Settings::Tile::height);
 	if(Utility::getRandInt(1, 10) < 3)
 	{
-		bb = new RectangleShape(new glm::vec2(), 0.0, new glm::vec2(Settings::Tile::width, Settings::Tile::height), "block");
+		bb = new RectangleShape(new glm::vec2(), 0.0, new glm::vec2(Settings::Tile::width, Settings::Tile::height));
 	}
 	else
 	{
-		//bb = new RectangleShape<Tile>(new glm::vec2(), this, new glm::vec2(TileWidth, TileHeight), s);
 		bb = nullptr;
 	}
 }
@@ -25,7 +26,7 @@ Tile::~Tile(void)
 {
 }
 
-glm::vec2* Tile::getPosition(void)
+glm::ivec2* Tile::getPosition(void)
 {
 	return position;
 }
@@ -35,7 +36,17 @@ RectangleShape* Tile::getBB(void)
 	return bb;
 }
 
-glm::vec2 Tile::getSize(void)
+glm::ivec2 Tile::getSize(void)
 {
 	return size;
+}
+
+int Tile::getTextureId(void)
+{
+	return textureId;
+}
+
+float Tile::getFriction(void)
+{
+	return friction;
 }

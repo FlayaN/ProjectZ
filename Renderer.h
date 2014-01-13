@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef RENDERER_H
 #define RENDERER_H
 
@@ -15,11 +13,12 @@
 #include "RectangleShape.h"
 #include "Camera.h"
 #include "ModelSquare.h"
+#include "TypeTile.h"
 
 class Renderer
 {
 public:
-	Renderer(EntityPlayer*, Camera*);
+	Renderer(EntityPlayer*, Camera*, SDL_Surface*, std::vector<TypeTile>);
 	~Renderer(void);
 	void render(std::HashMap<glm::ivec2, Chunk*> , EntityPlayer*, std::vector<PlayerMP*>);
 
@@ -28,7 +27,9 @@ public:
 	void renderPlayer(EntityPlayer*);
 	void renderOnlinePlayers(std::vector<PlayerMP*>, EntityPlayer*);
 
-	GLuint surfaceToOGLTexture(SDL_Surface* tex);
+	GLuint pathToOGLTexture(std::string);
+	GLuint surfaceToOGLTexture(SDL_Surface*);
+
 private:
 	void initShaders(void);
 

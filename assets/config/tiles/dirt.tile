@@ -1,0 +1,4 @@
+{
+	"texture" : "../assets/images/dirt.png",
+	"friction" : 90.0
+}

@@ -30,7 +30,7 @@ std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<glm::ivec2, Ch
 	return t;
 }
 
-void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, Chunk*>& chunks, int radius, EntityPlayer* player)
+void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, Chunk*>& chunks, int radius, EntityPlayer* player, std::vector<TypeTile> tileTypes)
 {
 	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player->getCenterPosition());
 
@@ -48,10 +48,7 @@ void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, Chunk*>& ch
 			}
 			else
 			{
-				Chunk* chunk = new Chunk(new glm::ivec2(x, y));
-
-				chunk->init("grass");
-				newchunks[glm::ivec2(x, y)] = chunk;
+				newchunks[glm::ivec2(x, y)] = new Chunk(new glm::ivec2(x, y), tileTypes);
 				checker[glm::ivec2(x, y)] = true;
 			}
 		}

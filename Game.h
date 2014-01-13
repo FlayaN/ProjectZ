@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GAME_H
+#define GAME_H
 
 #ifdef __APPLE__
 	#include <SDL2_mixer/SDL_mixer.h>
@@ -12,6 +13,10 @@
 #include <sstream>
 #include <iostream>
 
+#include "dirent.h"
+#include "lib/rapidjson/document.h"
+#include "lib/rapidjson/filestream.h"
+
 #include "Defines.h"
 #include "Tile.h"
 #include "EntityPlayer.h"
@@ -19,13 +24,12 @@
 #include "Chunk.h"
 #include "CollisionHandler.h"
 #include "ChunkUtility.h"
-#include "TextureManager.h"
 #include "Network.h"
 #include "Settings.h"
 #include "PerlinNoise.h"
-
-#ifndef GAME_H
-#define GAME_H
+#include "TypeTile.h"
+#include "TypePlayer.h"
+#include "Settings.h"
 
 class Game
 {
@@ -50,11 +54,19 @@ public:
 	void collision(void);
 
 	void loadJson(void);
+	void loadTiles(void);
+
+	void combineTileTextures(void);
 
 private:
     std::HashMap<glm::ivec2, Chunk*> chunks;
 	std::vector<PlayerMP*> players;
 	EntityPlayer* player;
+
+	std::vector<TypeTile> tileTypes;
+	TypePlayer playerType;
+	SDL_Surface* ct;
+
 	bool _running;
 
 	Renderer* renderer;

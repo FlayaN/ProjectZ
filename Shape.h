@@ -1,14 +1,11 @@
-#pragma once
+#ifndef SHAPE_H
+#define SHAPE_H
 
+#include <SDL.h>
 #include <string>
 #include <math.h>
 
-#include "TextureManager.h"
 #include "lib/glm/vec2.hpp"
-#include <SDL.h>
-
-#ifndef SHAPE_H
-#define SHAPE_H
 
 class Shape
 {

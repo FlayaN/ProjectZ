@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #ifdef __APPLE__
     #include <SDL2/SDL.h>
@@ -8,11 +9,9 @@
 
 #include <vector>
 
-#include "Shape.h"
 #include "lib/glm/vec2.hpp"
 
-#ifndef ENTITY_H
-#define ENTITY_H
+#include "Shape.h"
 
 class Entity
 {

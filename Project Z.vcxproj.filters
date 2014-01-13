@@ -46,14 +46,14 @@
     <Filter Include="Source Files\Network">
       <UniqueIdentifier>{2d4eb67a-b3f7-4b0c-bbe5-635de38ebfee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\config">
-      <UniqueIdentifier>{8c006b53-1a78-499c-a530-69f4ef05a907}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\shaders">
       <UniqueIdentifier>{30a4b512-df89-4520-a22b-0d42301571c7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Shapes">
       <UniqueIdentifier>{05f716db-1322-47ac-9aef-8202bf349d10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Types">
+      <UniqueIdentifier>{b008d565-3d38-48b8-9f5a-2417ff5e88f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -71,9 +71,6 @@
     </ClCompile>
     <ClCompile Include="EntityPlayer.cpp">
       <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
-      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Graphics.cpp">
       <Filter>Source Files\Utilities</Filter>
@@ -155,9 +152,6 @@
     <ClInclude Include="Graphics.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionHandler.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
@@ -206,24 +200,30 @@
     <ClInclude Include="PerlinNoise.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TypePlayer.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeTile.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\config\player.json">
-      <Filter>Resource Files\config</Filter>
-    </None>
-    <None Include="res\config\textures.json">
-      <Filter>Resource Files\config</Filter>
-    </None>
-    <None Include="res\shaders\entity.frag">
+    <None Include="assets\shaders\tile.frag">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="res\shaders\entity.vert">
+    <None Include="assets\shaders\tile.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="res\shaders\line.frag">
+    <None Include="assets\shaders\entity.frag">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="res\shaders\line.vert">
+    <None Include="assets\shaders\entity.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\line.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\line.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>

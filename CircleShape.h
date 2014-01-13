@@ -1,9 +1,7 @@
-#pragma once
-
-#include "Shape.h"
-
 #ifndef CIRCLESHAPE_H
 #define CIRCLESHAPE_H
+
+#include "Shape.h"
 
 class CircleShape : protected Shape
 {

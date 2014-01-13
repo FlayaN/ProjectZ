@@ -1,11 +1,8 @@
-#pragma once
-
 #ifndef PLAYERMP_H
 #define PLAYERMP_H
 
 #include "Utility.h"
 #include "Entity.h"
-#include "TextureManager.h"
 #include "RectangleShape.h"
 #include "SnapShot.h"
 

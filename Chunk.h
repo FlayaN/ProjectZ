@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef CHUNK_H
 #define CHUNK_H
 
@@ -12,15 +10,14 @@
 #include "Defines.h"
 #include "Tile.h"
 #include "PerlinNoise.h"
+#include "TypeTile.h"
 
 class Chunk
 {
 public:
-	Chunk(glm::ivec2* coord);
+	Chunk(glm::ivec2* coord, std::vector<TypeTile>);
 	~Chunk(void);
 
-	void init(std::string);
-	
 	Tile* getTile(const glm::ivec2& pos);
 
     glm::ivec2* getCoord(void);

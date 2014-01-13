@@ -52,7 +52,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)\lib\sdl-2.0.1\include;$(ProjectDir)\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\lib\sdl-2.0.1\include;$(ProjectDir)\lib\glew\include;$(ProjectDir)\lib\dirent\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -68,7 +68,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\lib\sdl-2.0.1\include;$(ProjectDir)\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\lib\sdl-2.0.1\include;$(ProjectDir)\lib\glew\include;$(ProjectDir)\lib\dirent\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -99,7 +99,6 @@
     <ClCompile Include="RectangleShape.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -125,21 +124,22 @@
     <ClInclude Include="RectangleShape.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SnapShot.h" />
-    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="TypePlayer.h" />
+    <ClInclude Include="TypeTile.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\config\player.json" />
-    <None Include="res\config\textures.json" />
-    <None Include="res\shaders\entity.frag" />
-    <None Include="res\shaders\entity.vert" />
-    <None Include="res\shaders\line.frag" />
-    <None Include="res\shaders\line.vert" />
+    <None Include="assets\shaders\entity.frag" />
+    <None Include="assets\shaders\entity.vert" />
+    <None Include="assets\shaders\line.frag" />
+    <None Include="assets\shaders\line.vert" />
+    <None Include="assets\shaders\tile.frag" />
+    <None Include="assets\shaders\tile.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

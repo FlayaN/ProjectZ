@@ -8,19 +8,9 @@
 		"width" : 80,
 		"height" : 160
 	},
-	"tex" : "mario",
+	"texture" : "../assets/images/mario.png",
 	"acceleration" : 30.0,
 	"maxSpeed" : 100.0,
 	"friction" : 90.0,
-	"bb" : {
-		"tex" : "block2",
-		"size": {
-			"width" : 80,
-			"height" : 40
-		},
-		"offset" : {
-			"x" : 0,
-			"y" : 0
-		}
-	}
+	"bb" : "playerBB"
 }

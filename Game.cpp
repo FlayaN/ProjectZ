@@ -7,7 +7,8 @@ Game::Game(void) : _running(false)
 
 Game::~Game(void)
 {
-	delete net;
+	if(online)
+		delete net;
 }
 
 int Game::init(void)
@@ -26,13 +27,17 @@ int Game::init(void)
 
 	//music = Mix_LoadWAV("../assets/music/CSLIVE.wav");
 
-	PerlinNoise::getInstance().SetValues(1.0, 1.0, 1.0, 1.0, 1337.0);
+	PerlinNoise::getInstance().SetValues(1.0, 1.0, 1.0, 1, 1337);
 
 	//Load json files
 	loadJson();
+
+	combineTileTextures();
+
 	Graphics::getInstance();
+	player = new EntityPlayer(playerType);
 	cam = new Camera(player);
-	renderer = new Renderer(player, cam);
+	renderer = new Renderer(player, cam, ct, tileTypes);
 
 	net = new Network("81.237.237.250");
 	online = net->getSuccess();
@@ -73,7 +78,7 @@ int Game::run(void)
 		}
 		
 		//Logic
-		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, player);
+		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, player, tileTypes);
 		collision();
 		player->update(delta, keystates);
 		if(online)
@@ -133,7 +138,13 @@ void Game::collision(void)
 	for(auto tile: v)
     {
 		Tile* currTile = tile;
-		glm::vec2 tileCoord = *currTile->getPosition();
+		glm::ivec2 tileCoord = *currTile->getPosition();
+		glm::ivec2 playerInTileCoord = Utility::inTileCoord(player->getCenterPosition());
+
+		if(playerInTileCoord == tileCoord)
+		{
+			player->setFriction(tile->getFriction());
+		}
 		
 		if(currTile != nullptr)
 		{
@@ -160,7 +171,7 @@ void Game::loadJson(void)
 	std::string settingsGraphicPath = "../assets/config/settings/graphic.json";
 	std::string settingsPlayerPath = "../assets/config/settings/player.json";
 	std::string settingsTilePath = "../assets/config/settings/tile.json";
-	std::string texturePath = "../assets/config/textures.json";
+	//std::string texturePath = "../assets/config/textures.json";
 #ifdef __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourceURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
@@ -214,41 +225,26 @@ void Game::loadJson(void)
 
 	assert(doc["startPos"]["x"].IsInt());
 	assert(doc["startPos"]["y"].IsInt());
-	glm::vec2* pos = new glm::vec2(doc["startPos"]["x"].GetInt(), doc["startPos"]["y"].GetInt());
+	playerType.startPos = glm::vec2(doc["startPos"]["x"].GetInt(), doc["startPos"]["y"].GetInt());
 
 	assert(doc["rotation"].IsDouble());
-	float rotation = (float)doc["rotation"].GetDouble();
+	playerType.rotation = (float)doc["rotation"].GetDouble();
 
 	assert(doc["size"]["width"].IsInt());
 	assert(doc["size"]["height"].IsInt());
-	glm::vec2 size(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
-	
-	assert(doc["tex"].IsString());
-	std::string tex = doc["tex"].GetString();
+	playerType.size = glm::vec2(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
+
+	assert(doc["texture"].IsString());
+	playerType.texture = doc["texture"].GetString();
 	
 	assert(doc["acceleration"].IsDouble());
-	float acceleration = (float)doc["acceleration"].GetDouble();
+	playerType.acceleration = (float)doc["acceleration"].GetDouble();
 
 	assert(doc["maxSpeed"].IsDouble());
-	float maxSpeed = (float)doc["maxSpeed"].GetDouble();
+	playerType.maxSpeed = (float)doc["maxSpeed"].GetDouble();
 
-	assert(doc["friction"].IsDouble());
-	float friction = (float)doc["friction"].GetDouble();
-
-	const rapidjson::Value& bb = doc["bb"];
-
-	assert(bb["tex"].IsString());
-	std::string bbTex = bb["tex"].GetString();
-
-	assert(bb["size"]["width"].IsInt());
-	assert(bb["size"]["height"].IsInt());
-	glm::vec2* bbSize = new glm::vec2(bb["size"]["width"].GetInt(), bb["size"]["height"].GetInt());
-
-	assert(bb["offset"]["x"].IsInt());
-	assert(bb["offset"]["y"].IsInt());
-	glm::vec2* bbOffset = new glm::vec2(bb["offset"]["x"].GetInt(), bb["offset"]["y"].GetInt());
-
-	player = new EntityPlayer(pos, rotation, size, tex, bbSize, bbOffset, bbTex, acceleration, maxSpeed, friction); // change 0.0 to rot
+	assert(doc["bb"].IsString());
+	playerType.bb = doc["bb"].GetString();
 
 	fclose(pFile3);
 
@@ -263,18 +259,81 @@ void Game::loadJson(void)
 	assert(doc["height"].IsInt());
 	Settings::Tile::height = doc["height"].GetInt();
 
-	fclose(pFile3);
+	fclose(pFile4);
 
-	std::cout << "--------------------Loading textures.json--------------------" << std::endl;
-	FILE* pFile5 = fopen(texturePath.c_str(), "rb");
-	rapidjson::FileStream fs5(pFile5);
-	doc.ParseStream<0>(fs5);
-	
-	const rapidjson::Value& a = doc["textures"];
-	assert(a.IsArray());
-	
-	TextureManager::getInstance().init(a);
+	loadTiles();
+}
 
-	fclose(pFile5);
+void Game::loadTiles(void)
+{
+	std::string path = "../assets/config/tiles/";
 
+	DIR* dir;
+	struct dirent* ent;
+
+	dir = opendir(path.c_str());
+	if(dir != nullptr)
+	{
+		while((ent = readdir(dir)) != nullptr)
+		{
+			std::string tmpFile(ent->d_name);
+			std::string end = ".tile";
+			if(Utility::hasEnding(tmpFile, end))
+			{
+				FILE* pFile = fopen((path+tmpFile).c_str(), "rb");
+				rapidjson::Document doc;
+				rapidjson::FileStream fs(pFile);
+				doc.ParseStream<0>(fs);
+
+				
+				TypeTile tmpTile;
+				tmpTile.name = tmpFile.erase(tmpFile.size() - 5);
+
+				assert(doc["texture"].IsString());
+				tmpTile.texture = doc["texture"].GetString();
+
+				assert(doc["friction"].IsDouble());
+				tmpTile.friction = (float)doc["friction"].GetDouble();
+
+				tileTypes.push_back(tmpTile);
+
+				fclose(pFile);
+			}
+		}
+	}else
+	{
+		std::cout << "Cannot open dir" << std::endl;
+	}
+}
+
+void Game::combineTileTextures(void)
+{
+	Uint32 rmask, gmask, bmask, amask;
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+#endif
+
+	ct = SDL_CreateRGBSurface(0, tileTypes.size()*256, 128, 32, rmask, gmask, bmask, amask);
+	SDL_Rect pos;
+	pos.y = 0;
+	pos.x = 0;
+
+	for(auto t : tileTypes)
+	{
+		SDL_Surface* tmp = IMG_Load(t.texture.c_str());
+		if(tmp != nullptr)
+		{
+			SDL_BlitSurface(tmp, NULL, ct, &pos);
+			pos.x += tmp->w;
+		}
+	}
 }

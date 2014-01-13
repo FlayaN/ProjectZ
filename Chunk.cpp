@@ -1,8 +1,16 @@
 #include "Chunk.h"
 
-Chunk::Chunk(glm::ivec2* coord) : coord(coord)
+Chunk::Chunk(glm::ivec2* coord, std::vector<TypeTile> tileTypes) : coord(coord)
 {
-	//init(renderer);
+	for(int x = 0; x < TileAmount; x++)
+	{
+		for(int y = 0; y < TileAmount; y++)
+		{
+			//std::cout << PerlinNoise::getInstance().GetHeight(TileAmount*coord->x+x, TileAmount*coord->y+y) << std::endl;
+			int i = Utility::getRandInt(0, tileTypes.size()-1);
+			tiles[x][y] = new Tile(i, tileTypes[i].friction, new glm::ivec2(TileAmount*coord->x+x, TileAmount*coord->y+y));
+		}
+	}
 }
 
 Chunk::~Chunk(void)
@@ -15,18 +23,6 @@ Chunk::~Chunk(void)
         }
     }
 	delete coord;
-}
-
-void Chunk::init(std::string s)
-{
-	for(int x = 0; x < TileAmount; x++)
-	{
-		for(int y = 0; y < TileAmount; y++)
-		{
-			std::cout << PerlinNoise::getInstance().GetHeight(TileAmount*coord->x+x, TileAmount*coord->y+y);
-			tiles[x][y] = new Tile(s, new glm::vec2(TileAmount*coord->x+x, TileAmount*coord->y+y));
-		}
-	}
 }
 
 Tile* Chunk::getTile(const glm::ivec2& pos)

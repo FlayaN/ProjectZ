@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef RECTANGLESHAPE_H
 #define RECTANGLESHAPE_H
 
@@ -10,7 +8,7 @@
 class RectangleShape : protected Shape
 {
 public:
-	RectangleShape(glm::vec2* posOffsetIn = nullptr, float rotOffsetIn = 0.0f, glm::vec2* sizeIn = new glm::vec2(), std::string tex = "default");
+	RectangleShape(glm::vec2* posOffsetIn = nullptr, float rotOffsetIn = 0.0f, glm::vec2* sizeIn = new glm::vec2());
 	virtual ~RectangleShape(void);
 
 	void setWidth(float);
@@ -20,12 +18,10 @@ public:
 	float getHeight(void);
 	float getArea(void);
 	std::string getShapeType(void);
-	SDL_Surface* getSurface(void);
 
 private:
 
 	glm::vec2* size;
-	SDL_Surface* surface;
 };
 
 #endif

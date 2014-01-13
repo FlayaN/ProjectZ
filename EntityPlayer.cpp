@@ -1,8 +1,6 @@
 #include "EntityPlayer.h"
 
-using namespace std;
-
-EntityPlayer::EntityPlayer(glm::vec2* posIn, float rotIn, glm::vec2 sizeIn, std::string texIn, glm::vec2* bbSizeIn, glm::vec2* bbOffsetIn, std::string bbTexIn, float accelerationIn, float maxSpeedIn, float frictionIn) : MovingEntity()
+/*EntityPlayer::EntityPlayer(glm::vec2* posIn, float rotIn, glm::vec2 sizeIn, std::string texIn, glm::vec2* bbSizeIn, glm::vec2* bbOffsetIn, std::string bbTexIn, float accelerationIn, float maxSpeedIn, float frictionIn) : MovingEntity()
 {
 	setPosition(posIn);
 	setRotation(rotIn);
@@ -13,6 +11,18 @@ EntityPlayer::EntityPlayer(glm::vec2* posIn, float rotIn, glm::vec2 sizeIn, std:
 
 	size = sizeIn;
 	bb = new RectangleShape(bbOffsetIn, 0.0, bbSizeIn, bbTexIn);
+}*/
+EntityPlayer::EntityPlayer(TypePlayer playerType)
+{
+	*position = playerType.startPos;
+	rotation = playerType.rotation;
+	acceleration = playerType.acceleration;
+	maxSpeed = playerType.maxSpeed;
+	size = playerType.size;
+	texture = playerType.texture;
+	
+	online = false;
+	bb = new RectangleShape(new glm::vec2(0, 0), 0.0, new glm::vec2(playerType.size.x, playerType.size.y/4)); //TODO BOUNDINGBOXES
 }
 
 EntityPlayer::~EntityPlayer(void)
@@ -96,4 +106,14 @@ glm::vec2 EntityPlayer::getSize(void)
 RectangleShape* EntityPlayer::getBB(void)
 {
 	return bb;
+}
+
+std::string EntityPlayer::getTexture(void)
+{
+	return texture;
+}
+
+void EntityPlayer::setFriction(float frictionIn)
+{
+	friction = frictionIn;
 }

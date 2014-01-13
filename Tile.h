@@ -1,35 +1,36 @@
-#pragma once
+#ifndef TILE_H
+#define TILE_H
 
 #include <iostream>
 
-//#include "glmVec2Incl.h"
 #include "lib/glm/vec2.hpp"
 #include "lib/glm/vec3.hpp"
+
 #include "Shape.h"
 #include "Utility.h"
-#include "TextureManager.h"
 #include "RectangleShape.h"
-
-#ifndef TILE_H
-#define TILE_H
 
 class Tile
 {
 public:
-	Tile(std::string, glm::vec2*);
+	Tile(int, float, glm::ivec2*);
 	~Tile(void);
 
 	RectangleShape* getBB(void);
-	glm::vec2* getPosition(void);
+	glm::ivec2* getPosition(void);
     glm::vec3* getColorMod(void);
-	glm::vec2 getSize(void);
-
+	glm::ivec2 getSize(void);
+	int getTextureId(void);
+	float getFriction(void);
 private:
-	glm::vec2* position;
+	glm::ivec2* position;
 
 	RectangleShape* bb;
 
-	glm::vec2 size;
+	glm::ivec2 size;
+
+	int textureId;
+	float friction;
 };
 
 #endif

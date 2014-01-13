@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
 
 #ifdef __APPLE__
 	#include <SDL2/SDL.h>
@@ -6,17 +7,12 @@
 #else
 	#include "SDL.h"
 	#include "SDL_image.h"
-
-	
 #endif
 
-#include "Defines.h"
 #include <iostream>
 
 #include "GL_utilities.h"
-
-#ifndef GRAPHICS_H
-#define GRAPHICS_H
+#include "Defines.h"
 
 class Graphics
 {

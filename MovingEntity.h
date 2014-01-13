@@ -1,9 +1,7 @@
-#pragma once
-
-#include "entity.h"
-
 #ifndef MOVINGENTITY_H
 #define MOVINGENTITY_H
+
+#include "entity.h"
 
 class MovingEntity : public Entity
 {

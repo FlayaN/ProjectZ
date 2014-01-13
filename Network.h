@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NETWORK_H
+#define NETWORK_H
 
 #ifdef __APPLE__
 	#include <SDL\SDL_net.h>
@@ -11,9 +12,6 @@
 
 #include "EntityPlayer.h"
 #include "PlayerMP.h"
-
-#ifndef NETWORK_H
-#define NETWORK_H
 
 class Network
 {

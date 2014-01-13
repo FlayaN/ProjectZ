@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef MODELSQUARE_H
 #define MODELSQUARE_H
 

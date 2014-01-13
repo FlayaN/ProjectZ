@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COLLISIONHANDLER_H
+#define COLLISIONHANDLER_H
 
 #ifdef __APPLE__
 	#include <SDL2/SDL.h>
@@ -9,9 +10,6 @@
 #include "Shape.h"
 #include "Entity.h"
 #include "CircleShape.h"
-
-#ifndef COLLISIONHANDLER_H
-#define COLLISIONHANDLER_H
 
 namespace CollisionHandler
 {

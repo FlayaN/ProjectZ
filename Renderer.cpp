@@ -1,18 +1,21 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(EntityPlayer* player, Camera* camIn)
+Renderer::Renderer(EntityPlayer* player, Camera* camIn, SDL_Surface* ct, std::vector<TypeTile> tileTypes)
 {
 	cam = camIn;
 
 	modelPlayer = new ModelSquare("../assets/shaders/entity.vert", "../assets/shaders/entity.frag");
 	modelOnlinePlayer = new ModelSquare("../assets/shaders/entity.vert", "../assets/shaders/entity.frag");
-	modelTile = new ModelSquare("../assets/shaders/entity.vert", "../assets/shaders/entity.frag");
+	modelTile = new ModelSquare("../assets/shaders/tile.vert", "../assets/shaders/tile.frag");
 	initShaders();
 
-	texPlayer = surfaceToOGLTexture(TextureManager::getInstance().getSurface("mario"));
-	texOnlinePlayer = surfaceToOGLTexture(TextureManager::getInstance().getSurface("default"));
-	texTile = surfaceToOGLTexture(TextureManager::getInstance().getSurface("grass"));
+	glUniform1i(modelTile->getUniform("maxId"), tileTypes.size());
+	glUniform1i(modelTile->getUniform("widthPerTexture"), 256);
+
+	texPlayer = pathToOGLTexture(player->getTexture());
+	texOnlinePlayer = pathToOGLTexture(player->getTexture());
+	texTile = surfaceToOGLTexture(ct);
 
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -54,6 +57,9 @@ void Renderer::initShaders(void)
 	modelTile->addUniform("projMatrix");
 	modelTile->addUniform("modelViewMatrix");
 	modelTile->addUniform("texUnit");
+	modelTile->addUniform("textureId");
+	modelTile->addUniform("maxId");
+	modelTile->addUniform("widthPerTexture");
 }
 
 void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer* player, std::vector<PlayerMP*> players)
@@ -76,6 +82,10 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer*
 
 	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
+	glUniformMatrix4fv(modelTile->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+	//glUniform1i(modelTile->getUniform("texUnit"), 0);
+	glBindTexture(GL_TEXTURE_2D, texTile);
+
 	for(Tile* tile: v)
 	{
 		if(tile != nullptr)
@@ -84,16 +94,12 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer*
 			modelMat = glm::translate(modelMat, glm::vec3(tile->getPosition()->x*tile->getSize().x + playerOffset.x, tile->getPosition()->y*tile->getSize().y + playerOffset.y, 0.0));
 			modelMat = glm::scale(modelMat, glm::vec3(tile->getSize().x, tile->getSize().y, 1.0));
 			glUniformMatrix4fv(modelTile->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
-			glUniformMatrix4fv(modelTile->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
-	
-			glUniform1i(modelTile->getUniform("texUnit"), 0);
-			glBindTexture(GL_TEXTURE_2D, texTile);
-			//glBindVertexArray(modelTile->getVAO()); Only need to bind if you use glVertexAttribPointer
-
+			glUniform1i(modelTile->getUniform("textureId"), tile->getTextureId());
+			
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelTile->getNumVertices());
 		}
 	}
-	printError("Renderer|renderPlayer");
+	printError("Renderer|renderTile");
 }
 
 void Renderer::renderGrid(EntityPlayer* player)
@@ -145,9 +151,8 @@ void Renderer::renderPlayer(EntityPlayer* player)
 	glUniformMatrix4fv(modelPlayer->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
 	glUniformMatrix4fv(modelPlayer->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
 	
-	glUniform1i(modelPlayer->getUniform("texUnit"), 0);
+	//glUniform1i(modelPlayer->getUniform("texUnit"), 0);
 	glBindTexture(GL_TEXTURE_2D, texPlayer);
-	glBindVertexArray(modelPlayer->getVAO());
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, modelPlayer->getNumVertices());
 	printError("Renderer|renderPlayer");
@@ -158,21 +163,67 @@ void Renderer::renderOnlinePlayers(std::vector<PlayerMP*> players, EntityPlayer*
 	glUseProgram(modelOnlinePlayer->getProg());
 	glm::vec2 playerOffset = glm::vec2(-player->getCenterPosition().x + w/2, -player->getCenterPosition().y + h/2);
 
+	glUniformMatrix4fv(modelOnlinePlayer->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+	glUniform1i(modelOnlinePlayer->getUniform("texUnit"), 0);
+	glBindTexture(GL_TEXTURE_2D, texOnlinePlayer);
+
 	for (auto p : players)
 	{
 		glm::mat4 modelMat(1.0);
 		modelMat = glm::translate(modelMat, glm::vec3(p->getPosition()->x + playerOffset.x, p->getPosition()->y + playerOffset.y, 0.0));
 		modelMat = glm::scale(modelMat, glm::vec3(p->getSize().x, p->getSize().y, 1.0));
 		glUniformMatrix4fv(modelOnlinePlayer->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
-		glUniformMatrix4fv(modelOnlinePlayer->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
-	
-		glUniform1i(modelOnlinePlayer->getUniform("texUnit"), 0);
-		glBindTexture(GL_TEXTURE_2D, texOnlinePlayer);
-		glBindVertexArray(modelOnlinePlayer->getVAO());
+		
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, modelOnlinePlayer->getNumVertices());
 	}
 	
 	printError("Renderer|renderOnlinePlayers");
+}
+
+GLuint Renderer::pathToOGLTexture(std::string path)
+{
+	SDL_Surface* tex = IMG_Load(path.c_str());
+	GLuint texture;
+	GLint nbOfColors;
+	GLenum textureFormat = 0;
+
+	nbOfColors = tex->format->BytesPerPixel;
+
+	switch(nbOfColors)
+	{
+		case 1:
+			textureFormat = GL_ALPHA;
+			break;
+		case 3: //no alpha
+			if(tex->format->Rmask == 0x000000ff)
+				textureFormat = GL_RGB;
+			else
+				textureFormat = GL_BGR;
+			break;
+		case 4: //contains alpha
+			if(tex->format->Rmask == 0x000000ff)
+				textureFormat = GL_RGBA;
+			else
+				textureFormat = GL_BGRA;
+			break;
+		default:
+			break;
+	}
+
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+		
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, nbOfColors, tex->w, tex->h, 0, textureFormat, GL_UNSIGNED_BYTE, tex->pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	printError("Renderer|surfaceToOGLTexture");
+	return texture;
 }
 
 GLuint Renderer::surfaceToOGLTexture(SDL_Surface* tex)
