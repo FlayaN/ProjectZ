@@ -18,14 +18,14 @@
 class Renderer
 {
 public:
-	Renderer(EntityPlayer, Camera*, SDL_Surface, std::vector<TypeTile>);
+	Renderer(EntityPlayer, std::shared_ptr<Camera>, SDL_Surface, std::vector<TypeTile>);
 	~Renderer(void);
-	void render(std::HashMap<glm::ivec2, Chunk*> , EntityPlayer, std::vector<PlayerMP*>);
+	void render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > , EntityPlayer, std::vector<std::shared_ptr<PlayerMP> >);
 
-	void renderTile(std::HashMap<glm::ivec2, Chunk*>, EntityPlayer);
+	void renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >, EntityPlayer);
 	void renderGrid(EntityPlayer);
 	void renderPlayer(EntityPlayer);
-	void renderOnlinePlayers(std::vector<PlayerMP*>, EntityPlayer);
+	void renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> >, EntityPlayer);
 
 	GLuint pathToOGLTexture(std::string);
 	GLuint surfaceToOGLTexture(SDL_Surface);
@@ -44,7 +44,7 @@ private:
 	ModelSquare* modelTile;
 	GLuint texTile;
 
-	Camera* cam;
+	std::shared_ptr<Camera> cam;
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera(EntityPlayer* playerIn)
+Camera::Camera(std::shared_ptr<EntityPlayer> playerIn)
 {
 	player = playerIn;
 	orthoMatrix = glm::ortho(0.0f, (float)Settings::Graphics::screenWidth, 0.0f, (float)Settings::Graphics::screenHeight);

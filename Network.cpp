@@ -22,8 +22,11 @@ Network::Network(const char* ipChar)
 
 Network::~Network(void)
 {
-	sprintf(tmp, "2 %d \n", pId);
-	SDLNet_TCP_Send(connection, tmp, strlen(tmp)+1);
+	if(success)
+	{
+		sprintf(tmp, "2 %d \n", pId);
+		SDLNet_TCP_Send(connection, tmp, strlen(tmp)+1);
+	}
 	SDLNet_TCP_Close(connection);
 	SDLNet_FreeSocketSet(server);
 	SDLNet_Quit();
@@ -46,7 +49,7 @@ void Network::send(EntityPlayer player, int ticks)
 	}
 }
 
-void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player, int ticks)
+void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared_ptr<EntityPlayer> player, int ticks)
 {
 	while(SDLNet_CheckSockets(server, 0)>0 && SDLNet_SocketReady(connection))
 	{
@@ -86,7 +89,7 @@ void Network::recv(std::vector<PlayerMP*>& players, EntityPlayer* player, int ti
 				if(id != pId)
 				{
 					std::cout << "Adding new player: " << id << std::endl;
-					players.push_back(new PlayerMP(id));
+					players.push_back(std::make_shared<PlayerMP>(PlayerMP(id)));
 				}
 			}
 		}else if(type == 2)

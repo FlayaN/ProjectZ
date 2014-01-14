@@ -1,6 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <memory>
+
 #include "lib/glm/mat4x4.hpp"
 #include "lib/glm/vec3.hpp"
 #include "lib/glm/gtc/matrix_transform.hpp"
@@ -11,7 +13,7 @@
 class Camera
 {
 public:
-	Camera(EntityPlayer*);
+	Camera(std::shared_ptr<EntityPlayer>);
 	~Camera(void);
 
 	glm::mat4 getOrthoMatrix(void);
@@ -21,7 +23,7 @@ public:
 	void update(void);
 private:
 	glm::mat4 orthoMatrix;
-	EntityPlayer* player;
+	std::shared_ptr<EntityPlayer> player;
 };
 
 #endif

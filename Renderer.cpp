@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(EntityPlayer player, Camera* camIn, SDL_Surface ct, std::vector<TypeTile> tileTypes)
+Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surface ct, std::vector<TypeTile> tileTypes)
 {
 	cam = camIn;
 
@@ -62,7 +62,7 @@ void Renderer::initShaders(void)
 	modelTile->addUniform("widthPerTexture");
 }
 
-void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer player, std::vector<PlayerMP*> players)
+void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player, std::vector<std::shared_ptr<PlayerMP> > players)
 {
 	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -75,10 +75,9 @@ void Renderer::render(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer play
 	SDL_GL_SwapWindow(Graphics::getInstance().getWindow());
 }
 
-void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer player)
+void Renderer::renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player)
 {
 	glUseProgram(modelTile->getProg());
-	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, Settings::Engine::renderDistance, player);
 
 	glm::vec2 playerOffset = glm::vec2(-player.getCenterPosition().x + w/2, -player.getCenterPosition().y + h/2);
 
@@ -86,7 +85,7 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, Chunk*> chunks, EntityPlayer 
 	//glUniform1i(modelTile->getUniform("texUnit"), 0);
 	glBindTexture(GL_TEXTURE_2D, texTile);
 
-	for(Tile* tile: v)
+	for(auto tile: ChunkUtility::getSurroundingTiles(chunks, Settings::Engine::renderDistance, player))
 	{
 		if(tile != nullptr)
 		{
@@ -158,7 +157,7 @@ void Renderer::renderPlayer(EntityPlayer player)
 	printError("Renderer|renderPlayer");
 }
 
-void Renderer::renderOnlinePlayers(std::vector<PlayerMP*> players, EntityPlayer player)
+void Renderer::renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> > players, EntityPlayer player)
 {
 	glUseProgram(modelOnlinePlayer->getProg());
 	glm::vec2 playerOffset = glm::vec2(-player.getCenterPosition().x + w/2, -player.getCenterPosition().y + h/2);

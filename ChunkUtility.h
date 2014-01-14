@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <sstream>
+#include <memory>
 
 #include "Chunk.h"
 #include "Utility.h"
@@ -11,8 +12,8 @@
 
 namespace ChunkUtility
 {
-	std::vector<Tile*> getSurroundingTiles(std::HashMap<glm::ivec2, Chunk*> chunks, int radius, EntityPlayer);
-	void generateSurroundingChunk(std::HashMap<glm::ivec2, Chunk*>& chunks, int radius, EntityPlayer, std::vector<TypeTile>);
+	std::vector<std::shared_ptr<Tile> > getSurroundingTiles(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, int radius, EntityPlayer);
+	void generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, int radius, EntityPlayer, std::vector<TypeTile>);
 };
 
 namespace std

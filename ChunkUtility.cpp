@@ -1,9 +1,9 @@
 #include "ChunkUtility.h"
 
-std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<glm::ivec2, Chunk*> chunks, int radius, EntityPlayer player)
+std::vector<std::shared_ptr<Tile> > ChunkUtility::getSurroundingTiles(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, int radius, EntityPlayer player)
 {
 	glm::vec2 centerPos = player.getCenterPosition();
-	std::vector<Tile*> t;
+	std::vector<std::shared_ptr<Tile> > t;
 	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(centerPos);
 	glm::ivec2 centerPosInTile = Utility::inTileCoord(centerPos);
 
@@ -13,13 +13,13 @@ std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<glm::ivec2, Ch
 		{
 			glm::ivec2 chunkCoord(floor((float)x/TileAmount), floor((float)y/TileAmount));
 
-			Chunk* tmpChunk = chunks[chunkCoord];
+			std::shared_ptr<Chunk> tmpChunk = chunks[chunkCoord];
 			
 			if(tmpChunk != nullptr)
 			{
-				Tile* tmpTile = tmpChunk->getTile(Utility::withinRange(glm::ivec2(x, y)));
+				std::shared_ptr<Tile> tmpTile = tmpChunk->getTile(Utility::withinRange(glm::ivec2(x, y)));
 
-				if(tmpTile != nullptr)
+				if(&tmpTile != nullptr)
 				{
 					t.push_back(tmpTile);
 				}
@@ -30,11 +30,11 @@ std::vector<Tile*> ChunkUtility::getSurroundingTiles(std::HashMap<glm::ivec2, Ch
 	return t;
 }
 
-void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, Chunk*>& chunks, int radius, EntityPlayer player, std::vector<TypeTile> tileTypes)
+void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, int radius, EntityPlayer player, std::vector<TypeTile> tileTypes)
 {
 	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player.getCenterPosition());
 
-	std::HashMap<glm::ivec2, Chunk*> newchunks;
+	std::HashMap<glm::ivec2,std::shared_ptr<Chunk> > newchunks;
 	std::HashMap<glm::ivec2, bool> checker;
 
 	for (int x = centerPosInChunk.x - radius; x <= centerPosInChunk.x + radius; x++)
@@ -48,7 +48,7 @@ void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, Chunk*>& ch
 			}
 			else
 			{
-				newchunks[glm::ivec2(x, y)] = new Chunk(new glm::ivec2(x, y), tileTypes);
+				newchunks[glm::ivec2(x, y)] = std::make_shared<Chunk>(Chunk(glm::ivec2(x, y), tileTypes));
 				checker[glm::ivec2(x, y)] = true;
 			}
 		}

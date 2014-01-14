@@ -9,6 +9,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <memory>
 
 #include "EntityPlayer.h"
 #include "PlayerMP.h"
@@ -19,7 +20,7 @@ public:
 	Network(const char* ip);
 	~Network(void);
 	void send(EntityPlayer, int);
-	void recv(std::vector<PlayerMP*>&, EntityPlayer*, int);
+	void recv(std::vector<std::shared_ptr<PlayerMP> >&, std::shared_ptr<EntityPlayer>, int);
 	bool getSuccess(void);
 private:
 	SDLNet_SocketSet server;

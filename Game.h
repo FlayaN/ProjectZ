@@ -12,6 +12,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <memory>
 
 #include "dirent.h"
 #include "lib/rapidjson/document.h"
@@ -58,22 +59,22 @@ public:
 	void combineTileTextures(void);
 
 private:
-    std::HashMap<glm::ivec2, Chunk*> chunks;
-	std::vector<PlayerMP*> players;
-	EntityPlayer* player;
+    std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks;
+	std::vector<std::shared_ptr<PlayerMP> > players;
+	std::shared_ptr<Camera> cam;
+	std::shared_ptr<EntityPlayer> player;
+
+	std::unique_ptr<Renderer> renderer;
+	std::unique_ptr<Network> net;
 
 	std::vector<TypeTile> tileTypes;
 	TypePlayer playerType;
+	
 	SDL_Surface ct;
-
-	bool _running;
-
-	Renderer* renderer;
 	Mix_Chunk* music;
 
+	bool _running;
 	bool online;
-	Network* net;
-	Camera* cam;
 	int state;
 };
 

@@ -26,18 +26,17 @@ Game::Game(void) : _running(false)
 	combineTileTextures();
 
 	Graphics::getInstance();
-	player = new EntityPlayer(playerType);
-	cam = new Camera(player);
-	renderer = new Renderer(*player, cam, ct, tileTypes);
+	player = std::make_shared<EntityPlayer>(EntityPlayer(playerType));
+	cam = std::make_shared<Camera>(Camera(player));
+	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, ct, tileTypes));
+	net = std::unique_ptr<Network>(new Network("81.237.237.250"));
 
-	net = new Network("81.237.237.250");
 	online = net->getSuccess();
 }
 
 Game::~Game(void)
 {
-	/*if(online)
-		delete net;*/
+
 }
 
 int Game::run(void)
@@ -127,21 +126,17 @@ void Game::render()
 
 void Game::collision(void)
 {
-	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, Settings::Engine::collisionDistance, *player);
-	
-	for(auto tile: v)
+	for(auto tile: ChunkUtility::getSurroundingTiles(chunks, Settings::Engine::collisionDistance, *player))
     {
-		Tile* currTile = tile;
-		glm::ivec2 tileCoord = *currTile->getPosition();
-		glm::ivec2 playerInTileCoord = Utility::inTileCoord(player->getCenterPosition());
+		if(tile != nullptr)
+		{
+			glm::ivec2 tileCoord = *tile->getPosition();
+			glm::ivec2 playerInTileCoord = Utility::inTileCoord(player->getCenterPosition());
 
-		if(playerInTileCoord == tileCoord)
-		{
-			player->setFriction(tile->getFriction());
-		}
-		
-		if(currTile != nullptr)
-		{
+			if(playerInTileCoord == tileCoord)
+			{
+				player->setFriction(tile->getFriction());
+			}
 			/*SDL_Rect* bb = currTile->getBB();
 			if(bb != nullptr)
 			{
