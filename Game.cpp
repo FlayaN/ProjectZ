@@ -2,27 +2,17 @@
 
 Game::Game(void) : _running(false)
 {
-    
-}
-
-Game::~Game(void)
-{
-	if(online)
-		delete net;
-}
-
-int Game::init(void)
-{
-	// Initialize the SDL library.
+	state = APP_OK;
+    // Initialize the SDL library.
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		fprintf(stderr, "SDL_Init() failed: %s\n", SDL_GetError());
-		return APP_FAILED;
+		state = APP_FAILED;
 	}
 
 	if(Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1)
 	{
-		return false;
+		state = APP_FAILED;
 	}
 
 	//music = Mix_LoadWAV("../assets/music/CSLIVE.wav");
@@ -30,7 +20,7 @@ int Game::init(void)
 	//Load json files
 	loadJson();
 
-	PerlinNoise::getInstance().SetValues(1.0, 1.0, (double)tileTypes.size(), 10, 1337);
+	PerlinNoise::getInstance().SetValues(0.25, 6.0, (double)tileTypes.size(), 1, 1337);
 	SimplexNoise::init();
 
 	combineTileTextures();
@@ -38,18 +28,21 @@ int Game::init(void)
 	Graphics::getInstance();
 	player = new EntityPlayer(playerType);
 	cam = new Camera(player);
-	renderer = new Renderer(player, cam, ct, tileTypes);
+	renderer = new Renderer(*player, cam, ct, tileTypes);
 
 	net = new Network("81.237.237.250");
 	online = net->getSuccess();
+}
 
-	return APP_OK;
+Game::~Game(void)
+{
+	/*if(online)
+		delete net;*/
 }
 
 int Game::run(void)
 {
 	// Initialize application.
-	int state = init();
 	if (state != APP_OK) return state;
 	
 	// Enter to the SDL event loop.
@@ -79,7 +72,7 @@ int Game::run(void)
 		}
 		
 		//Logic
-		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, player, tileTypes);
+		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, *player, tileTypes);
 		collision();
 		player->update(delta, keystates);
 		if(online)
@@ -99,7 +92,7 @@ int Game::run(void)
 			tmpTime += (currTime - oldTime);
 			if(tmpTime >= 50) //How often to send data to the server in ms (50 = 20times/second)
 			{
-				net->send(player, currTime);
+				net->send(*player, currTime);
 				tmpTime = 0;
 			}
 			net->recv(players, player, currTime);
@@ -129,12 +122,12 @@ void Game::onEvent(SDL_Event* ev)
 
 void Game::render()
 {
-	renderer->render(chunks, player, players);
+	renderer->render(chunks, *player, players);
 }
 
 void Game::collision(void)
 {
-	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, Settings::Engine::collisionDistance, player);
+	std::vector<Tile*> v = ChunkUtility::getSurroundingTiles(chunks, Settings::Engine::collisionDistance, *player);
 	
 	for(auto tile: v)
     {
@@ -323,7 +316,7 @@ void Game::combineTileTextures(void)
     amask = 0xff000000;
 #endif
 
-	ct = SDL_CreateRGBSurface(0, tileTypes.size()*256, 128, 32, rmask, gmask, bmask, amask);
+	ct = *SDL_CreateRGBSurface(0, tileTypes.size()*256, 128, 32, rmask, gmask, bmask, amask);
 	SDL_Rect pos;
 	pos.y = 0;
 	pos.x = 0;
@@ -333,7 +326,7 @@ void Game::combineTileTextures(void)
 		SDL_Surface* tmp = IMG_Load(t.texture.c_str());
 		if(tmp != nullptr)
 		{
-			SDL_BlitSurface(tmp, NULL, ct, &pos);
+			SDL_BlitSurface(tmp, NULL, &ct, &pos);
 			pos.x += tmp->w;
 		}
 	}

@@ -11,8 +11,8 @@
 
 namespace ChunkUtility
 {
-	std::vector<Tile*> getSurroundingTiles(std::HashMap<glm::ivec2, Chunk*> chunks, int radius, EntityPlayer*);
-	void generateSurroundingChunk(std::HashMap<glm::ivec2, Chunk*>& chunks, int radius, EntityPlayer*, std::vector<TypeTile>);
+	std::vector<Tile*> getSurroundingTiles(std::HashMap<glm::ivec2, Chunk*> chunks, int radius, EntityPlayer);
+	void generateSurroundingChunk(std::HashMap<glm::ivec2, Chunk*>& chunks, int radius, EntityPlayer, std::vector<TypeTile>);
 };
 
 namespace std

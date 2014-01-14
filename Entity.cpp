@@ -3,12 +3,11 @@
 
 Entity::Entity(void)
 {
-	position = new glm::vec2();
+	position = glm::vec2();
 }
 
 Entity::~Entity(void)
 {
-	delete position;
 	for(int i = 0; i < shapes.size(); i++)
 	{
 		delete shapes[i];
@@ -17,16 +16,15 @@ Entity::~Entity(void)
 
 //------------------------------------------------SET ----------------------------------------------//
 
-void Entity::setPosition(glm::vec2* positionIn)
+void Entity::setPosition(glm::vec2 positionIn)
 {
-	delete position;
 	position = positionIn;
 }
 
 void Entity::setPosition(float x, float y)
 {
-	position->x = x;
-	position->y = y;
+	position.x = x;
+	position.y = y;
 }
 
 void Entity::setRotation(float rotationIn)
@@ -36,7 +34,7 @@ void Entity::setRotation(float rotationIn)
 
 //------------------------------------------------GET ----------------------------------------------//
 
-glm::vec2* Entity::getPosition(void)
+glm::vec2 Entity::getPosition(void)
 {
     return position;
 }

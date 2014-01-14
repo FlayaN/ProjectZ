@@ -9,14 +9,14 @@ public:
 	MovingEntity(void);
 	virtual ~MovingEntity(void);
 
-	void setVelocity(glm::vec2*);
+	void setVelocity(glm::vec2);
 
-	glm::vec2* getVelocity(void);
+	glm::vec2 getVelocity(void);
 
 	void updatePosition(void);
 
-private:
-	glm::vec2* velocity;
+protected:
+	glm::vec2 velocity;
 };
 
 #endif

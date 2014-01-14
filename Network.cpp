@@ -29,13 +29,13 @@ Network::~Network(void)
 	SDLNet_Quit();
 }
 
-void Network::send(EntityPlayer* player, int ticks)
+void Network::send(EntityPlayer player, int ticks)
 {
-	if(player->isOnline())
+	if(player.isOnline())
 	{
-		glm::vec2 pos = *player->getPosition();
+		glm::vec2 pos = player.getPosition();
 		//1 id posX posY
-		sprintf(tmp, "1 %d %f %f %d \n", player->getId(), pos.x, pos.y, ticks);
+		sprintf(tmp, "1 %d %f %f %d \n", player.getId(), pos.x, pos.y, ticks);
 
 		int size = 0;
 		int len = strlen(tmp)+1;

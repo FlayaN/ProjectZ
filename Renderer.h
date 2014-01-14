@@ -18,17 +18,17 @@
 class Renderer
 {
 public:
-	Renderer(EntityPlayer*, Camera*, SDL_Surface*, std::vector<TypeTile>);
+	Renderer(EntityPlayer, Camera*, SDL_Surface, std::vector<TypeTile>);
 	~Renderer(void);
-	void render(std::HashMap<glm::ivec2, Chunk*> , EntityPlayer*, std::vector<PlayerMP*>);
+	void render(std::HashMap<glm::ivec2, Chunk*> , EntityPlayer, std::vector<PlayerMP*>);
 
-	void renderTile(std::HashMap<glm::ivec2, Chunk*>, EntityPlayer*);
-	void renderGrid(EntityPlayer*);
-	void renderPlayer(EntityPlayer*);
-	void renderOnlinePlayers(std::vector<PlayerMP*>, EntityPlayer*);
+	void renderTile(std::HashMap<glm::ivec2, Chunk*>, EntityPlayer);
+	void renderGrid(EntityPlayer);
+	void renderPlayer(EntityPlayer);
+	void renderOnlinePlayers(std::vector<PlayerMP*>, EntityPlayer);
 
 	GLuint pathToOGLTexture(std::string);
-	GLuint surfaceToOGLTexture(SDL_Surface*);
+	GLuint surfaceToOGLTexture(SDL_Surface);
 
 private:
 	void initShaders(void);

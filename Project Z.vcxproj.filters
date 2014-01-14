@@ -129,6 +129,9 @@
     <ClCompile Include="SimplexNoise.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -212,6 +215,9 @@
     <ClInclude Include="SimplexNoise.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\tile.frag">
@@ -220,16 +226,16 @@
     <None Include="assets\shaders\tile.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="assets\shaders\entity.frag">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="assets\shaders\entity.vert">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="assets\shaders\line.frag">
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="assets\shaders\line.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\basic.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\basic.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>

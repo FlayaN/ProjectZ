@@ -19,11 +19,11 @@ public:
 	Entity(void);
 	virtual ~Entity(void);
 
-	void setPosition(glm::vec2*);
+	void setPosition(glm::vec2);
 	void setPosition(float x, float y);
 	void setRotation(float);
 
-	glm::vec2* getPosition(void);
+	glm::vec2 getPosition(void);
 	float getRotation(void);
     std::vector<Shape*> getShapes(void);
 	std::vector<Entity*> getChildren(void);
@@ -43,7 +43,7 @@ public:
 	void releaseChildren(void);
 
 protected:
-	glm::vec2* position;
+	glm::vec2 position;
 	float rotation;
 	std::vector<Shape*> shapes; // shapes with entity as owner
 	std::vector<Entity*> children;

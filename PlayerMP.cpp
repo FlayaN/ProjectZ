@@ -41,5 +41,5 @@ void PlayerMP::update(void)
 	currTime = SDL_GetTicks();
 	float tmp = (currTime - oldTime) / (float)(latestSnapShot.time - prevSnapShot.time);
 	timer += tmp;
-	*position =  prevSnapShot.pos + ((latestSnapShot.pos-prevSnapShot.pos) * timer);
+	position =  prevSnapShot.pos + ((latestSnapShot.pos-prevSnapShot.pos) * timer);
 }

@@ -21,7 +21,6 @@ public:
 	void update(void);
 private:
 	glm::mat4 orthoMatrix;
-	//glm::vec2 pos;
 	EntityPlayer* player;
 };
 

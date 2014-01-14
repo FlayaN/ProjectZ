@@ -2,25 +2,24 @@
 
 MovingEntity::MovingEntity(void)
 {
-	velocity = new glm::vec2();
+	velocity = glm::vec2();
 }
 
 MovingEntity::~MovingEntity(void)
 {
-	delete velocity;
+
 }
 
 //------------------------------------------------SET ----------------------------------------------//
 
-void MovingEntity::setVelocity(glm::vec2* velocityIn)
+void MovingEntity::setVelocity(glm::vec2 velocityIn)
 {
-	delete velocity;
 	velocity = velocityIn;
 }
 
 //------------------------------------------------GET ----------------------------------------------//
 
-glm::vec2* MovingEntity::getVelocity(void)
+glm::vec2 MovingEntity::getVelocity(void)
 {
 	return velocity;
 }
@@ -29,8 +28,8 @@ glm::vec2* MovingEntity::getVelocity(void)
 
 void MovingEntity::updatePosition(void)
 {
-	position->x += velocity->x;
-	position->y += velocity->y;
+	position.x += velocity.x;
+	position.y += velocity.y;
 
 	for (Entity* child : children)
 	{

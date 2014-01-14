@@ -18,7 +18,7 @@ glm::mat4 Camera::getOrthoMatrix(void)
 
 glm::vec2 Camera::getPos(void)
 {
-	return *player->getPosition();
+	return player->getPosition();
 }
 
 void Camera::update(void)

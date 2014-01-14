@@ -90,6 +90,7 @@
     <ClCompile Include="EntityPlayer.cpp" />
     <ClCompile Include="GL_utilities.c" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelSquare.cpp" />
     <ClCompile Include="MovingEntity.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="GL_utilities.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="ModelSquare.h" />
     <ClInclude Include="MovingEntity.h" />
     <ClInclude Include="Network.h" />
@@ -136,8 +138,8 @@
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shaders\entity.frag" />
-    <None Include="assets\shaders\entity.vert" />
+    <None Include="assets\shaders\basic.frag" />
+    <None Include="assets\shaders\basic.vert" />
     <None Include="assets\shaders\line.frag" />
     <None Include="assets\shaders\line.vert" />
     <None Include="assets\shaders\tile.frag" />

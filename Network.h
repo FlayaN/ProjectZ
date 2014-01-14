@@ -18,7 +18,7 @@ class Network
 public:
 	Network(const char* ip);
 	~Network(void);
-	void send(EntityPlayer*, int);
+	void send(EntityPlayer, int);
 	void recv(std::vector<PlayerMP*>&, EntityPlayer*, int);
 	bool getSuccess(void);
 private:

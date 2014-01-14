@@ -46,8 +46,6 @@ public:
 		APP_FAILED = 1
 	};
 	
-	int init(void);
-    
 	int run(void);
     
 	void onEvent(SDL_Event* ev);
@@ -66,7 +64,7 @@ private:
 
 	std::vector<TypeTile> tileTypes;
 	TypePlayer playerType;
-	SDL_Surface* ct;
+	SDL_Surface ct;
 
 	bool _running;
 
@@ -76,6 +74,7 @@ private:
 	bool online;
 	Network* net;
 	Camera* cam;
+	int state;
 };
 
 #endif
