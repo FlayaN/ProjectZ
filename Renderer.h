@@ -4,6 +4,7 @@
 #include "lib/glm/gtc/type_ptr.hpp"
 #include "lib/glm/mat4x4.hpp"
 #include "lib/glm/gtc/matrix_transform.hpp"
+#include "simplefont.h"
 
 #include "Graphics.h"
 #include "Defines.h"
@@ -14,6 +15,7 @@
 #include "Camera.h"
 #include "ModelSquare.h"
 #include "TypeTile.h"
+//#include "Font.h"
 
 class Renderer
 {
@@ -26,6 +28,7 @@ public:
 	void renderGrid(EntityPlayer);
 	void renderPlayer(EntityPlayer);
 	void renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> >, EntityPlayer);
+	//void renderText(std::string sText, int x, int y);
 
 	GLuint pathToOGLTexture(std::string);
 	GLuint surfaceToOGLTexture(SDL_Surface);
@@ -45,6 +48,8 @@ private:
 	GLuint texTile;
 
 	std::shared_ptr<Camera> cam;
+
+	char buff[1400];
 };
 
 #endif

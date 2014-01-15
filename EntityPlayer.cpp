@@ -60,6 +60,12 @@ void EntityPlayer::update(float delta, const Uint8* keyCode)
 		else if(velocity.y < 0)
 			velocity.y += friction*delta;
 	}
+
+	if(velocity.x < 0.5)
+		velocity.x = 0;
+
+	if(velocity.y < 0.5)
+		velocity.y = 0;
 	
 	position.x += velocity.x * delta;
 	position.y += velocity.y * delta;

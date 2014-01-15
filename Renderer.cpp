@@ -17,6 +17,10 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 	texOnlinePlayer = pathToOGLTexture(player.getTexture());
 	texTile = surfaceToOGLTexture(ct);
 
+	sfMakeRasterFont();
+
+	sfSetRasterSize(Settings::Graphics::screenWidth, Settings::Graphics::screenHeight);
+
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
 	glDisable(GL_DEPTH_TEST);
@@ -24,6 +28,8 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	
 	printError("Renderer|Renderer");
 }
 
@@ -72,6 +78,11 @@ void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, 
 	if(player.isOnline())
 		renderOnlinePlayers(players, player);
 
+	sprintf(buff, "X %0.1f", player.getPosition().x);
+	sfDrawString(10, 10, buff);
+	sprintf(buff, "Y %0.1f", player.getPosition().y);
+	sfDrawString(10, 30, buff);
+
 	SDL_GL_SwapWindow(Graphics::getInstance().getWindow());
 }
 
@@ -95,6 +106,8 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chun
 			glUniformMatrix4fv(modelTile->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
 			glUniform1i(modelTile->getUniform("textureId"), tile->getTextureId());
 			
+			glBindVertexArray(modelTile->getVAO());
+
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelTile->getNumVertices());
 		}
 	}
@@ -152,6 +165,8 @@ void Renderer::renderPlayer(EntityPlayer player)
 	
 	//glUniform1i(modelPlayer->getUniform("texUnit"), 0);
 	glBindTexture(GL_TEXTURE_2D, texPlayer);
+
+	glBindVertexArray(modelPlayer->getVAO());
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, modelPlayer->getNumVertices());
 	printError("Renderer|renderPlayer");

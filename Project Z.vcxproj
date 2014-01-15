@@ -103,6 +103,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="simplefont.c" />
     <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Utility.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="PlayerMP.h" />
     <ClInclude Include="RectangleShape.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="simplefont.h" />
     <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="SnapShot.h" />
     <ClInclude Include="Game.h" />
