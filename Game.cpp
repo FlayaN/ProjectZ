@@ -231,7 +231,7 @@ void Game::loadSettings(void)
 	playerType.size = glm::vec2(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
 
 	assert(doc["texture"].IsString());
-	playerType.texture = doc["texture"].GetString();
+	playerType.texture = std::string("../assets/config/settings/")+doc["texture"].GetString();
 	
 	assert(doc["acceleration"].IsDouble());
 	playerType.acceleration = (float)doc["acceleration"].GetDouble();
@@ -286,7 +286,7 @@ void Game::loadTiles(void)
 				tmpTile.name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmpTile.texture = doc["texture"].GetString();
+				tmpTile.texture = path+doc["texture"].GetString();
 
 				assert(doc["friction"].IsDouble());
 				tmpTile.friction = (float)doc["friction"].GetDouble();
@@ -336,7 +336,7 @@ void Game::loadItems(void)
 				tmp.name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmp.texture = doc["texture"].GetString();
+				tmp.texture = clothingPath + doc["texture"].GetString();
 
 				assert(doc["desc"].IsString());
 				tmp.desc = doc["desc"].GetString();
@@ -374,7 +374,7 @@ void Game::loadItems(void)
 				tmp.name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmp.texture = doc["texture"].GetString();
+				tmp.texture = consumablesPath + doc["texture"].GetString();
 
 				assert(doc["desc"].IsString());
 				tmp.desc = doc["desc"].GetString();
@@ -412,7 +412,7 @@ void Game::loadItems(void)
 				tmp.name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmp.texture = doc["texture"].GetString();
+				tmp.texture = materialPath + doc["texture"].GetString();
 
 				assert(doc["desc"].IsString());
 				tmp.desc = doc["desc"].GetString();
@@ -450,7 +450,7 @@ void Game::loadItems(void)
 				tmp.name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmp.texture = doc["texture"].GetString();
+				tmp.texture = weaponPath + doc["texture"].GetString();
 
 				assert(doc["desc"].IsString());
 				tmp.desc = doc["desc"].GetString();

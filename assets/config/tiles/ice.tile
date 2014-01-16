@@ -1,5 +1,5 @@
 {
 	"name" : "Ice",
-	"texture" : "../assets/images/ice.png",
+	"texture" : "ice.png",
 	"friction" : 1.0
 }

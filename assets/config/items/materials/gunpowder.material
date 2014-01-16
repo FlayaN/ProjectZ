@@ -1,5 +1,5 @@
 {
 	"name" : "Gunpowder",
-	"texture" : "../assets/images/gunpowder.png",
+	"texture" : "gunpowder.png",
 	"desc" : "TODO add description"
 }

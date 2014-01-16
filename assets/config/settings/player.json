@@ -8,7 +8,7 @@
 		"width" : 80,
 		"height" : 160
 	},
-	"texture" : "../assets/images/mario.png",
+	"texture" : "mario.png",
 	"acceleration" : 30.0,
 	"maxSpeed" : 100.0,
 	"friction" : 90.0,
