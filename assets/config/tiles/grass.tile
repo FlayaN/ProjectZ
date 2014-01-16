@@ -1,4 +1,5 @@
 {
+	"name" : "Grass",
 	"texture" : "../assets/images/grass.png",
 	"friction" : 90.0
 }

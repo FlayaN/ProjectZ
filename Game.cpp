@@ -24,11 +24,12 @@ Game::Game(void) : _running(false)
 	SimplexNoise::init();
 
 	combineTileTextures();
+	combineItemTextures();
 
 	Graphics::getInstance();
 	player = std::make_shared<EntityPlayer>(EntityPlayer(playerType));
 	cam = std::make_shared<Camera>(Camera(player));
-	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, ct, tileTypes));
+	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, tileTexture, tileTypes, itemTexture, materialTypes));
 	net = std::unique_ptr<Network>(new Network("81.237.237.250"));
 
 	online = net->getSuccess();
@@ -71,7 +72,7 @@ int Game::run(void)
 		}
 		
 		//Logic
-		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, *player, tileTypes);
+		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, *player, tileTypes, materialTypes);
 		collision();
 		player->update(delta, keystates);
 		if(online)
@@ -130,7 +131,7 @@ void Game::collision(void)
     {
 		if(tile != nullptr)
 		{
-			glm::ivec2 tileCoord = *tile->getPosition();
+			glm::ivec2 tileCoord = tile->getPosition();
 			glm::ivec2 playerInTileCoord = Utility::inTileCoord(player->getCenterPosition());
 
 			if(playerInTileCoord == tileCoord)
@@ -155,12 +156,18 @@ void Game::collision(void)
 
 void Game::loadJson(void)
 {
+	loadSettings();
+	loadTiles();
+	loadItems();
+}
+
+void Game::loadSettings(void)
+{
 	std::string settingsChunkPath = "../assets/config/settings/chunk.json";
 	std::string settingsEnginePath = "../assets/config/settings/engine.json";
 	std::string settingsGraphicPath = "../assets/config/settings/graphic.json";
 	std::string settingsPlayerPath = "../assets/config/settings/player.json";
 	std::string settingsTilePath = "../assets/config/settings/tile.json";
-	//std::string texturePath = "../assets/config/textures.json";
 #ifdef __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourceURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
@@ -249,8 +256,6 @@ void Game::loadJson(void)
 	Settings::Tile::height = doc["height"].GetInt();
 
 	fclose(pFile4);
-
-	loadTiles();
 }
 
 void Game::loadTiles(void)
@@ -276,7 +281,9 @@ void Game::loadTiles(void)
 
 				
 				TypeTile tmpTile;
-				tmpTile.name = tmpFile.erase(tmpFile.size() - 5);
+
+				assert(doc["name"].IsString());
+				tmpTile.name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
 				tmpTile.texture = doc["texture"].GetString();
@@ -292,6 +299,173 @@ void Game::loadTiles(void)
 	}else
 	{
 		std::cout << "Cannot open dir" << std::endl;
+	}
+}
+
+void Game::loadItems(void)
+{
+	std::string clothingPath = "../assets/config/items/clothing/";
+	std::string consumablesPath = "../assets/config/items/consumables/";
+	std::string materialPath = "../assets/config/items/materials/";
+	std::string weaponPath = "../assets/config/items/weapons/";
+
+	DIR* dir;
+	struct dirent* ent;
+
+
+	//CLOTHING
+
+	dir = opendir(clothingPath.c_str());
+	if(dir != nullptr)
+	{
+		while((ent = readdir(dir)) != nullptr)
+		{
+			std::string tmpFile(ent->d_name);
+			std::string end = ".clothing";
+			if(Utility::hasEnding(tmpFile, end))
+			{
+				FILE* pFile = fopen((clothingPath+tmpFile).c_str(), "rb");
+				rapidjson::Document doc;
+				rapidjson::FileStream fs(pFile);
+				doc.ParseStream<0>(fs);
+
+				
+				TypeClothing tmp;
+
+				assert(doc["name"].IsString());
+				tmp.name = doc["name"].GetString();
+
+				assert(doc["texture"].IsString());
+				tmp.texture = doc["texture"].GetString();
+
+				assert(doc["desc"].IsString());
+				tmp.desc = doc["desc"].GetString();
+
+				clothingTypes.push_back(tmp);
+
+				fclose(pFile);
+			}
+		}
+	}else
+	{
+		std::cout << "Cannot open dir: " << clothingPath << std::endl;
+	}
+
+	//CONSUMABLES
+
+	dir = opendir(consumablesPath.c_str());
+	if(dir != nullptr)
+	{
+		while((ent = readdir(dir)) != nullptr)
+		{
+			std::string tmpFile(ent->d_name);
+			std::string end = ".consumable";
+			if(Utility::hasEnding(tmpFile, end))
+			{
+				FILE* pFile = fopen((consumablesPath+tmpFile).c_str(), "rb");
+				rapidjson::Document doc;
+				rapidjson::FileStream fs(pFile);
+				doc.ParseStream<0>(fs);
+
+				
+				TypeConsumable tmp;
+				
+				assert(doc["name"].IsString());
+				tmp.name = doc["name"].GetString();
+
+				assert(doc["texture"].IsString());
+				tmp.texture = doc["texture"].GetString();
+
+				assert(doc["desc"].IsString());
+				tmp.desc = doc["desc"].GetString();
+
+				consumableTypes.push_back(tmp);
+
+				fclose(pFile);
+			}
+		}
+	}else
+	{
+		std::cout << "Cannot open dir: " << consumablesPath << std::endl;
+	}
+
+	//MATERIALS
+
+	dir = opendir(materialPath.c_str());
+	if(dir != nullptr)
+	{
+		while((ent = readdir(dir)) != nullptr)
+		{
+			std::string tmpFile(ent->d_name);
+			std::string end = ".material";
+			if(Utility::hasEnding(tmpFile, end))
+			{
+				FILE* pFile = fopen((materialPath+tmpFile).c_str(), "rb");
+				rapidjson::Document doc;
+				rapidjson::FileStream fs(pFile);
+				doc.ParseStream<0>(fs);
+
+				
+				TypeMaterial tmp;
+				
+				assert(doc["name"].IsString());
+				tmp.name = doc["name"].GetString();
+
+				assert(doc["texture"].IsString());
+				tmp.texture = doc["texture"].GetString();
+
+				assert(doc["desc"].IsString());
+				tmp.desc = doc["desc"].GetString();
+
+				materialTypes.push_back(tmp);
+
+				fclose(pFile);
+			}
+		}
+	}else
+	{
+		std::cout << "Cannot open dir: " << materialPath << std::endl;
+	}
+
+	//WEAPONS
+
+	dir = opendir(weaponPath.c_str());
+	if(dir != nullptr)
+	{
+		while((ent = readdir(dir)) != nullptr)
+		{
+			std::string tmpFile(ent->d_name);
+			std::string end = ".weapon";
+			if(Utility::hasEnding(tmpFile, end))
+			{
+				FILE* pFile = fopen((weaponPath+tmpFile).c_str(), "rb");
+				rapidjson::Document doc;
+				rapidjson::FileStream fs(pFile);
+				doc.ParseStream<0>(fs);
+
+				
+				TypeWeapon tmp;
+				
+				assert(doc["name"].IsString());
+				tmp.name = doc["name"].GetString();
+
+				assert(doc["texture"].IsString());
+				tmp.texture = doc["texture"].GetString();
+
+				assert(doc["desc"].IsString());
+				tmp.desc = doc["desc"].GetString();
+
+				assert(doc["damage"].IsDouble());
+				tmp.damage = (float)doc["damage"].GetDouble();
+
+				weaponTypes.push_back(tmp);
+
+				fclose(pFile);
+			}
+		}
+	}else
+	{
+		std::cout << "Cannot open dir: " << weaponPath << std::endl;
 	}
 }
 
@@ -311,7 +485,7 @@ void Game::combineTileTextures(void)
     amask = 0xff000000;
 #endif
 
-	ct = *SDL_CreateRGBSurface(0, tileTypes.size()*256, 128, 32, rmask, gmask, bmask, amask);
+	tileTexture = *SDL_CreateRGBSurface(0, tileTypes.size()*256, 128, 32, rmask, gmask, bmask, amask);
 	SDL_Rect pos;
 	pos.y = 0;
 	pos.x = 0;
@@ -321,7 +495,39 @@ void Game::combineTileTextures(void)
 		SDL_Surface* tmp = IMG_Load(t.texture.c_str());
 		if(tmp != nullptr)
 		{
-			SDL_BlitSurface(tmp, NULL, &ct, &pos);
+			SDL_BlitSurface(tmp, NULL, &tileTexture, &pos);
+			pos.x += tmp->w;
+		}
+	}
+}
+
+void Game::combineItemTextures(void)
+{
+	Uint32 rmask, gmask, bmask, amask;
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+#endif
+
+	itemTexture = *SDL_CreateRGBSurface(0, materialTypes.size()*32, 32, 32, rmask, gmask, bmask, amask);
+	SDL_Rect pos;
+	pos.y = 0;
+	pos.x = 0;
+
+	for(auto i : materialTypes)
+	{
+		SDL_Surface* tmp = IMG_Load(i.texture.c_str());
+		if(tmp != nullptr)
+		{
+			SDL_BlitSurface(tmp, NULL, &itemTexture, &pos);
 			pos.x += tmp->w;
 		}
 	}

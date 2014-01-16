@@ -230,6 +230,21 @@
     <ClInclude Include="simplefont.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="TypeItem.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeWeapon.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeMaterial.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeConsumable.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeClothing.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\tile.frag">
@@ -248,6 +263,12 @@
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="assets\shaders\basic.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\item.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="assets\shaders\item.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>

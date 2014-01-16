@@ -32,6 +32,10 @@
 #include "TypePlayer.h"
 #include "Settings.h"
 #include "SimplexNoise.h"
+#include "TypeClothing.h"
+#include "TypeConsumable.h"
+#include "TypeMaterial.h"
+#include "TypeWeapon.h"
 
 class Game
 {
@@ -54,10 +58,12 @@ public:
 	void collision(void);
 
 	void loadJson(void);
+	void loadSettings(void);
 	void loadTiles(void);
+	void loadItems(void);
 
 	void combineTileTextures(void);
-
+	void combineItemTextures(void);
 private:
     std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks;
 	std::vector<std::shared_ptr<PlayerMP> > players;
@@ -68,9 +74,16 @@ private:
 	std::unique_ptr<Network> net;
 
 	std::vector<TypeTile> tileTypes;
+	std::vector<TypeClothing> clothingTypes;
+	std::vector<TypeConsumable> consumableTypes;
+	std::vector<TypeMaterial> materialTypes;
+	std::vector<TypeWeapon> weaponTypes;
+
 	TypePlayer playerType;
 	
-	SDL_Surface ct;
+	SDL_Surface tileTexture;
+	SDL_Surface itemTexture;
+
 	Mix_Chunk* music;
 
 	bool _running;

@@ -135,13 +135,20 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="TypeClothing.h" />
+    <ClInclude Include="TypeConsumable.h" />
+    <ClInclude Include="TypeItem.h" />
+    <ClInclude Include="TypeMaterial.h" />
     <ClInclude Include="TypePlayer.h" />
     <ClInclude Include="TypeTile.h" />
+    <ClInclude Include="TypeWeapon.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\basic.frag" />
     <None Include="assets\shaders\basic.vert" />
+    <None Include="assets\shaders\item.frag" />
+    <None Include="assets\shaders\item.vert" />
     <None Include="assets\shaders\line.frag" />
     <None Include="assets\shaders\line.vert" />
     <None Include="assets\shaders\tile.frag" />

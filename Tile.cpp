@@ -6,7 +6,7 @@ void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
-Tile::Tile(int tId, float frictionIn, glm::ivec2* positionIn)
+Tile::Tile(int tId, float frictionIn, glm::ivec2 positionIn)
 {
 	textureId = tId;
 	friction = frictionIn;
@@ -26,7 +26,7 @@ Tile::~Tile(void)
 {
 }
 
-glm::ivec2* Tile::getPosition(void)
+glm::ivec2 Tile::getPosition(void)
 {
 	return position;
 }

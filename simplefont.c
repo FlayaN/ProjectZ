@@ -373,10 +373,11 @@ void sfDrawString(int h, int v, char *s)
 	// I also would like to get and restore the current shader program:
 	glGetIntegerv(GL_CURRENT_PROGRAM, &saveprogram);
 	
+	/*
 	if (h < 0)
 		h = gRasterH + h - strlen(s)*10;
 	if (v < 0)
-		v = gRasterV + v; // * 13;
+		v = gRasterV + v; // * 13;*/
 	for (;*s != 0;s++)
 	{
 		drawChar(h, v-10, *s); // -10 to get to the proper height

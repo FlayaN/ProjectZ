@@ -13,17 +13,17 @@
 class Tile
 {
 public:
-	Tile(int, float, glm::ivec2*);
+	Tile(int, float, glm::ivec2);
 	~Tile(void);
 
 	RectangleShape* getBB(void);
-	glm::ivec2* getPosition(void);
+	glm::ivec2 getPosition(void);
     glm::vec3* getColorMod(void);
 	glm::ivec2 getSize(void);
 	int getTextureId(void);
 	float getFriction(void);
 private:
-	glm::ivec2* position;
+	glm::ivec2 position;
 
 	RectangleShape* bb;
 

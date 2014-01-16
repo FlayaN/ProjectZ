@@ -30,7 +30,30 @@ std::vector<std::shared_ptr<Tile> > ChunkUtility::getSurroundingTiles(std::HashM
 	return t;
 }
 
-void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, int radius, EntityPlayer player, std::vector<TypeTile> tileTypes)
+std::vector<std::shared_ptr<Item> > ChunkUtility::getSurroundingItems(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player)
+{
+	std::vector<std::shared_ptr<Item> > t;
+
+	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player.getCenterPosition());
+
+	for(int x = centerPosInChunk.x - 2; x <= centerPosInChunk.x + 2; x++)
+	{
+		for(int y = centerPosInChunk.y - 2; y <= centerPosInChunk.y + 2; y++)
+		{
+			std::shared_ptr<Chunk> tmpChunk = chunks[glm::ivec2(x, y)];
+			
+			if(tmpChunk != nullptr)
+			{
+				std::vector<std::shared_ptr<Item> > t2 = tmpChunk->getGroundItems();
+				t.insert(t.end(), t2.begin(), t2.end());
+			}
+		}
+	}
+
+	return t;
+}
+
+void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, int radius, EntityPlayer player, std::vector<TypeTile> tileTypes, std::vector<TypeMaterial> materialTypes)
 {
 	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player.getCenterPosition());
 
@@ -48,7 +71,7 @@ void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared
 			}
 			else
 			{
-				newchunks[glm::ivec2(x, y)] = std::make_shared<Chunk>(Chunk(glm::ivec2(x, y), tileTypes));
+				newchunks[glm::ivec2(x, y)] = std::make_shared<Chunk>(Chunk(glm::ivec2(x, y), tileTypes, materialTypes));
 				checker[glm::ivec2(x, y)] = true;
 			}
 		}

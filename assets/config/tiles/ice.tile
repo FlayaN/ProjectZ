@@ -1,4 +1,5 @@
 {
+	"name" : "Ice",
 	"texture" : "../assets/images/ice.png",
 	"friction" : 1.0
 }

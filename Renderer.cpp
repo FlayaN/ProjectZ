@@ -1,21 +1,29 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surface ct, std::vector<TypeTile> tileTypes)
+Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surface tileTexture, std::vector<TypeTile> tileTypes, SDL_Surface itemTexture, std::vector<TypeMaterial> materialTypes)
 {
 	cam = camIn;
 
 	modelPlayer = new ModelSquare("../assets/shaders/basic.vert", "../assets/shaders/basic.frag");
 	modelOnlinePlayer = new ModelSquare("../assets/shaders/basic.vert", "../assets/shaders/basic.frag");
 	modelTile = new ModelSquare("../assets/shaders/tile.vert", "../assets/shaders/tile.frag");
+	modelItem = new ModelSquare("../assets/shaders/item.vert", "../assets/shaders/item.frag");
+
 	initShaders();
 
+	glUseProgram(modelTile->getProg());
 	glUniform1i(modelTile->getUniform("maxId"), tileTypes.size());
 	glUniform1i(modelTile->getUniform("widthPerTexture"), 256);
 
+	glUseProgram(modelItem->getProg());
+	glUniform1i(modelItem->getUniform("maxId"), materialTypes.size());
+	glUniform1i(modelItem->getUniform("widthPerTexture"), 32);
+
 	texPlayer = pathToOGLTexture(player.getTexture());
 	texOnlinePlayer = pathToOGLTexture(player.getTexture());
-	texTile = surfaceToOGLTexture(ct);
+	texTile = surfaceToOGLTexture(tileTexture);
+	texItem = surfaceToOGLTexture(itemTexture);
 
 	sfMakeRasterFont();
 
@@ -23,7 +31,7 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 
 	glEnable(GL_BLEND);
@@ -66,6 +74,18 @@ void Renderer::initShaders(void)
 	modelTile->addUniform("textureId");
 	modelTile->addUniform("maxId");
 	modelTile->addUniform("widthPerTexture");
+
+	//------------------------------ITEM BUFFER INITIALIZATION-----------------------------//
+	modelItem->addAttrib(BUFFTYPE::VERTEX, "inPosition");
+	modelItem->addAttrib(BUFFTYPE::TEXCOORD, "inTexCoord");
+
+	modelItem->addUniform("projMatrix");
+	modelItem->addUniform("modelViewMatrix");
+	modelItem->addUniform("texUnit");
+	modelItem->addUniform("textureId");
+	modelItem->addUniform("maxId");
+	modelItem->addUniform("widthPerTexture");
+
 }
 
 void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player, std::vector<std::shared_ptr<PlayerMP> > players)
@@ -78,12 +98,42 @@ void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, 
 	if(player.isOnline())
 		renderOnlinePlayers(players, player);
 
+	renderItem(chunks, player);
+
 	sprintf(buff, "X %0.1f", player.getPosition().x);
 	sfDrawString(10, 10, buff);
 	sprintf(buff, "Y %0.1f", player.getPosition().y);
 	sfDrawString(10, 30, buff);
 
 	SDL_GL_SwapWindow(Graphics::getInstance().getWindow());
+}
+
+void Renderer::renderItem(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player)
+{
+	glUseProgram(modelItem->getProg());
+
+	glm::vec2 playerOffset = glm::vec2(-player.getCenterPosition().x + w/2, -player.getCenterPosition().y + h/2);
+
+	glUniformMatrix4fv(modelItem->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+	glBindTexture(GL_TEXTURE_2D, texItem);
+
+	for(auto item: ChunkUtility::getSurroundingItems(chunks, player))
+	{
+		if(item != nullptr)
+		{
+			glm::mat4 modelMat(1.0);
+			modelMat = glm::translate(modelMat, glm::vec3(item->getPosition().x*Settings::Tile::width + playerOffset.x, item->getPosition().y*Settings::Tile::height + playerOffset.y, -0.5));
+			sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
+			modelMat = glm::scale(modelMat, glm::vec3(32, 32, 1.0));
+			glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+			glUniform1i(modelItem->getUniform("textureId"), 0);
+			
+			glBindVertexArray(modelItem->getVAO());
+
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
+		}
+	}
+	printError("Renderer|renderItem");
 }
 
 void Renderer::renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player)
@@ -93,7 +143,7 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chun
 	glm::vec2 playerOffset = glm::vec2(-player.getCenterPosition().x + w/2, -player.getCenterPosition().y + h/2);
 
 	glUniformMatrix4fv(modelTile->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
-	//glUniform1i(modelTile->getUniform("texUnit"), 0);
+	glUniform1i(modelTile->getUniform("texUnit"), 0);
 	glBindTexture(GL_TEXTURE_2D, texTile);
 
 	for(auto tile: ChunkUtility::getSurroundingTiles(chunks, Settings::Engine::renderDistance, player))
@@ -101,7 +151,7 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chun
 		if(tile != nullptr)
 		{
 			glm::mat4 modelMat(1.0);
-			modelMat = glm::translate(modelMat, glm::vec3(tile->getPosition()->x*tile->getSize().x + playerOffset.x, tile->getPosition()->y*tile->getSize().y + playerOffset.y, 0.0));
+			modelMat = glm::translate(modelMat, glm::vec3(tile->getPosition().x*tile->getSize().x + playerOffset.x, tile->getPosition().y*tile->getSize().y + playerOffset.y, -1.0));
 			modelMat = glm::scale(modelMat, glm::vec3(tile->getSize().x, tile->getSize().y, 1.0));
 			glUniformMatrix4fv(modelTile->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
 			glUniform1i(modelTile->getUniform("textureId"), tile->getTextureId());
@@ -236,7 +286,7 @@ GLuint Renderer::pathToOGLTexture(std::string path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	printError("Renderer|surfaceToOGLTexture");
+	printError("Renderer|pathToOGLTexture");
 	return texture;
 }
 
