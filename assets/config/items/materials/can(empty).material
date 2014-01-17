@@ -1,0 +1,6 @@
+{
+	"name" : "Can(Empty)",
+	"texture" : "can(empty).png",
+	"desc" : "TODO add description",
+	"stackSize" : 1
+}

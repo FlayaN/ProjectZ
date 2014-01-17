@@ -74,10 +74,12 @@ private:
 	std::unique_ptr<Network> net;
 
 	std::vector<TypeTile> tileTypes;
-	std::vector<TypeClothing> clothingTypes;
+	std::vector<std::shared_ptr<TypeItem> > itemTypes;
+
+	/*std::vector<TypeClothing> clothingTypes;
 	std::vector<TypeConsumable> consumableTypes;
 	std::vector<TypeMaterial> materialTypes;
-	std::vector<TypeWeapon> weaponTypes;
+	std::vector<TypeWeapon> weaponTypes;*/
 
 	TypePlayer playerType;
 	

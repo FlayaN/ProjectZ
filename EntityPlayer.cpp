@@ -14,9 +14,6 @@ EntityPlayer::EntityPlayer(TypePlayer playerType)
 
 	inventory = std::make_shared<Inventory>(Inventory(27));
 
-	inventory->addItem(0, std::make_shared<Item>(Item("hej", 2, 0)));
-	inventory->addItem(1, std::make_shared<Item>(Item("hej", 2, 0)));
-
 	inventoryOpen = false;
 	std::cout << "INV SIZE" << inventory->getCurrSize() << std::endl;
 }
@@ -142,4 +139,9 @@ bool EntityPlayer::hasInventoryOpen(void)
 std::vector<std::shared_ptr<ItemStack> > EntityPlayer::getItems(void)
 {
 	return inventory->getItems();
+}
+
+std::shared_ptr<Inventory> EntityPlayer::getInventory(void)
+{
+	return inventory;
 }

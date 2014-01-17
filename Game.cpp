@@ -29,7 +29,7 @@ Game::Game(void) : _running(false)
 	Graphics::getInstance();
 	player = std::make_shared<EntityPlayer>(EntityPlayer(playerType));
 	cam = std::make_shared<Camera>(Camera(player));
-	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, tileTexture, tileTypes, itemTexture, (materialTypes.size()+weaponTypes.size()+clothingTypes.size()+consumableTypes.size())));
+	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, tileTexture, tileTypes, itemTexture, itemTypes.size())); //(materialTypes.size()+weaponTypes.size()+clothingTypes.size()+consumableTypes.size())));
 	net = std::unique_ptr<Network>(new Network("81.237.237.250"));
 
 	online = net->getSuccess();
@@ -73,7 +73,7 @@ int Game::run(void)
 		}
 		
 		//Logic
-		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, *player, tileTypes, materialTypes);
+		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, *player, tileTypes, itemTypes);
 		collision();
 		player->update(delta, keystates);
 		if(online)
@@ -151,6 +151,18 @@ void Game::collision(void)
 			{
 				//std::cout << "Collision at X: " << bb->x << " Y: " << bb->y << std::endl;
 			}*/
+		}
+	}
+
+	for(auto item: ChunkUtility::getSurroundingItems(chunks, *player))
+	{
+		glm::vec2 playerPos = player->getCenterPosition();
+		glm::vec2 itemPos = glm::vec2(item->getPosition().x * Settings::Tile::width, item->getPosition().y * Settings::Tile::height);
+
+		if(	playerPos.x > (itemPos.x - 100) && playerPos.x < (itemPos.x + 100) &&
+			playerPos.y > (itemPos.y - 100) && playerPos.y < (itemPos.y + 100))
+		{
+			player->getInventory()->addItem(item->getId(), item);
 		}
 	}
 }
@@ -332,23 +344,23 @@ void Game::loadItems(void)
 				doc.ParseStream<0>(fs);
 
 				
-				TypeClothing tmp;
+				std::shared_ptr<TypeClothing> tmp = std::make_shared<TypeClothing>();
 
 				assert(doc["name"].IsString());
-				tmp.name = doc["name"].GetString();
+				tmp->name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmp.texture = clothingPath + doc["texture"].GetString();
+				tmp->texture = clothingPath + doc["texture"].GetString();
 
 				assert(doc["desc"].IsString());
-				tmp.desc = doc["desc"].GetString();
+				tmp->desc = doc["desc"].GetString();
 				
 				assert(doc["stackSize"].IsInt());
-				tmp.stackSize = doc["stackSize"].GetInt();
+				tmp->stackSize = doc["stackSize"].GetInt();
 
-				tmp.id = curId++;
+				tmp->id = curId++;
 
-				clothingTypes.push_back(tmp);
+				itemTypes.push_back(tmp);
 				
 				fclose(pFile);
 			}
@@ -375,23 +387,23 @@ void Game::loadItems(void)
 				doc.ParseStream<0>(fs);
 
 				
-				TypeConsumable tmp;
+				std::shared_ptr<TypeConsumable> tmp = std::make_shared<TypeConsumable>();
 				
 				assert(doc["name"].IsString());
-				tmp.name = doc["name"].GetString();
+				tmp->name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmp.texture = consumablesPath + doc["texture"].GetString();
+				tmp->texture = consumablesPath + doc["texture"].GetString();
 
 				assert(doc["desc"].IsString());
-				tmp.desc = doc["desc"].GetString();
+				tmp->desc = doc["desc"].GetString();
 				
 				assert(doc["stackSize"].IsInt());
-				tmp.stackSize = doc["stackSize"].GetInt();
+				tmp->stackSize = doc["stackSize"].GetInt();
 
-				tmp.id = curId++;
+				tmp->id = curId++;
 
-				consumableTypes.push_back(tmp);
+				itemTypes.push_back(tmp);
 
 				fclose(pFile);
 			}
@@ -418,23 +430,23 @@ void Game::loadItems(void)
 				doc.ParseStream<0>(fs);
 
 				
-				TypeMaterial tmp;
+				std::shared_ptr<TypeMaterial> tmp = std::make_shared<TypeMaterial>();
 				
 				assert(doc["name"].IsString());
-				tmp.name = doc["name"].GetString();
+				tmp->name = (std::string)doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmp.texture = materialPath + doc["texture"].GetString();
+				tmp->texture = materialPath + doc["texture"].GetString();
 
 				assert(doc["desc"].IsString());
-				tmp.desc = doc["desc"].GetString();
+				tmp->desc = doc["desc"].GetString();
 				
 				assert(doc["stackSize"].IsInt());
-				tmp.stackSize = doc["stackSize"].GetInt();
+				tmp->stackSize = doc["stackSize"].GetInt();
 
-				tmp.id = curId++;
+				tmp->id = curId++;
 
-				materialTypes.push_back(tmp);
+				itemTypes.push_back(tmp);
 
 				fclose(pFile);
 			}
@@ -461,26 +473,26 @@ void Game::loadItems(void)
 				doc.ParseStream<0>(fs);
 
 				
-				TypeWeapon tmp;
+				std::shared_ptr<TypeWeapon> tmp = std::make_shared<TypeWeapon>();
 				
 				assert(doc["name"].IsString());
-				tmp.name = doc["name"].GetString();
+				tmp->name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmp.texture = weaponPath + doc["texture"].GetString();
+				tmp->texture = weaponPath + doc["texture"].GetString();
 
 				assert(doc["desc"].IsString());
-				tmp.desc = doc["desc"].GetString();
+				tmp->desc = doc["desc"].GetString();
 
 				assert(doc["damage"].IsDouble());
-				tmp.damage = (float)doc["damage"].GetDouble();
+				tmp->damage = (float)doc["damage"].GetDouble();
 				
 				assert(doc["stackSize"].IsInt());
-				tmp.stackSize = doc["stackSize"].GetInt();
+				tmp->stackSize = doc["stackSize"].GetInt();
 
-				tmp.id = curId++;
+				tmp->id = curId++;
 
-				weaponTypes.push_back(tmp);
+				itemTypes.push_back(tmp);
 
 				fclose(pFile);
 			}
@@ -539,44 +551,14 @@ void Game::combineItemTextures(void)
     amask = 0xff000000;
 #endif
 
-	itemTexture = *SDL_CreateRGBSurface(0, materialTypes.size()*32, 32, 32, rmask, gmask, bmask, amask);
+	itemTexture = *SDL_CreateRGBSurface(0, itemTypes.size()*32, 32, 32, rmask, gmask, bmask, amask);
 	SDL_Rect pos;
 	pos.y = 0;
 	pos.x = 0;
 
-	for(auto i : clothingTypes)
+	for(auto i : itemTypes)
 	{
-		SDL_Surface* tmp = IMG_Load(i.texture.c_str());
-		if(tmp != nullptr)
-		{
-			SDL_BlitSurface(tmp, NULL, &itemTexture, &pos);
-			pos.x += tmp->w;
-		}
-	}
-
-	for(auto i : consumableTypes)
-	{
-		SDL_Surface* tmp = IMG_Load(i.texture.c_str());
-		if(tmp != nullptr)
-		{
-			SDL_BlitSurface(tmp, NULL, &itemTexture, &pos);
-			pos.x += tmp->w;
-		}
-	}
-
-	for(auto i : materialTypes)
-	{
-		SDL_Surface* tmp = IMG_Load(i.texture.c_str());
-		if(tmp != nullptr)
-		{
-			SDL_BlitSurface(tmp, NULL, &itemTexture, &pos);
-			pos.x += tmp->w;
-		}
-	}
-
-	for(auto i : weaponTypes)
-	{
-		SDL_Surface* tmp = IMG_Load(i.texture.c_str());
+		SDL_Surface* tmp = IMG_Load(i->texture.c_str());
 		if(tmp != nullptr)
 		{
 			SDL_BlitSurface(tmp, NULL, &itemTexture, &pos);

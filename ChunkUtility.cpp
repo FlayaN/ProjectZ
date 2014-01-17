@@ -53,7 +53,7 @@ std::vector<std::shared_ptr<GroundItem> > ChunkUtility::getSurroundingItems(std:
 	return t;
 }
 
-void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, int radius, EntityPlayer player, std::vector<TypeTile> tileTypes, std::vector<TypeMaterial> materialTypes)
+void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, int radius, EntityPlayer player, std::vector<TypeTile> tileTypes, std::vector<std::shared_ptr<TypeItem> > itemTypes)
 {
 	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player.getCenterPosition());
 
@@ -71,7 +71,7 @@ void ChunkUtility::generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared
 			}
 			else
 			{
-				newchunks[glm::ivec2(x, y)] = std::make_shared<Chunk>(Chunk(glm::ivec2(x, y), tileTypes, materialTypes));
+				newchunks[glm::ivec2(x, y)] = std::make_shared<Chunk>(Chunk(glm::ivec2(x, y), tileTypes, itemTypes));
 				checker[glm::ivec2(x, y)] = true;
 			}
 		}

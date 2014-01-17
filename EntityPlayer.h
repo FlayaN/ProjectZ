@@ -33,6 +33,8 @@ public:
 
 	std::vector<std::shared_ptr<ItemStack> > getItems(void);
 
+	std::shared_ptr<Inventory> getInventory(void);
+
 	bool hasInventoryOpen(void);
 private:
 	int id;

@@ -1,0 +1,6 @@
+{
+	"name" : "Baked Beans",
+	"texture" : "baked_beans.png",
+	"desc" : "TODO add description",
+	"stackSize" : 5
+}

@@ -1,6 +1,6 @@
 #include "Chunk.h"
 
-Chunk::Chunk(glm::ivec2 coord, std::vector<TypeTile> tileTypes, std::vector<TypeMaterial> materialTypes) : coord(coord)
+Chunk::Chunk(glm::ivec2 coord, std::vector<TypeTile> tileTypes, std::vector<std::shared_ptr<TypeItem> > itemTypes) : coord(coord)
 {
 	for(int x = 0; x < TileAmount; x++)
 	{
@@ -21,8 +21,8 @@ Chunk::Chunk(glm::ivec2 coord, std::vector<TypeTile> tileTypes, std::vector<Type
 			tiles[x][y] = std::make_shared<Tile>(Tile(i, tileTypes[i].friction, glm::ivec2(TileAmount*coord.x+x, TileAmount*coord.y+y)));
 		}
 	}
-	int id = 0;
-	groundItems.push_back(std::make_shared<GroundItem>(GroundItem(glm::vec2(TileAmount*coord.x+Utility::getRandInt(0, TileAmount), TileAmount*coord.y+Utility::getRandInt(0, TileAmount)), materialTypes[id].name, materialTypes[id].stackSize, materialTypes[id].id)));
+	int id = Utility::getRandInt(0, itemTypes.size()-1);
+	groundItems.push_back(std::make_shared<GroundItem>(GroundItem(glm::vec2(TileAmount*coord.x+Utility::getRandInt(0, TileAmount), TileAmount*coord.y+Utility::getRandInt(0, TileAmount)), itemTypes[id]->name, itemTypes[id]->stackSize, itemTypes[id]->id)));
 }
 
 Chunk::~Chunk(void)
