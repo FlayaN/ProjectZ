@@ -13,7 +13,7 @@
 #include "PerlinNoise.h"
 #include "TypeTile.h"
 #include "SimplexNoise.h"
-#include "Item.h"
+#include "GroundItem.h"
 #include "TypeMaterial.h"
 
 class Chunk
@@ -23,14 +23,14 @@ public:
 	~Chunk(void);
 
 	std::shared_ptr<Tile> getTile(const glm::ivec2& pos);
-	std::vector<std::shared_ptr<Item> > getGroundItems(void);
+	std::vector<std::shared_ptr<GroundItem> > getGroundItems(void);
 
     glm::ivec2 getCoord(void);
 
 private:
 
 	std::shared_ptr<Tile> tiles[TileAmount][TileAmount];
-	std::vector<std::shared_ptr<Item> > groundItems;
+	std::vector<std::shared_ptr<GroundItem> > groundItems;
     glm::ivec2 coord;
 };
 

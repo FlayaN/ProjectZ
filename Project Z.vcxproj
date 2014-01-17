@@ -90,7 +90,10 @@
     <ClCompile Include="EntityPlayer.cpp" />
     <ClCompile Include="GL_utilities.c" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="GroundItem.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemStack.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelSquare.cpp" />
     <ClCompile Include="MovingEntity.cpp" />
@@ -119,6 +122,9 @@
     <ClInclude Include="GL_utilities.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="GroundItem.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="ItemStack.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ModelSquare.h" />
     <ClInclude Include="MovingEntity.h" />

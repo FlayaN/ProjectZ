@@ -1,5 +1,6 @@
 {
 	"name" : "Gunpowder",
 	"texture" : "gunpowder.png",
-	"desc" : "TODO add description"
+	"desc" : "TODO add description",
+	"stackSize" : 2
 }

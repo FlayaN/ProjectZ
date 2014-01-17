@@ -29,7 +29,7 @@ Game::Game(void) : _running(false)
 	Graphics::getInstance();
 	player = std::make_shared<EntityPlayer>(EntityPlayer(playerType));
 	cam = std::make_shared<Camera>(Camera(player));
-	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, tileTexture, tileTypes, itemTexture, materialTypes));
+	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, tileTexture, tileTypes, itemTexture, (materialTypes.size()+weaponTypes.size()+clothingTypes.size()+consumableTypes.size())));
 	net = std::unique_ptr<Network>(new Network("81.237.237.250"));
 
 	online = net->getSuccess();
@@ -69,6 +69,7 @@ int Game::run(void)
 		while( SDL_PollEvent(&ev)) 
 		{
 			onEvent(&ev);
+			player->onEvent(&ev);
 		}
 		
 		//Logic
@@ -312,6 +313,7 @@ void Game::loadItems(void)
 	DIR* dir;
 	struct dirent* ent;
 
+	int curId = 0;
 
 	//CLOTHING
 
@@ -340,9 +342,14 @@ void Game::loadItems(void)
 
 				assert(doc["desc"].IsString());
 				tmp.desc = doc["desc"].GetString();
+				
+				assert(doc["stackSize"].IsInt());
+				tmp.stackSize = doc["stackSize"].GetInt();
+
+				tmp.id = curId++;
 
 				clothingTypes.push_back(tmp);
-
+				
 				fclose(pFile);
 			}
 		}
@@ -378,6 +385,11 @@ void Game::loadItems(void)
 
 				assert(doc["desc"].IsString());
 				tmp.desc = doc["desc"].GetString();
+				
+				assert(doc["stackSize"].IsInt());
+				tmp.stackSize = doc["stackSize"].GetInt();
+
+				tmp.id = curId++;
 
 				consumableTypes.push_back(tmp);
 
@@ -416,6 +428,11 @@ void Game::loadItems(void)
 
 				assert(doc["desc"].IsString());
 				tmp.desc = doc["desc"].GetString();
+				
+				assert(doc["stackSize"].IsInt());
+				tmp.stackSize = doc["stackSize"].GetInt();
+
+				tmp.id = curId++;
 
 				materialTypes.push_back(tmp);
 
@@ -457,6 +474,11 @@ void Game::loadItems(void)
 
 				assert(doc["damage"].IsDouble());
 				tmp.damage = (float)doc["damage"].GetDouble();
+				
+				assert(doc["stackSize"].IsInt());
+				tmp.stackSize = doc["stackSize"].GetInt();
+
+				tmp.id = curId++;
 
 				weaponTypes.push_back(tmp);
 
@@ -522,7 +544,37 @@ void Game::combineItemTextures(void)
 	pos.y = 0;
 	pos.x = 0;
 
+	for(auto i : clothingTypes)
+	{
+		SDL_Surface* tmp = IMG_Load(i.texture.c_str());
+		if(tmp != nullptr)
+		{
+			SDL_BlitSurface(tmp, NULL, &itemTexture, &pos);
+			pos.x += tmp->w;
+		}
+	}
+
+	for(auto i : consumableTypes)
+	{
+		SDL_Surface* tmp = IMG_Load(i.texture.c_str());
+		if(tmp != nullptr)
+		{
+			SDL_BlitSurface(tmp, NULL, &itemTexture, &pos);
+			pos.x += tmp->w;
+		}
+	}
+
 	for(auto i : materialTypes)
+	{
+		SDL_Surface* tmp = IMG_Load(i.texture.c_str());
+		if(tmp != nullptr)
+		{
+			SDL_BlitSurface(tmp, NULL, &itemTexture, &pos);
+			pos.x += tmp->w;
+		}
+	}
+
+	for(auto i : weaponTypes)
 	{
 		SDL_Surface* tmp = IMG_Load(i.texture.c_str());
 		if(tmp != nullptr)

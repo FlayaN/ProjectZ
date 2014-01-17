@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surface tileTexture, std::vector<TypeTile> tileTypes, SDL_Surface itemTexture, std::vector<TypeMaterial> materialTypes)
+Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surface tileTexture, std::vector<TypeTile> tileTypes, SDL_Surface itemTexture, int itemCount)
 {
 	cam = camIn;
 
@@ -9,7 +9,7 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 	modelOnlinePlayer = new ModelSquare("../assets/shaders/basic.vert", "../assets/shaders/basic.frag");
 	modelTile = new ModelSquare("../assets/shaders/tile.vert", "../assets/shaders/tile.frag");
 	modelItem = new ModelSquare("../assets/shaders/item.vert", "../assets/shaders/item.frag");
-
+	modelGui = new ModelSquare("../assets/shaders/basic.vert", "../assets/shaders/basic.frag");
 	initShaders();
 
 	glUseProgram(modelTile->getProg());
@@ -17,11 +17,14 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 	glUniform1i(modelTile->getUniform("widthPerTexture"), 256);
 
 	glUseProgram(modelItem->getProg());
-	glUniform1i(modelItem->getUniform("maxId"), materialTypes.size());
+	glUniform1i(modelItem->getUniform("maxId"), itemCount);
 	glUniform1i(modelItem->getUniform("widthPerTexture"), 32);
 
 	texPlayer = pathToOGLTexture(player.getTexture());
 	texOnlinePlayer = pathToOGLTexture(player.getTexture());
+
+	texGui = pathToOGLTexture("../assets/images/gui.png");
+
 	texTile = surfaceToOGLTexture(tileTexture);
 	texItem = surfaceToOGLTexture(itemTexture);
 
@@ -86,6 +89,13 @@ void Renderer::initShaders(void)
 	modelItem->addUniform("maxId");
 	modelItem->addUniform("widthPerTexture");
 
+	//------------------------------GUI BUFFER INITIALIZATION-----------------------------//
+	modelGui->addAttrib(BUFFTYPE::VERTEX, "inPosition");
+	modelGui->addAttrib(BUFFTYPE::TEXCOORD, "inTexCoord");
+
+	modelGui->addUniform("projMatrix");
+	modelGui->addUniform("modelViewMatrix");
+	modelGui->addUniform("texUnit");
 }
 
 void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player, std::vector<std::shared_ptr<PlayerMP> > players)
@@ -99,6 +109,7 @@ void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, 
 		renderOnlinePlayers(players, player);
 
 	renderItem(chunks, player);
+	renderGui(player);
 
 	sprintf(buff, "X %0.1f", player.getPosition().x);
 	sfDrawString(10, 10, buff);
@@ -242,6 +253,54 @@ void Renderer::renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> > playe
 	}
 	
 	printError("Renderer|renderOnlinePlayers");
+}
+
+void Renderer::renderGui(EntityPlayer player)
+{
+	if(player.hasInventoryOpen())
+	{
+		//RENDER BG
+		glUseProgram(modelGui->getProg());
+	
+		glm::mat4 modelMat(1.0);
+		modelMat = glm::translate(modelMat, glm::vec3(w/2 - 256, h/2 - 256, 0.0));
+		modelMat = glm::scale(modelMat, glm::vec3(512, 512, 1.0));
+		glUniformMatrix4fv(modelGui->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+		glUniformMatrix4fv(modelGui->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+
+		glBindTexture(GL_TEXTURE_2D, texGui);
+
+		glBindVertexArray(modelGui->getVAO());
+
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, modelGui->getNumVertices());
+		
+		//RENDER FG
+		glUseProgram(modelItem->getProg());
+		glUniformMatrix4fv(modelItem->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+		glBindTexture(GL_TEXTURE_2D, texItem);
+
+		std::vector<std::shared_ptr<ItemStack> > tmpInv = player.getItems();
+
+
+		for(int i = 0; i < tmpInv.size(); i++)
+		{
+			if(tmpInv.at(i) != nullptr)
+			{
+				glm::mat4 modelMat(1.0);
+				modelMat = glm::translate(modelMat, glm::vec3((i%9)*100, (i/9)*100, -0.5));
+				//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
+				modelMat = glm::scale(modelMat, glm::vec3(32, 32, 1.0));
+				glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+				glUniform1i(modelItem->getUniform("textureId"), tmpInv.at(i)->getItem()->getId());
+			
+				glBindVertexArray(modelItem->getVAO());
+
+				glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
+			}
+		}
+
+	}
+	printError("Renderer|renderGui");
 }
 
 GLuint Renderer::pathToOGLTexture(std::string path)

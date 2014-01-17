@@ -11,11 +11,33 @@ EntityPlayer::EntityPlayer(TypePlayer playerType)
 	
 	online = false;
 	bb = new RectangleShape(new glm::vec2(0, 0), 0.0, new glm::vec2(playerType.size.x, playerType.size.y/4)); //TODO BOUNDINGBOXES
+
+	inventory = std::make_shared<Inventory>(Inventory(27));
+
+	inventory->addItem(0, std::make_shared<Item>(Item("hej", 2, 0)));
+	inventory->addItem(1, std::make_shared<Item>(Item("hej", 2, 0)));
+
+	inventoryOpen = false;
+	std::cout << "INV SIZE" << inventory->getCurrSize() << std::endl;
 }
 
 EntityPlayer::~EntityPlayer(void)
 {
 
+}
+
+void EntityPlayer::onEvent(SDL_Event* ev)
+{
+	switch (ev->type)
+	{
+		case SDL_KEYUP:
+		{
+			if(ev->key.keysym.sym == SDLK_i)
+			{
+				inventoryOpen = !inventoryOpen;
+			}
+		}
+	}
 }
 
 void EntityPlayer::update(float delta, const Uint8* keyCode)
@@ -110,4 +132,14 @@ std::string EntityPlayer::getTexture(void)
 void EntityPlayer::setFriction(float frictionIn)
 {
 	friction = frictionIn;
+}
+
+bool EntityPlayer::hasInventoryOpen(void)
+{
+	return inventoryOpen;
+}
+
+std::vector<std::shared_ptr<ItemStack> > EntityPlayer::getItems(void)
+{
+	return inventory->getItems();
 }
