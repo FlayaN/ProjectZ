@@ -193,8 +193,8 @@ void Game::collision(void)
 
 					if(	playerPos.x > (itemPos.x - 100) && playerPos.x < (itemPos.x + 100) && playerPos.y > (itemPos.y - 100) && playerPos.y < (itemPos.y + 100))
 					{
-						player->getInventory()->addItem(t2[i]->getId(), t2[i]);
-						tmpChunk->removeGroundItem(t2[i]);
+						if(player->getInventory()->addItem(t2[i]))
+							tmpChunk->removeGroundItem(t2[i]);
 					}
 				}
 			}

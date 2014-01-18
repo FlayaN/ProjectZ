@@ -150,7 +150,7 @@
     <ClCompile Include="GroundItem.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
-    <ClCompile Include="HeldItem.cpp">
+    <ClCompile Include="MouseItem.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
   </ItemGroup>
@@ -266,7 +266,7 @@
     <ClInclude Include="GroundItem.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
-    <ClInclude Include="HeldItem.h">
+    <ClInclude Include="MouseItem.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,6 +16,27 @@ bool ItemStack::addItem(std::shared_ptr<Item> item)
 	}
 	return false;
 }
+
+std::shared_ptr<ItemStack> ItemStack::addItemStack(std::shared_ptr<ItemStack> itemStackIn)
+{
+	std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(ItemStack(itemStackIn->getMaxSize()));
+
+	int cnt = 0;
+	for(int i = 0; i < itemStackIn->getCurrSize(); i++)
+	{
+		if(!addItem(itemStackIn->getItem()))
+		{
+			cnt++;
+			tmpItemStack->addItem(itemStackIn->getItem());
+		}
+	}
+
+	if(cnt == 0)
+		return nullptr;
+	else
+		return tmpItemStack;
+}
+
 int ItemStack::getCurrSize(void)
 {
 	return (maxSize - std::count(items.begin(), items.end(), nullptr));
@@ -24,4 +45,9 @@ int ItemStack::getCurrSize(void)
 std::shared_ptr<Item> ItemStack::getItem(void)
 {
 	return items.at(0);
+}
+
+int ItemStack::getMaxSize(void)
+{
+	return maxSize;
 }

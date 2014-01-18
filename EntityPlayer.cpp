@@ -13,9 +13,9 @@ EntityPlayer::EntityPlayer(TypePlayer playerType)
 	bb = new RectangleShape(new glm::vec2(0, 0), 0.0, new glm::vec2(playerType.size.x, playerType.size.y/4)); //TODO BOUNDINGBOXES
 
 	inventory = std::make_shared<Inventory>(Inventory(27, glm::ivec2(200, 200)));
-
+	mouseItem = std::make_shared<MouseItem>(MouseItem());
 	inventoryOpen = false;
-	holdingItem = false;
+	draggingItem = false;
 }
 
 EntityPlayer::~EntityPlayer(void)
@@ -40,14 +40,22 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 			{
 				if(ev->button.button == SDL_BUTTON_LEFT)
 				{
-					std::shared_ptr<ItemStack> tmpItem = inventory->pickupItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-					if(tmpItem != nullptr)
+					if(mouseItem->getCurrItem() != nullptr)
 					{
-						heldItem = std::make_shared<HeldItem>(HeldItem(tmpItem));
-						heldItem->setPosition(glm::vec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-						holdingItem = true;
+						inventory->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), mouseItem);
+						if(mouseItem->getCurrItem() == nullptr)
+						{
+							draggingItem = false;
+						}
 					}
-					
+					else
+					{
+						mouseItem = inventory->pickupItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
+						if(mouseItem->getCurrItem() != nullptr)
+						{
+							draggingItem = true;
+						}
+					}
 				}
 				if(ev->button.button == SDL_BUTTON_RIGHT)
 				{
@@ -60,12 +68,7 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 			{
 				if(ev->button.button == SDL_BUTTON_LEFT)
 				{
-					if(holdingItem)
-					{
-						inventory->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), heldItem->getCurrItem());
-						holdingItem = false;
-						heldItem = nullptr;
-					}
+
 				}
 				if(ev->button.button == SDL_BUTTON_RIGHT)
 				{
@@ -74,9 +77,9 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 			}
 			break;
 		case SDL_MOUSEMOTION:
-			if(holdingItem)
+			if(draggingItem)
 			{
-				heldItem->setPosition(glm::vec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
+				mouseItem->setPosition(glm::vec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
 			}
 			break;
 	}
@@ -186,12 +189,12 @@ std::shared_ptr<Inventory> EntityPlayer::getInventory(void)
 	return inventory;
 }
 
-bool EntityPlayer::isHoldingItem(void)
+bool EntityPlayer::isDraggingItem(void)
 {
-	return holdingItem;
+	return draggingItem;
 }
 
-std::shared_ptr<HeldItem> EntityPlayer::getHoldItem(void)
+std::shared_ptr<MouseItem> EntityPlayer::getMouseItem(void)
 {
-	return heldItem;
+	return mouseItem;
 }
