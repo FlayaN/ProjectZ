@@ -22,7 +22,7 @@ Chunk::Chunk(glm::ivec2 coord, std::vector<TypeTile> tileTypes, std::vector<std:
 		}
 	}
 	int id = Utility::getRandInt(0, itemTypes.size()-1);
-	groundItems.push_back(std::make_shared<GroundItem>(GroundItem(glm::vec2(TileAmount*coord.x+Utility::getRandInt(0, TileAmount), TileAmount*coord.y+Utility::getRandInt(0, TileAmount)), itemTypes[id]->name, itemTypes[id]->stackSize, itemTypes[id]->id)));
+	groundItems.push_back(std::make_shared<GroundItem>(GroundItem(glm::vec2(TileAmount*coord.x+Utility::getRandInt(0, TileAmount-1), TileAmount*coord.y+Utility::getRandInt(0, TileAmount-1)), itemTypes[id]->name, itemTypes[id]->stackSize, itemTypes[id]->id)));
 }
 
 Chunk::~Chunk(void)
@@ -43,4 +43,11 @@ glm::ivec2 Chunk::getCoord(void)
 std::vector<std::shared_ptr<GroundItem> > Chunk::getGroundItems(void)
 {
 	return groundItems;
+}
+
+void Chunk::removeGroundItem(std::shared_ptr<GroundItem> item)
+{
+	std::cout << "Should be within: " << TileAmount*coord.x << " : " << TileAmount*coord.y << " -> " << TileAmount*coord.x + (TileAmount-1) << " : " << TileAmount*coord.y + (TileAmount-1) << std::endl;
+	std::cout << "ItemPos X: " << item->getPosition().x << " Y: " << item->getPosition().y << std::endl;
+	groundItems.erase(std::find(groundItems.begin(), groundItems.end(), item));
 }

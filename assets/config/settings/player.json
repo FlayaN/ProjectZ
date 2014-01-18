@@ -11,6 +11,5 @@
 	"texture" : "mario.png",
 	"acceleration" : 30.0,
 	"maxSpeed" : 100.0,
-	"friction" : 90.0,
 	"bb" : "playerBB"
 }

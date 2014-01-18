@@ -154,15 +154,50 @@ void Game::collision(void)
 		}
 	}
 
-	for(auto item: ChunkUtility::getSurroundingItems(chunks, *player))
+	/*std::vector<std::shared_ptr<GroundItem> > tmpItems = ChunkUtility::getSurroundingItems(chunks, *player);
+
+	for(int i = 0; i < tmpItems.size(); i++)
 	{
 		glm::vec2 playerPos = player->getCenterPosition();
-		glm::vec2 itemPos = glm::vec2(item->getPosition().x * Settings::Tile::width, item->getPosition().y * Settings::Tile::height);
+		glm::vec2 itemPos = glm::vec2(tmpItems[i]->getPosition().x * Settings::Tile::width, tmpItems[i]->getPosition().y * Settings::Tile::height);
+		glm::ivec2 chunkPos = Utility::inChunkCoord(itemPos);
 
 		if(	playerPos.x > (itemPos.x - 100) && playerPos.x < (itemPos.x + 100) &&
 			playerPos.y > (itemPos.y - 100) && playerPos.y < (itemPos.y + 100))
 		{
-			player->getInventory()->addItem(item->getId(), item);
+			//std::cout << "ChunkPos X: " << chunkPos.x << " Y: " << chunkPos.y << std::endl;
+			//std::cout << "ItemPos X: " << itemPos.x << " Y: " << itemPos.y << std::endl;
+
+			player->getInventory()->addItem(tmpItems[i]->getId(), tmpItems[i]);
+			chunks[chunkPos]->removeGroundItem(tmpItems[i]);
+		}
+	}*/
+
+	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player->getCenterPosition());
+
+	for(int x = centerPosInChunk.x - 1; x <= centerPosInChunk.x + 1; x++)
+	{
+		for(int y = centerPosInChunk.y - 1; y <= centerPosInChunk.y + 1; y++)
+		{
+			std::shared_ptr<Chunk> tmpChunk = chunks[glm::ivec2(x, y)];
+			
+			if(tmpChunk != nullptr)
+			{
+				std::vector<std::shared_ptr<GroundItem> > t2 = tmpChunk->getGroundItems();
+				
+				for(int i = 0; i < t2.size(); i++)
+				{
+					glm::vec2 playerPos = player->getCenterPosition();
+					glm::vec2 itemPos = glm::vec2(t2[i]->getPosition().x * Settings::Tile::width, t2[i]->getPosition().y * Settings::Tile::height);
+					glm::ivec2 chunkPos = Utility::inChunkCoord(itemPos);
+
+					if(	playerPos.x > (itemPos.x - 100) && playerPos.x < (itemPos.x + 100) && playerPos.y > (itemPos.y - 100) && playerPos.y < (itemPos.y + 100))
+					{
+						player->getInventory()->addItem(t2[i]->getId(), t2[i]);
+						tmpChunk->removeGroundItem(t2[i]);
+					}
+				}
+			}
 		}
 	}
 }
