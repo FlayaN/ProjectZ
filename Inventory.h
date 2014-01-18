@@ -21,8 +21,6 @@ public:
 	glm::ivec2 getPosition(void);
 
 	int mousePosToIndex(glm::ivec2 mouse);
-	//std::shared_ptr<ItemStack> pickupItem(glm::ivec2);
-	//std::shared_ptr<ItemStack> placeItem(glm::ivec2, std::shared_ptr<ItemStack>);
 
 	std::shared_ptr<MouseItem> pickupItem(glm::ivec2);
 	void placeItem(glm::ivec2, std::shared_ptr<MouseItem>);

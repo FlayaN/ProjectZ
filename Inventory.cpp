@@ -60,48 +60,6 @@ glm::ivec2 Inventory::getPosition(void)
 	return pos;
 }
 
-/*std::shared_ptr<ItemStack> Inventory::pickupItem(glm::ivec2 mouse)
-{
-	int index = mousePosToIndex(mouse);
-
-	if(index != -1)
-	{
-		std::shared_ptr<ItemStack> tmpItem = inv.at(index);
-		inv.at(index) = nullptr;
-		return tmpItem;
-	}
-
-	return nullptr;
-}
-
-std::shared_ptr<ItemStack> Inventory::placeItem(glm::ivec2 mouse, std::shared_ptr<ItemStack> item)
-{
-	int index = mousePosToIndex(mouse);
-	std::shared_ptr<ItemStack> tmpItem = nullptr;
-
-	if(index != -1)
-	{
-		if(inv.at(index) == nullptr)
-		{
-			inv.at(index) = item;
-		}
-		else
-		{
-			if(inv.at(index)->getItem()->getId() == item->getItem()->getId())
-			{
-				tmpItem = inv.at(index)->addItemStack(item);
-				//tmpItem = nullptr; //TODO make this take the rest of the addItem....
-			}
-			else
-			{
-				tmpItem = inv.at(index);
-				inv.at(index) = item;
-			}
-		}
-	}
-	return tmpItem;
-}*/
-
 std::shared_ptr<MouseItem> Inventory::pickupItem(glm::ivec2 mouse)
 {
 	std::shared_ptr<MouseItem> tmpMouseItem = std::make_shared<MouseItem>();
@@ -124,7 +82,6 @@ std::shared_ptr<MouseItem> Inventory::pickupItem(glm::ivec2 mouse)
 void Inventory::placeItem(glm::ivec2 mouse, std::shared_ptr<MouseItem> mouseItem)
 {
 	int index = mousePosToIndex(mouse);
-	//std::shared_ptr<ItemStack> tmpItem = nullptr;
 
 	if(index != -1)
 	{

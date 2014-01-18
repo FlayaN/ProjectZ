@@ -23,5 +23,5 @@ glm::vec2 Camera::getPos(void)
 
 void Camera::update(void)
 {
-	//viewMa
+
 }

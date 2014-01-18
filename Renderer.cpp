@@ -179,8 +179,6 @@ void Renderer::renderGrid(EntityPlayer player)
 {
 	glm::vec2 playerOffset = glm::vec2(-player.getCenterPosition().x + w/2, -player.getCenterPosition().y + h/2);
 
-	//SDL_Renderer* renderer = Graphics::getInstance().getRenderer();
-
 	std::vector<glm::vec2> points;
 
 	for(int x = player.getPosition().x-w; x < player.getPosition().x+w; x+=Settings::Tile::width)
