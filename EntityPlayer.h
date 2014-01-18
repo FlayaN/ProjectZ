@@ -10,6 +10,8 @@
 #include "MovingEntity.h"
 #include "TypePlayer.h"
 #include "Inventory.h"
+#include "Settings.h"
+#include "HeldItem.h"
 
 class EntityPlayer : public MovingEntity
 {
@@ -31,11 +33,11 @@ public:
 	std::string getTexture(void);
 	void setFriction(float);
 
-	std::vector<std::shared_ptr<ItemStack> > getItems(void);
-
 	std::shared_ptr<Inventory> getInventory(void);
 
 	bool hasInventoryOpen(void);
+	bool isHoldingItem(void);
+	std::shared_ptr<HeldItem> getHoldItem(void);
 private:
 	int id;
 	bool online;
@@ -45,9 +47,12 @@ private:
 	float friction;
 	std::string texture;
 
+	bool holdingItem;
+
 	glm::vec2 size;
 	RectangleShape* bb;
 	std::shared_ptr<Inventory> inventory;
+	std::shared_ptr<HeldItem> heldItem;
 };
 
 #endif

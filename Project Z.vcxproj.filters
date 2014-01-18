@@ -150,6 +150,9 @@
     <ClCompile Include="GroundItem.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="HeldItem.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -261,6 +264,9 @@
       <Filter>Header Files\Items</Filter>
     </ClInclude>
     <ClInclude Include="GroundItem.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="HeldItem.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,7 +23,7 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 	texPlayer = pathToOGLTexture(player.getTexture());
 	texOnlinePlayer = pathToOGLTexture(player.getTexture());
 
-	texGui = pathToOGLTexture("../assets/images/gui.png");
+	texGui = pathToOGLTexture("../assets/images/slot.png");
 
 	texTile = surfaceToOGLTexture(tileTexture);
 	texItem = surfaceToOGLTexture(itemTexture);
@@ -259,39 +259,43 @@ void Renderer::renderGui(EntityPlayer player)
 {
 	if(player.hasInventoryOpen())
 	{
+		std::shared_ptr<Inventory> tmpInv = player.getInventory();
+
+
+		std::vector<std::shared_ptr<ItemStack> > tmpItems = tmpInv->getItems();
+		glm::ivec2 invPos = tmpInv->getPosition();
+
+		
 		//RENDER BG
 		glUseProgram(modelGui->getProg());
-	
-		glm::mat4 modelMat(1.0);
-		modelMat = glm::translate(modelMat, glm::vec3(w/2 - 256, h/2 - 256, 0.0));
-		modelMat = glm::scale(modelMat, glm::vec3(512, 512, 1.0));
-		glUniformMatrix4fv(modelGui->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
 		glUniformMatrix4fv(modelGui->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
-
 		glBindTexture(GL_TEXTURE_2D, texGui);
 
-		glBindVertexArray(modelGui->getVAO());
+		for(int i = 0; i < tmpItems.size(); i++)
+		{
+			glm::mat4 modelMat(1.0);
+			modelMat = glm::translate(modelMat, glm::vec3(invPos.x + (i%9)*34, invPos.x + (i/9)*34, 0.0));
+			modelMat = glm::scale(modelMat, glm::vec3(34, 34, 1.0));
+			glUniformMatrix4fv(modelGui->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+			glBindVertexArray(modelGui->getVAO());
 
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, modelGui->getNumVertices());
-		
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelGui->getNumVertices());
+		}
 		//RENDER FG
 		glUseProgram(modelItem->getProg());
 		glUniformMatrix4fv(modelItem->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
 		glBindTexture(GL_TEXTURE_2D, texItem);
 
-		std::vector<std::shared_ptr<ItemStack> > tmpInv = player.getItems();
-
-
-		for(int i = 0; i < tmpInv.size(); i++)
+		for(int i = 0; i < tmpItems.size(); i++)
 		{
-			if(tmpInv.at(i) != nullptr)
+			if(tmpItems.at(i) != nullptr)
 			{
 				glm::mat4 modelMat(1.0);
-				modelMat = glm::translate(modelMat, glm::vec3((i%9)*100, (i/9)*100, -0.5));
+				modelMat = glm::translate(modelMat, glm::vec3(invPos.x + (i%9)*34, invPos.x + (i/9)*34, 0.0));
 				//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
 				modelMat = glm::scale(modelMat, glm::vec3(32, 32, 1.0));
 				glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
-				glUniform1i(modelItem->getUniform("textureId"), tmpInv.at(i)->getItem()->getId());
+				glUniform1i(modelItem->getUniform("textureId"), tmpItems.at(i)->getItem()->getId());
 			
 				glBindVertexArray(modelItem->getVAO());
 
@@ -299,6 +303,22 @@ void Renderer::renderGui(EntityPlayer player)
 			}
 		}
 
+		if(player.isHoldingItem())
+		{
+			std::shared_ptr<HeldItem> tmpHeldItem = player.getHoldItem();
+			glm::vec2 tmpPos = tmpHeldItem->getPosition();
+
+			glm::mat4 modelMat(1.0);
+			modelMat = glm::translate(modelMat, glm::vec3(tmpPos.x, tmpPos.y, 0.0));
+			//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
+			modelMat = glm::scale(modelMat, glm::vec3(32, 32, 1.0));
+			glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+			glUniform1i(modelItem->getUniform("textureId"), tmpHeldItem->getCurrItem()->getItem()->getId());
+			
+			glBindVertexArray(modelItem->getVAO());
+
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
+		}
 	}
 	printError("Renderer|renderGui");
 }

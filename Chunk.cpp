@@ -47,7 +47,5 @@ std::vector<std::shared_ptr<GroundItem> > Chunk::getGroundItems(void)
 
 void Chunk::removeGroundItem(std::shared_ptr<GroundItem> item)
 {
-	std::cout << "Should be within: " << TileAmount*coord.x << " : " << TileAmount*coord.y << " -> " << TileAmount*coord.x + (TileAmount-1) << " : " << TileAmount*coord.y + (TileAmount-1) << std::endl;
-	std::cout << "ItemPos X: " << item->getPosition().x << " Y: " << item->getPosition().y << std::endl;
 	groundItems.erase(std::find(groundItems.begin(), groundItems.end(), item));
 }

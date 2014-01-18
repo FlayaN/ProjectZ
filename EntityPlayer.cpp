@@ -12,10 +12,10 @@ EntityPlayer::EntityPlayer(TypePlayer playerType)
 	online = false;
 	bb = new RectangleShape(new glm::vec2(0, 0), 0.0, new glm::vec2(playerType.size.x, playerType.size.y/4)); //TODO BOUNDINGBOXES
 
-	inventory = std::make_shared<Inventory>(Inventory(27));
+	inventory = std::make_shared<Inventory>(Inventory(27, glm::ivec2(200, 200)));
 
 	inventoryOpen = false;
-	std::cout << "INV SIZE" << inventory->getCurrSize() << std::endl;
+	holdingItem = false;
 }
 
 EntityPlayer::~EntityPlayer(void)
@@ -33,7 +33,52 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 			{
 				inventoryOpen = !inventoryOpen;
 			}
+			break;
 		}
+		case SDL_MOUSEBUTTONDOWN:
+			if(inventoryOpen)
+			{
+				if(ev->button.button == SDL_BUTTON_LEFT)
+				{
+					std::shared_ptr<ItemStack> tmpItem = inventory->pickupItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
+					if(tmpItem != nullptr)
+					{
+						heldItem = std::make_shared<HeldItem>(HeldItem(tmpItem));
+						heldItem->setPosition(glm::vec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
+						holdingItem = true;
+					}
+					
+				}
+				if(ev->button.button == SDL_BUTTON_RIGHT)
+				{
+
+				}
+			}
+			break;
+		case SDL_MOUSEBUTTONUP:
+			if(inventoryOpen)
+			{
+				if(ev->button.button == SDL_BUTTON_LEFT)
+				{
+					if(holdingItem)
+					{
+						inventory->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), heldItem->getCurrItem());
+						holdingItem = false;
+						heldItem = nullptr;
+					}
+				}
+				if(ev->button.button == SDL_BUTTON_RIGHT)
+				{
+
+				}
+			}
+			break;
+		case SDL_MOUSEMOTION:
+			if(holdingItem)
+			{
+				heldItem->setPosition(glm::vec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
+			}
+			break;
 	}
 }
 
@@ -136,12 +181,17 @@ bool EntityPlayer::hasInventoryOpen(void)
 	return inventoryOpen;
 }
 
-std::vector<std::shared_ptr<ItemStack> > EntityPlayer::getItems(void)
-{
-	return inventory->getItems();
-}
-
 std::shared_ptr<Inventory> EntityPlayer::getInventory(void)
 {
 	return inventory;
+}
+
+bool EntityPlayer::isHoldingItem(void)
+{
+	return holdingItem;
+}
+
+std::shared_ptr<HeldItem> EntityPlayer::getHoldItem(void)
+{
+	return heldItem;
 }
