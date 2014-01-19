@@ -26,9 +26,9 @@ Network::~Network(void)
 	{
 		sprintf(tmp, "2 %d \n", pId);
 		SDLNet_TCP_Send(connection, tmp, strlen(tmp)+1);
+		SDLNet_FreeSocketSet(server);
 	}
 	SDLNet_TCP_Close(connection);
-	SDLNet_FreeSocketSet(server);
 	SDLNet_Quit();
 }
 
@@ -49,7 +49,21 @@ void Network::send(EntityPlayer player, int ticks)
 	}
 }
 
-void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared_ptr<EntityPlayer> player, int ticks)
+void Network::sendMessage(EntityPlayer player, std::string message)
+{
+	//3 id message
+	sprintf(tmp, "3 %d %s \n", player.getId(), message.c_str());
+
+	int size = 0;
+	int len = strlen(tmp)+1;
+
+	while(size<len)
+	{
+		size += SDLNet_TCP_Send(connection, tmp+size, len-size);
+	}
+}
+
+void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared_ptr<EntityPlayer> player, int ticks, std::shared_ptr<Chat> chat)
 {
 	while(SDLNet_CheckSockets(server, 0)>0 && SDLNet_SocketReady(connection))
 	{
@@ -63,45 +77,67 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 		int type, id;
 		sscanf(tmp, "%d %d", &type, &id);
 		//std::cout << "Packet of type: " << type << " got sent" << std::endl;
-		if(type == 0)
+
+		switch (type)
 		{
-			std::cout << "You are id: " << id << std::endl;
-			player->setId(id);
-			pId = id;
-		}else if(type == 1)
-		{
-			//std::cout << "Got an update from " << id << std::endl;
-			int i;
-			for(i = 0; i < players.size(); i++)
+			case 0:
 			{
-				if(players[i]->getId() == id)
-				{
-					int tmp2;
-					float x, y;
-					int tick;
-					sscanf(tmp, "1 %d %f %f %d \n", &tmp2, &x, &y, &tick);
-					players[i]->setLatestSnapShot(x, y, tick);
-					break;
-				}	
+				std::cout << "You are id: " << id << std::endl;
+				player->setId(id);
+				pId = id;
+				break;
 			}
-			if(i >= players.size())
+			case 1:
 			{
-				if(id != pId)
+				int i;
+				for(i = 0; i < players.size(); i++)
 				{
-					std::cout << "Adding new player: " << id << std::endl;
-					players.push_back(std::make_shared<PlayerMP>(PlayerMP(id)));
+					if(players[i]->getId() == id)
+					{
+						int tmp2;
+						float x, y;
+						int tick;
+						sscanf(tmp, "1 %d %f %f %d \n", &tmp2, &x, &y, &tick);
+						players[i]->setLatestSnapShot(x, y, tick);
+						break;
+					}	
 				}
+				if(i >= players.size())
+				{
+					if(id != pId)
+					{
+						std::cout << "Adding new player: " << id << std::endl;
+						players.push_back(std::make_shared<PlayerMP>(PlayerMP(id)));
+					}
+				}
+				break;
 			}
-		}else if(type == 2)
-		{
-			std::cout << "remove onlinePlayer with id: " << id << std::endl;
-			for(int i = 0; i < players.size(); i++)
+			case 2:
 			{
-				if(players[i]->getId() == id)
+				std::cout << "remove onlinePlayer with id: " << id << std::endl;
+				for(int i = 0; i < players.size(); i++)
 				{
-					std::cout << "removed onlinePlayer with id: " << id << std::endl;
-					players.erase(players.begin()+i);
+					if(players[i]->getId() == id)
+					{
+						std::cout << "removed onlinePlayer with id: " << id << std::endl;
+						players.erase(players.begin()+i);
+					}
 				}
+				break;
+			}
+			case 3:
+			{
+				int tmp2;
+				char* tmpMessage = (char*)malloc(strlen(tmp)+1);
+				sscanf(tmp, "3 %d %[0-9a-öA-Ö ]s \n", &tmp2, tmpMessage);
+				
+				std::stringstream ss;
+
+				ss << "Player " << id << ": " << tmpMessage;
+
+				chat->addMessage(ss.str());
+				//std::cout << "Player " << id << ": " << tmpMessage << std::endl;
+				break;
 			}
 		}
 	}

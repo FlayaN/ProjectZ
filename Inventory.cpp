@@ -29,16 +29,23 @@ bool Inventory::addItem(std::shared_ptr<Item> item)
 	{
 		for(int i = 0; i < inv.size(); i++)
 		{
+			if(inv.at(i) != nullptr)
+			{
+				if(inv.at(i)->getItem()->getId() == item->getId())
+				{
+					bool tmp = inv.at(i)->addItem(item);
+					if(tmp)
+						return tmp;
+				}
+			}
+		}
+		
+		for(int i = 0; i < inv.size(); i++)
+		{
 			if(inv.at(i) == nullptr)
 			{
 				inv.at(i) = std::make_shared<ItemStack>(ItemStack(item->getStackSize()));
 				return inv.at(i)->addItem(item);
-			}
-			else if(inv.at(i)->getItem()->getId() == item->getId())
-			{
-				bool tmp = inv.at(i)->addItem(item);
-				if(tmp)
-					return tmp;
 			}
 		}
 	}

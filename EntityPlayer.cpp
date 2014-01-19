@@ -138,6 +138,45 @@ void EntityPlayer::update(float delta, const Uint8* keyCode)
 	position.y += velocity.y * delta;
 }
 
+void EntityPlayer::update2(float delta)
+{
+	if(std::abs(velocity.x) > maxSpeed)
+	{
+		if(velocity.x > 0)
+			velocity.x = maxSpeed;
+		else if(velocity.x < 0)
+			velocity.x = -maxSpeed;
+	}
+
+	if(std::abs(velocity.y) > maxSpeed)
+	{
+		if(velocity.y > 0)
+			velocity.y = maxSpeed;
+		else if(velocity.y < 0)
+			velocity.y = -maxSpeed;
+	}
+
+	if(velocity.x > 0)
+		velocity.x -= friction*delta;
+	else if(velocity.x < 0)
+		velocity.x += friction*delta;
+
+
+	if(velocity.y > 0)
+		velocity.y -= friction*delta;
+	else if(velocity.y < 0)
+		velocity.y += friction*delta;
+
+	if(abs(velocity.x) < 0.5)
+		velocity.x = 0;
+
+	if(abs(velocity.y) < 0.5)
+		velocity.y = 0;
+	
+	position.x += velocity.x * delta;
+	position.y += velocity.y * delta;
+}
+
 glm::vec2 EntityPlayer::getCenterPosition(void)
 {
 	return glm::vec2(position.x + bb->getWidth()/2, position.y + bb->getHeight()/2);

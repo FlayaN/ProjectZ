@@ -36,6 +36,7 @@
 #include "TypeConsumable.h"
 #include "TypeMaterial.h"
 #include "TypeWeapon.h"
+#include "Chat.h"
 
 class Game
 {
@@ -54,6 +55,7 @@ public:
 	int run(void);
     
 	void onEvent(SDL_Event* ev);
+	//void chat(SDL_Event* ev, const Uint8* keystates);
 	void render(void);
 	void collision(void);
 
@@ -69,17 +71,14 @@ private:
 	std::vector<std::shared_ptr<PlayerMP> > players;
 	std::shared_ptr<Camera> cam;
 	std::shared_ptr<EntityPlayer> player;
+	std::shared_ptr<Network> net;
 
 	std::unique_ptr<Renderer> renderer;
-	std::unique_ptr<Network> net;
-
+	
 	std::vector<TypeTile> tileTypes;
 	std::vector<std::shared_ptr<TypeItem> > itemTypes;
 
-	/*std::vector<TypeClothing> clothingTypes;
-	std::vector<TypeConsumable> consumableTypes;
-	std::vector<TypeMaterial> materialTypes;
-	std::vector<TypeWeapon> weaponTypes;*/
+	std::shared_ptr<Chat> chat;
 
 	TypePlayer playerType;
 	
@@ -90,7 +89,11 @@ private:
 
 	bool _running;
 	bool online;
+	bool keyFocus;
 	int state;
+
+	//std::string tmpChat;
+	char buff[1400];
 };
 
 #endif

@@ -27,12 +27,16 @@ Game::Game(void) : _running(false)
 	combineItemTextures();
 
 	Graphics::getInstance();
-	player = std::make_shared<EntityPlayer>(EntityPlayer(playerType));
-	cam = std::make_shared<Camera>(Camera(player));
-	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, tileTexture, tileTypes, itemTexture, itemTypes.size())); //(materialTypes.size()+weaponTypes.size()+clothingTypes.size()+consumableTypes.size())));
-	net = std::unique_ptr<Network>(new Network("81.237.237.250"));
+	player = std::make_shared<EntityPlayer>(playerType);
+	cam = std::make_shared<Camera>(player);
+	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, tileTexture, tileTypes, itemTexture, itemTypes.size()));
+	net = std::make_shared<Network>("81.237.237.250");
 
 	online = net->getSuccess();
+	keyFocus = false;
+
+	chat = std::make_shared<Chat>(10);
+	//sfMakeRasterFont();
 }
 
 Game::~Game(void)
@@ -56,7 +60,7 @@ int Game::run(void)
 	float tmpTime = 0;
 	currTime = SDL_GetTicks();
 
-	const Uint8* keystates = SDL_GetKeyboardState(NULL);
+	const Uint8* keyStates = SDL_GetKeyboardState(NULL);
 
 	
 	while(_running)
@@ -69,13 +73,19 @@ int Game::run(void)
 		while( SDL_PollEvent(&ev)) 
 		{
 			onEvent(&ev);
-			player->onEvent(&ev);
+			if(keyFocus)
+				chat->handleKeyInput(&ev, keyStates);
+			else
+				player->onEvent(&ev);
 		}
 		
 		//Logic
 		ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, *player, tileTypes, itemTypes);
 		collision();
-		player->update(delta, keystates);
+		if(keyFocus)
+			player->update2(delta);
+		else
+			player->update(delta, keyStates);
 		if(online)
 		{
 			for(auto p : players)
@@ -96,7 +106,7 @@ int Game::run(void)
 				net->send(*player, currTime);
 				tmpTime = 0;
 			}
-			net->recv(players, player, currTime);
+			net->recv(players, player, currTime, chat);
 		}
 	}
 	
@@ -113,17 +123,41 @@ void Game::onEvent(SDL_Event* ev)
 			
 		case SDL_KEYDOWN:
 		{
-			if (ev->key.keysym.sym == SDLK_ESCAPE)
+			if(ev->key.keysym.sym == SDLK_ESCAPE)
 			{
 				_running = false;
 			}
+			if(ev->key.keysym.sym == SDLK_RETURN)
+			{
+				if(online)
+				{
+					if(!keyFocus)
+					{
+						keyFocus = true;
+						SDL_StartTextInput();
+					}
+					else
+					{
+						keyFocus = false;
+						SDL_StopTextInput();
+
+						//chat->sendMessage(*player, net);
+						if(chat->getCurrText() != "")
+						{
+							net->sendMessage(*player, chat->getCurrText());
+							chat->setCurrText("");
+						}
+					}
+				}
+			}
+			break;
 		}
 	}
 }
 
 void Game::render()
 {
-	renderer->render(chunks, *player, players);
+	renderer->render(chunks, *player, players, *chat);
 }
 
 void Game::collision(void)
@@ -153,25 +187,6 @@ void Game::collision(void)
 			}*/
 		}
 	}
-
-	/*std::vector<std::shared_ptr<GroundItem> > tmpItems = ChunkUtility::getSurroundingItems(chunks, *player);
-
-	for(int i = 0; i < tmpItems.size(); i++)
-	{
-		glm::vec2 playerPos = player->getCenterPosition();
-		glm::vec2 itemPos = glm::vec2(tmpItems[i]->getPosition().x * Settings::Tile::width, tmpItems[i]->getPosition().y * Settings::Tile::height);
-		glm::ivec2 chunkPos = Utility::inChunkCoord(itemPos);
-
-		if(	playerPos.x > (itemPos.x - 100) && playerPos.x < (itemPos.x + 100) &&
-			playerPos.y > (itemPos.y - 100) && playerPos.y < (itemPos.y + 100))
-		{
-			//std::cout << "ChunkPos X: " << chunkPos.x << " Y: " << chunkPos.y << std::endl;
-			//std::cout << "ItemPos X: " << itemPos.x << " Y: " << itemPos.y << std::endl;
-
-			player->getInventory()->addItem(tmpItems[i]->getId(), tmpItems[i]);
-			chunks[chunkPos]->removeGroundItem(tmpItems[i]);
-		}
-	}*/
 
 	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player->getCenterPosition());
 

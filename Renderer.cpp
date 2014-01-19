@@ -98,7 +98,7 @@ void Renderer::initShaders(void)
 	modelGui->addUniform("texUnit");
 }
 
-void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player, std::vector<std::shared_ptr<PlayerMP> > players)
+void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player, std::vector<std::shared_ptr<PlayerMP> > players, Chat chat)
 {
 	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -110,6 +110,8 @@ void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, 
 
 	renderItem(chunks, player);
 	renderGui(player);
+
+	renderChat(chat);
 
 	sprintf(buff, "X %0.1f", player.getPosition().x);
 	sfDrawString(10, 10, buff);
@@ -323,6 +325,19 @@ void Renderer::renderGui(EntityPlayer player)
 		}
 	}
 	printError("Renderer|renderGui");
+}
+
+void Renderer::renderChat(Chat chat)
+{
+	strcpy(buff, chat.getCurrText().c_str());
+	sfDrawString(10, Settings::Graphics::screenHeight - 10, buff);
+	std::vector<std::string> chatLog = chat.getChatLog();
+
+	for(int i = 0; i < chatLog.size(); i++)
+	{
+		strcpy(buff, chatLog[i].c_str());
+		sfDrawString(10, Settings::Graphics::screenHeight - (25*((chatLog.size()-i)+1)), buff);
+	}
 }
 
 GLuint Renderer::pathToOGLTexture(std::string path)

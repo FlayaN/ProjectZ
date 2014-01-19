@@ -16,13 +16,14 @@
 #include "ModelSquare.h"
 #include "TypeTile.h"
 #include "TypeMaterial.h"
+#include "Chat.h"
 
 class Renderer
 {
 public:
 	Renderer(EntityPlayer, std::shared_ptr<Camera>, SDL_Surface, std::vector<TypeTile>, SDL_Surface, int);
 	~Renderer(void);
-	void render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > , EntityPlayer, std::vector<std::shared_ptr<PlayerMP> >);
+	void render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > , EntityPlayer, std::vector<std::shared_ptr<PlayerMP> >, Chat);
 
 	void renderItem(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >, EntityPlayer);
 	void renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >, EntityPlayer);
@@ -30,6 +31,7 @@ public:
 	void renderPlayer(EntityPlayer);
 	void renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> >, EntityPlayer);
 	void renderGui(EntityPlayer);
+	void renderChat(Chat);
 
 	GLuint pathToOGLTexture(std::string);
 	GLuint surfaceToOGLTexture(SDL_Surface);
