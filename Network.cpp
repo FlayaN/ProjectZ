@@ -2,34 +2,63 @@
 
 Network::Network(const char* ipChar)
 {
-	success = true;
-	SDLNet_Init();
-	IPaddress ip;
-	if(SDLNet_ResolveHost(&ip, ipChar, 1234) == -1)
+	if(enet_initialize () != 0)
+    {
+        fprintf (stderr, "An error occurred while initializing ENet.\n");
+    }
+
+	client = enet_host_create(NULL, 1, 2, 57600 / 8, 14400 / 8);
+
+	if(client == NULL)
 	{
-		std::cout << "Could not connect to server (SDLNet_ResolveHost)" << std::endl;
+		fprintf (stderr, "An error occurred while trying to create an ENet client host.\n");
+	}
+
+	ENetAddress address;
+
+	enet_address_set_host(&address, ipChar);
+	address.port = 1234;
+
+	server = enet_host_connect(client, &address, 2, 0);
+
+	if(server == NULL)
+	{
+		fprintf (stderr, "No available peers for initiating an ENet connection.\n");
+	}
+
+	ENetEvent event;
+
+	if(enet_host_service(client, &event, 5000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
+	{
+		std::cout << "Successfully connected to server" << std::endl;
+		success = true;
+	}
+	else
+	{
+		std::cout << "Failed to connect to server" << std::endl;
 		success = false;
 	}
-	connection = SDLNet_TCP_Open(&ip);
-	if(connection == NULL)
-	{
-		std::cout << "Could not connect to server (SDLNet_TCP_Open)" << std::endl;
-		success = false;
-	}
-	server = SDLNet_AllocSocketSet(1);
-	SDLNet_TCP_AddSocket(server, connection);
+	enet_host_flush(client);
 }
 
 Network::~Network(void)
 {
-	if(success)
-	{
-		sprintf(tmp, "2 %d \n", pId);
-		SDLNet_TCP_Send(connection, tmp, strlen(tmp)+1);
-		SDLNet_FreeSocketSet(server);
-	}
-	SDLNet_TCP_Close(connection);
-	SDLNet_Quit();
+	enet_peer_disconnect(server, 0);
+	enet_host_flush(client);
+}
+
+bool Network::getSuccess(void)
+{
+	return success;
+}
+
+void Network::sendMessage(EntityPlayer player, std::string message)
+{
+	sprintf(tmp, "3 %d %s", player.getId(), message.c_str());
+
+	ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
+	enet_peer_send(server, 0, packet);
+	enet_host_flush(client);
 }
 
 void Network::send(EntityPlayer player, int ticks)
@@ -38,45 +67,25 @@ void Network::send(EntityPlayer player, int ticks)
 	{
 		glm::vec2 pos = player.getPosition();
 		//1 id posX posY
-		sprintf(tmp, "1 %d %f %f %d \n", player.getId(), pos.x, pos.y, ticks);
+		sprintf(tmp, "1 %d %f %f %d", player.getId(), pos.x, pos.y, ticks);
 
-		int size = 0;
-		int len = strlen(tmp)+1;
-		while(size<len)
-		{
-			size += SDLNet_TCP_Send(connection, tmp+size, len-size);
-		}
-	}
-}
-
-void Network::sendMessage(EntityPlayer player, std::string message)
-{
-	//3 id message
-	sprintf(tmp, "3 %d %s \n", player.getId(), message.c_str());
-
-	int size = 0;
-	int len = strlen(tmp)+1;
-
-	while(size<len)
-	{
-		size += SDLNet_TCP_Send(connection, tmp+size, len-size);
+		ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(server, 0, packet);
+		enet_host_flush(client);
 	}
 }
 
 void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared_ptr<EntityPlayer> player, int ticks, std::shared_ptr<Chat> chat)
 {
-	while(SDLNet_CheckSockets(server, 0)>0 && SDLNet_SocketReady(connection))
+	ENetEvent event;
+	while(enet_host_service(client, &event, 0) && event.type == ENET_EVENT_TYPE_RECEIVE)
 	{
-		int offset = 0;
-		do
-		{
-			offset += SDLNet_TCP_Recv(connection, tmp+offset, 1400);
-			if(offset <= 0)
-				return;
-		}while(tmp[strlen(tmp) - 1] != '\n');
+
 		int type, id;
-		sscanf(tmp, "%d %d", &type, &id);
-		//std::cout << "Packet of type: " << type << " got sent" << std::endl;
+		sscanf((char*)event.packet->data, "%d %d", &type, &id);
+
+		if(type!=1)
+			std::cout << "Packet of type: " << type << " was recieved from id: " << id << std::endl;
 
 		switch (type)
 		{
@@ -97,7 +106,7 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 						int tmp2;
 						float x, y;
 						int tick;
-						sscanf(tmp, "1 %d %f %f %d \n", &tmp2, &x, &y, &tick);
+						sscanf((char*)event.packet->data, "1 %d %f %f %d", &tmp2, &x, &y, &tick);
 						players[i]->setLatestSnapShot(x, y, tick);
 						break;
 					}	
@@ -129,7 +138,7 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 			{
 				int tmp2;
 				char* tmpMessage = (char*)malloc(strlen(tmp)+1);
-				sscanf(tmp, "3 %d %[0-9a-öA-Ö ]s \n", &tmp2, tmpMessage);
+				sscanf((char*)event.packet->data, "3 %d %[0-9a-öA-Ö?*/ ]s", &tmp2, tmpMessage);
 				
 				std::stringstream ss;
 
@@ -141,9 +150,4 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 			}
 		}
 	}
-}
-
-bool Network::getSuccess(void)
-{
-	return success;
 }

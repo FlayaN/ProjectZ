@@ -1,17 +1,13 @@
-#ifndef NETWORK_H
-#define NETWORK_H
-
-#ifdef __APPLE__
-	#include <SDL\SDL_net.h>
-#else
-	#include "SDL_net.h"
-#endif
+#ifndef NETWORK_H2
+#define NETWORK_H2
 
 #include <string>
 #include <cstring>
 #include <iostream>
 #include <memory>
 #include <sstream>
+
+#include <enet/enet.h>
 
 #include "EntityPlayer.h"
 #include "PlayerMP.h"
@@ -27,9 +23,10 @@ public:
 
 	void recv(std::vector<std::shared_ptr<PlayerMP> >&, std::shared_ptr<EntityPlayer>, int, std::shared_ptr<Chat>);
 	bool getSuccess(void);
+
 private:
-	SDLNet_SocketSet server;
-	TCPsocket connection;
+	ENetHost* client;
+	ENetPeer* server;
 	char tmp[1400];
 	bool success;
 	int pId;

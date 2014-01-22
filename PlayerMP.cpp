@@ -10,6 +10,8 @@ PlayerMP::PlayerMP(int idIn) : id(idIn), Entity()
 
 void PlayerMP::setLatestSnapShot(float x, float y, int tick)
 {
+	if(latestSnapShot.time > tick)
+		std::cout << "ERROR TIME ERRORORORORO" << std::endl;
 	prevSnapShot = latestSnapShot;
 	latestSnapShot = SnapShot(glm::vec2(x, y), tick);
 	timer = 0;

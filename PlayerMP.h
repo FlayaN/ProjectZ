@@ -1,6 +1,8 @@
 #ifndef PLAYERMP_H
 #define PLAYERMP_H
 
+#include <iostream>
+
 #include "Utility.h"
 #include "Entity.h"
 #include "RectangleShape.h"

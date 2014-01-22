@@ -102,9 +102,6 @@
     <ClCompile Include="PlayerMP.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Network.cpp">
-      <Filter>Source Files\Network</Filter>
-    </ClCompile>
     <ClCompile Include="GL_utilities.c">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
@@ -156,6 +153,9 @@
     <ClCompile Include="Chat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -199,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="PlayerMP.h">
       <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Network.h">
-      <Filter>Header Files\Network</Filter>
     </ClInclude>
     <ClInclude Include="RectangleShape.h">
       <Filter>Header Files\Shapes</Filter>
@@ -274,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="Chat.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

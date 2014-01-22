@@ -240,7 +240,7 @@ static void charToTexture(char *indata, int theChar, char *data)
 			{
 				data[pos++] = 255;
 				data[pos++] = 255;
-				data[pos++] = 255;
+				data[pos++] = 0;
 				data[pos++] = 255;
 			}
 		}
