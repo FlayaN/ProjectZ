@@ -52,9 +52,9 @@ bool Network::getSuccess(void)
 	return success;
 }
 
-void Network::sendMessage(EntityPlayer player, std::string message)
+void Network::sendMessage(EntityPlayer player, TimeChat timeChat)
 {
-	sprintf(tmp, "3 %d %s", player.getId(), message.c_str());
+	sprintf(tmp, "3 %d %f %s", player.getId(), timeChat.time, timeChat.chat.c_str());
 
 	ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
 	enet_peer_send(server, 0, packet);
@@ -138,13 +138,14 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 			{
 				int tmp2;
 				char* tmpMessage = (char*)malloc(strlen(tmp)+1);
-				sscanf((char*)event.packet->data, "3 %d %[0-9a-öA-Ö?*/ ]s", &tmp2, tmpMessage);
+				float time;
+				sscanf((char*)event.packet->data, "3 %d %f %[0-9a-öA-Ö?*/ ]s", &tmp2, &time, tmpMessage);
 				
 				std::stringstream ss;
 
 				ss << "Player " << id << ": " << tmpMessage;
 
-				chat->addMessage(ss.str());
+				chat->addMessage(ss.str(), time);
 				//std::cout << "Player " << id << ": " << tmpMessage << std::endl;
 				break;
 			}

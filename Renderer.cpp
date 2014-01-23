@@ -24,6 +24,7 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 	texOnlinePlayer = pathToOGLTexture(player.getTexture());
 
 	texGui = pathToOGLTexture("../assets/images/slot.png");
+	texChat = pathToOGLTexture("../assets/images/chat.png");
 
 	texTile = surfaceToOGLTexture(tileTexture);
 	texItem = surfaceToOGLTexture(itemTexture);
@@ -111,7 +112,10 @@ void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, 
 	renderItem(chunks, player);
 	renderGui(player);
 
-	renderChat(chat);
+	if(chat.isOpen())
+		renderChat(chat);
+	else
+		renderTimedChat(chat);
 
 	sprintf(buff, "X %0.1f", player.getPosition().x);
 	sfDrawString(10, 10, buff);
@@ -329,14 +333,74 @@ void Renderer::renderGui(EntityPlayer player)
 
 void Renderer::renderChat(Chat chat)
 {
+	//Render bg
+	glUseProgram(modelGui->getProg());
+	glUniformMatrix4fv(modelGui->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+	glBindTexture(GL_TEXTURE_2D, texChat);
+
+	glm::mat4 modelMat(1.0);
+	modelMat = glm::translate(modelMat, glm::vec3(0, 4, 0.0));
+	modelMat = glm::scale(modelMat, glm::vec3(256, 19, 1.0));
+	glUniformMatrix4fv(modelGui->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+	glBindVertexArray(modelGui->getVAO());
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, modelGui->getNumVertices());
+
+
+	//Render text
 	strcpy(buff, chat.getCurrText().c_str());
 	sfDrawString(10, Settings::Graphics::screenHeight - 10, buff);
-	std::vector<std::string> chatLog = chat.getChatLog();
+	std::vector<std::shared_ptr<TimeChat> > chatLog = chat.getChatLog();
 
-	for(int i = 0; i < chatLog.size(); i++)
+	int amountOfChat = chatLog.size();
+
+	if(amountOfChat <= 10)
 	{
-		strcpy(buff, chatLog[i].c_str());
-		sfDrawString(10, Settings::Graphics::screenHeight - (25*((chatLog.size()-i)+1)), buff);
+		for(int i = 0; i < amountOfChat; i++)
+		{
+			strcpy(buff, chatLog[i]->chat.c_str());
+			sfDrawString(10, Settings::Graphics::screenHeight - (15*((chatLog.size()-i)+1)), buff);
+		}
+	}
+	else
+	{
+		for(int i = amountOfChat-10; i < amountOfChat; i++)
+		{
+			strcpy(buff, chatLog[i]->chat.c_str());
+			sfDrawString(10, Settings::Graphics::screenHeight - (15*((chatLog.size()-i)+1)), buff);
+		}
+	}
+}
+
+void Renderer::renderTimedChat(Chat chat)
+{
+	strcpy(buff, chat.getCurrText().c_str());
+	sfDrawString(10, Settings::Graphics::screenHeight - 10, buff);
+	std::vector<std::shared_ptr<TimeChat> > chatLog = chat.getChatLog();
+
+	int amountOfChat = chatLog.size();
+
+	if(amountOfChat <= 10)
+	{
+		for(int i = 0; i < amountOfChat; i++)
+		{
+			if((SDL_GetTicks() - chatLog[i]->time) < 5000)
+			{
+				strcpy(buff, chatLog[i]->chat.c_str());
+				sfDrawString(10, Settings::Graphics::screenHeight - (15*((chatLog.size()-i)+1)), buff);
+			}
+		}
+	}
+	else
+	{
+		for(int i = amountOfChat-10; i < amountOfChat; i++)
+		{
+			if((SDL_GetTicks() - chatLog[i]->time) < 5000)
+			{
+				strcpy(buff, chatLog[i]->chat.c_str());
+				sfDrawString(10, Settings::Graphics::screenHeight - (15*((chatLog.size()-i)+1)), buff);
+			}
+		}
 	}
 }
 

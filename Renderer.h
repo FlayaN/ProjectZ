@@ -32,6 +32,7 @@ public:
 	void renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> >, EntityPlayer);
 	void renderGui(EntityPlayer);
 	void renderChat(Chat);
+	void renderTimedChat(Chat);
 
 	GLuint pathToOGLTexture(std::string);
 	GLuint surfaceToOGLTexture(SDL_Surface);
@@ -55,6 +56,8 @@ private:
 
 	ModelSquare* modelGui;
 	GLuint texGui;
+
+	GLuint texChat;
 
 	std::shared_ptr<Camera> cam;
 

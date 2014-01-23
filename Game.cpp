@@ -127,24 +127,25 @@ void Game::onEvent(SDL_Event* ev)
 			{
 				_running = false;
 			}
-			if(ev->key.keysym.sym == SDLK_RETURN)
+			else if(ev->key.keysym.sym == SDLK_RETURN)
 			{
 				if(online)
 				{
 					if(!keyFocus)
 					{
 						keyFocus = true;
+						chat->setOpen(true);
 						SDL_StartTextInput();
 					}
 					else
 					{
 						keyFocus = false;
+						chat->setOpen(false);
 						SDL_StopTextInput();
 
-						//chat->sendMessage(*player, net);
 						if(chat->getCurrText() != "")
 						{
-							net->sendMessage(*player, chat->getCurrText());
+							net->sendMessage(*player, TimeChat(chat->getCurrText(), SDL_GetTicks()));
 							chat->setCurrText("");
 						}
 					}

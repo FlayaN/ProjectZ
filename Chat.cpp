@@ -2,10 +2,7 @@
 
 Chat::Chat(int chatLogSizeIn) : chatLogSize(chatLogSizeIn) 
 {
-	for(int i = 0; i < chatLogSize; i++)
-	{
-		//chatLog.push_back("HEJ");
-	}
+	open = false;
 }
 void Chat::handleKeyInput(SDL_Event* ev, const Uint8* keyStates)
 {
@@ -17,7 +14,17 @@ void Chat::handleKeyInput(SDL_Event* ev, const Uint8* keyStates)
 	{
 		case SDL_TEXTINPUT:
 		{
+			//ev->text
 			currText += ev->text.text;
+			break;
+		}
+		case SDL_KEYDOWN:
+		{
+			if(ev->key.keysym.sym == SDLK_BACKSPACE)
+			{
+				if(!currText.empty())
+					currText.erase(currText.end() - 1);
+			}
 			break;
 		}
 	}
@@ -25,7 +32,12 @@ void Chat::handleKeyInput(SDL_Event* ev, const Uint8* keyStates)
 
 void Chat::addMessage(std::string message)
 {
-	chatLog.push_back(message);
+	chatLog.push_back(std::make_shared<TimeChat>(message, 0));
+}
+
+void Chat::addMessage(std::string message, float time)
+{
+	chatLog.push_back(std::make_shared<TimeChat>(message, time));
 }
 
 std::string Chat::getCurrText(void)
@@ -33,7 +45,7 @@ std::string Chat::getCurrText(void)
 	return currText;
 }
 
-std::vector<std::string> Chat::getChatLog(void)
+std::vector<std::shared_ptr<TimeChat> > Chat::getChatLog(void)
 {
 	return chatLog;
 }
@@ -41,4 +53,14 @@ std::vector<std::string> Chat::getChatLog(void)
 void Chat::setCurrText(std::string currTextIn)
 {
 	currText = currTextIn;
+}
+
+bool Chat::isOpen(void)
+{
+	return open;
+}
+
+void Chat::setOpen(bool openIn)
+{
+	open = openIn;
 }

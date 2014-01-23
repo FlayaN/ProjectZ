@@ -19,7 +19,7 @@ public:
 	Network(const char* ip);
 	~Network(void);
 	void send(EntityPlayer, int);
-	void sendMessage(EntityPlayer, std::string);
+	void sendMessage(EntityPlayer, TimeChat);
 
 	void recv(std::vector<std::shared_ptr<PlayerMP> >&, std::shared_ptr<EntityPlayer>, int, std::shared_ptr<Chat>);
 	bool getSuccess(void);
