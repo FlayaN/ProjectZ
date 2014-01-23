@@ -103,7 +103,7 @@ int Game::run(void)
 			tmpTime += (currTime - oldTime);
 			if(tmpTime >= 50) //How often to send data to the server in ms (50 = 20times/second)
 			{
-				//net->send(*player, currTime);
+				net->send(*player, currTime);
 				tmpTime = 0;
 			}
 			net->recv(players, player, currTime, chat);
