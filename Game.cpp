@@ -227,26 +227,11 @@ void Game::loadJson(void)
 
 void Game::loadSettings(void)
 {
-	std::string settingsChunkPath = "../assets/config/settings/chunk.json";
-	std::string settingsEnginePath = "../assets/config/settings/engine.json";
-	std::string settingsGraphicPath = "../assets/config/settings/graphic.json";
-	std::string settingsPlayerPath = "../assets/config/settings/player.json";
-	std::string settingsTilePath = "../assets/config/settings/tile.json";
-#ifdef __APPLE__
-    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    CFURLRef resourceURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
-    char p[PATH_MAX];
-    if(!CFURLGetFileSystemRepresentation(resourceURL, TRUE, (UInt8 *)p, PATH_MAX))
-        std::cout << "ERROROROROR" << std::endl;
-    CFRelease(resourceURL);
-    
-    chdir(p);
-    
-    std::string path = p;
-    
-    std::string texturePath = path + "/" + texturePath;
-	std::string playerPath = path + "/" + playerPath;
-#endif
+	std::string settingsEnginePath = Utility::getBasePath() + "assets/config/settings/engine.json";
+	std::string settingsGraphicPath = Utility::getBasePath() + "assets/config/settings/graphic.json";
+	std::string settingsPlayerPath = Utility::getBasePath() + "assets/config/settings/player.json";
+	std::string settingsTilePath = Utility::getBasePath() + "assets/config/settings/tile.json";
+
 	rapidjson::Document doc;
 	std::cout << "--------------------Loading Settings--------------------" << std::endl;
 	std::cout << "----------Loading engine.json----------" << std::endl;
@@ -295,7 +280,7 @@ void Game::loadSettings(void)
 	playerType.size = glm::vec2(doc["size"]["width"].GetInt(), doc["size"]["height"].GetInt());
 
 	assert(doc["texture"].IsString());
-	playerType.texture = std::string("../assets/config/settings/")+doc["texture"].GetString();
+	playerType.texture = std::string("assets/config/settings/")+doc["texture"].GetString();
 	
 	assert(doc["acceleration"].IsDouble());
 	playerType.acceleration = (float)doc["acceleration"].GetDouble();
@@ -324,7 +309,7 @@ void Game::loadSettings(void)
 
 void Game::loadTiles(void)
 {
-	std::string path = "../assets/config/tiles/";
+	std::string path = Utility::getBasePath() + "assets/config/tiles/";
 
 	DIR* dir;
 	struct dirent* ent;
@@ -368,10 +353,10 @@ void Game::loadTiles(void)
 
 void Game::loadItems(void)
 {
-	std::string clothingPath = "../assets/config/items/clothing/";
-	std::string consumablesPath = "../assets/config/items/consumables/";
-	std::string materialPath = "../assets/config/items/materials/";
-	std::string weaponPath = "../assets/config/items/weapons/";
+	std::string clothingPath = Utility::getBasePath() + "assets/config/items/clothing/";
+	std::string consumablesPath = Utility::getBasePath() + "assets/config/items/consumables/";
+	std::string materialPath = Utility::getBasePath() + "assets/config/items/materials/";
+	std::string weaponPath = Utility::getBasePath() + "assets/config/items/weapons/";
 
 	DIR* dir;
 	struct dirent* ent;

@@ -3,8 +3,10 @@
 
 #ifdef __APPLE__
 	#include <SDL2_mixer/SDL_mixer.h>
+    #include <dirent.h>
 #else
 	#include "SDL_mixer.h"
+    #include "dirent.h"
 #endif
 
 #include <cstdio>
@@ -14,7 +16,7 @@
 #include <iostream>
 #include <memory>
 
-#include "dirent.h"
+
 #include "lib/rapidjson/document.h"
 #include "lib/rapidjson/filestream.h"
 
@@ -37,6 +39,7 @@
 #include "TypeMaterial.h"
 #include "TypeWeapon.h"
 #include "Chat.h"
+#include "Utility.h"
 
 class Game
 {

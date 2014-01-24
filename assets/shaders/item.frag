@@ -16,5 +16,5 @@ vec2 getTextureCoords()
 
 void main(void)
 {
-	outColor = texture2D(texUnit,getTextureCoords());
+	outColor = texture(texUnit,getTextureCoords());
 }

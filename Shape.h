@@ -1,7 +1,6 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
-#include <SDL.h>
 #include <string>
 #include <math.h>
 

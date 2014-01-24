@@ -1,6 +1,12 @@
 #ifndef TILE_H
 #define TILE_H
 
+#ifdef __APPLE__
+    #include <SDL2/SDL.h>
+#else
+
+#endif
+
 #include <iostream>
 
 #include "lib/glm/vec2.hpp"

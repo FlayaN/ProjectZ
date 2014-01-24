@@ -2,6 +2,8 @@
 
 ModelSquare::ModelSquare(std::string vert, std::string frag)
 {
+    vert = Utility::getBasePath() + vert;
+    frag = Utility::getBasePath() + frag;
 	prog = loadShaders(vert.c_str(), frag.c_str());
 	glGenVertexArrays(1, &vertexArrayObj);
 

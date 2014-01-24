@@ -28,7 +28,7 @@ Network::Network(const char* ipChar)
 
 	ENetEvent event;
 
-	if(enet_host_service(client, &event, 5000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
+	if(enet_host_service(client, &event, 1000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
 	{
 		std::cout << "Successfully connected to server" << std::endl;
 		success = true;

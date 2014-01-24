@@ -96,7 +96,7 @@ void EntityPlayer::update(float delta, const Uint8* keyCode)
 	if(keyCode[SDL_SCANCODE_D])
 		velocity.x += acceleration;
 
-	if(std::abs(velocity.x) > maxSpeed)
+	if(abs(velocity.x) > maxSpeed)
 	{
 		if(velocity.x > 0)
 			velocity.x = maxSpeed;
@@ -104,7 +104,7 @@ void EntityPlayer::update(float delta, const Uint8* keyCode)
 			velocity.x = -maxSpeed;
 	}
 
-	if(std::abs(velocity.y) > maxSpeed)
+	if(abs(velocity.y) > maxSpeed)
 	{
 		if(velocity.y > 0)
 			velocity.y = maxSpeed;
@@ -140,7 +140,7 @@ void EntityPlayer::update(float delta, const Uint8* keyCode)
 
 void EntityPlayer::update2(float delta)
 {
-	if(std::abs(velocity.x) > maxSpeed)
+	if(abs(velocity.x) > maxSpeed)
 	{
 		if(velocity.x > 0)
 			velocity.x = maxSpeed;
@@ -148,7 +148,7 @@ void EntityPlayer::update2(float delta)
 			velocity.x = -maxSpeed;
 	}
 
-	if(std::abs(velocity.y) > maxSpeed)
+	if(abs(velocity.y) > maxSpeed)
 	{
 		if(velocity.y > 0)
 			velocity.y = maxSpeed;

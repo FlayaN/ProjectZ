@@ -5,7 +5,12 @@
 extern "C" {
 #endif
 
-#include <GL/glew.h>
+#ifdef __APPLE__
+    #include "glew.h"
+    #include <OpenGL/gl3.h>
+#else
+    #include <GL/glew.h>
+#endif
 
 void printError(const char *functionName);
 GLuint loadShaders(const char *vertFileName, const char *fragFileName);

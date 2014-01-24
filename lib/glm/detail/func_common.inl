@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2014 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -37,13 +37,13 @@ namespace glm{
 namespace detail
 {
 	template <typename genFIType, bool /*signed*/>
-	struct Abs_
+	struct compute_abs
 	{};
 
 	template <typename genFIType>
-	struct Abs_<genFIType, true>
+	struct compute_abs<genFIType, true>
 	{
-		GLM_FUNC_QUALIFIER static genFIType get(genFIType const & x)
+		GLM_FUNC_QUALIFIER static genFIType call(genFIType const & x)
 		{
 			GLM_STATIC_ASSERT(
 				std::numeric_limits<genFIType>::is_iec559 || std::numeric_limits<genFIType>::is_signed,
@@ -54,9 +54,9 @@ namespace detail
 	};
 
 	template <typename genFIType>
-	struct Abs_<genFIType, false>
+	struct compute_abs<genFIType, false>
 	{
-		GLM_FUNC_QUALIFIER static genFIType get(genFIType const & x)
+		GLM_FUNC_QUALIFIER static genFIType call(genFIType const & x)
 		{
 			GLM_STATIC_ASSERT(
 				!std::numeric_limits<genFIType>::is_signed && std::numeric_limits<genFIType>::is_integer,
@@ -73,7 +73,7 @@ namespace detail
 		genFIType const & x
 	)
 	{
-		return detail::Abs_<genFIType, std::numeric_limits<genFIType>::is_signed>::get(x);
+		return detail::compute_abs<genFIType, std::numeric_limits<genFIType>::is_signed>::call(x);
 	}
 
 	VECTORIZE_VEC(abs)

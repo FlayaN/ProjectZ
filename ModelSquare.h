@@ -10,6 +10,7 @@
 
 #include "GL_utilities.h"
 #include "Defines.h"
+#include "Utility.h"
 
 enum class BUFFTYPE
 {

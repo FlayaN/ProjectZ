@@ -5,11 +5,11 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 {
 	cam = camIn;
 
-	modelPlayer = new ModelSquare("../assets/shaders/basic.vert", "../assets/shaders/basic.frag");
-	modelOnlinePlayer = new ModelSquare("../assets/shaders/basic.vert", "../assets/shaders/basic.frag");
-	modelTile = new ModelSquare("../assets/shaders/tile.vert", "../assets/shaders/tile.frag");
-	modelItem = new ModelSquare("../assets/shaders/item.vert", "../assets/shaders/item.frag");
-	modelGui = new ModelSquare("../assets/shaders/basic.vert", "../assets/shaders/basic.frag");
+	modelPlayer = new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag");
+	modelOnlinePlayer = new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag");
+	modelTile = new ModelSquare("assets/shaders/tile.vert", "assets/shaders/tile.frag");
+	modelItem = new ModelSquare("assets/shaders/item.vert", "assets/shaders/item.frag");
+	modelGui = new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag");
 	initShaders();
 
 	glUseProgram(modelTile->getProg());
@@ -23,8 +23,8 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 	texPlayer = pathToOGLTexture(player.getTexture());
 	texOnlinePlayer = pathToOGLTexture(player.getTexture());
 
-	texGui = pathToOGLTexture("../assets/images/slot.png");
-	texChat = pathToOGLTexture("../assets/images/chat.png");
+	texGui = pathToOGLTexture("assets/images/slot.png");
+	texChat = pathToOGLTexture("assets/images/chat.png");
 
 	texTile = surfaceToOGLTexture(tileTexture);
 	texItem = surfaceToOGLTexture(itemTexture);
@@ -406,13 +406,16 @@ void Renderer::renderTimedChat(Chat chat)
 
 GLuint Renderer::pathToOGLTexture(std::string path)
 {
+    path = Utility::getBasePath() + path;
 	SDL_Surface* tex = IMG_Load(path.c_str());
+    if(tex == nullptr)
+        std::cout << "ERROR: " << std::endl;
 	GLuint texture;
 	GLint nbOfColors;
 	GLenum textureFormat = 0;
 
 	nbOfColors = tex->format->BytesPerPixel;
-
+    std::cout << "nbOfColor: " << nbOfColors << std::endl;
 	switch(nbOfColors)
 	{
 		case 1:
@@ -441,7 +444,7 @@ GLuint Renderer::pathToOGLTexture(std::string path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, nbOfColors, tex->w, tex->h, 0, textureFormat, GL_UNSIGNED_BYTE, tex->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->w, tex->h, 0, textureFormat, GL_UNSIGNED_BYTE, tex->pixels);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -478,19 +481,19 @@ GLuint Renderer::surfaceToOGLTexture(SDL_Surface tex)
 		default:
 			break;
 	}
-
+    
 	glEnable(GL_TEXTURE_2D);
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
-		
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, nbOfColors, tex.w, tex.h, 0, textureFormat, GL_UNSIGNED_BYTE, tex.pixels);
+    
+	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, tex.w, tex.h, 0, textureFormat, GL_UNSIGNED_BYTE, tex.pixels);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
+    
 	printError("Renderer|surfaceToOGLTexture");
 	return texture;
 }
