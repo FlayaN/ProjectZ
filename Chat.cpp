@@ -32,12 +32,7 @@ void Chat::handleKeyInput(SDL_Event* ev, const Uint8* keyStates)
 
 void Chat::addMessage(std::string message)
 {
-	chatLog.push_back(std::make_shared<TimeChat>(message, 0));
-}
-
-void Chat::addMessage(std::string message, float time)
-{
-	chatLog.push_back(std::make_shared<TimeChat>(message, time));
+	chatLog.push_back(std::make_shared<TimeChat>(message, SDL_GetTicks()));
 }
 
 std::string Chat::getCurrText(void)

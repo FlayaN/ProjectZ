@@ -11,29 +11,22 @@ Graphics::Graphics(void)
 
 	win = SDL_CreateWindow("Project Z", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Settings::Graphics::screenWidth, Settings::Graphics::screenHeight, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);	// create window
 	renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-		
 	
+	context = SDL_GL_CreateContext(win);
+	SDL_GL_MakeCurrent(win, context);
 	
-
-	
-    
-    
-
 	SDL_GL_SetSwapInterval(1);	// Vsync
-		
+	
+	
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();	// init Glew (OpenGL extensions)
-		
+	
 	if(err != GLEW_OK)
 		std::cout << "Error: " << glewGetErrorString(err) << std::endl;
-		
+	
 	std::cout << "Using GLEW: " << glewGetString(GLEW_VERSION) << std::endl;
 	std::cout << "Using OpenGL: " << (char*)glGetString(GL_VERSION) << std::endl;
-
-    
-    context = SDL_GL_CreateContext(win);
-    SDL_GL_MakeCurrent(win, context);
-    
+	
 	printError("Graphics|Graphics");
 }
 

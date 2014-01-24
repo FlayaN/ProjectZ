@@ -415,7 +415,7 @@ GLuint Renderer::pathToOGLTexture(std::string path)
 	GLenum textureFormat = 0;
 
 	nbOfColors = tex->format->BytesPerPixel;
-    std::cout << "nbOfColor: " << nbOfColors << std::endl;
+
 	switch(nbOfColors)
 	{
 		case 1:

@@ -14,7 +14,6 @@ class Inventory
 public:
 	Inventory(int, glm::ivec2);
 
-	bool addItem(int, std::shared_ptr<Item>);
 	bool addItem(std::shared_ptr<Item>);
 	int getCurrSize(void);
 	std::vector<std::shared_ptr<ItemStack> > getItems(void);
@@ -24,6 +23,7 @@ public:
 
 	std::shared_ptr<MouseItem> pickupItem(glm::ivec2);
 	void placeItem(glm::ivec2, std::shared_ptr<MouseItem>);
+	void pickupOneItem(std::shared_ptr<MouseItem>, glm::ivec2);
 
 private:
 	std::vector<std::shared_ptr<ItemStack> > inv;

@@ -145,7 +145,7 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 
 				ss << "Player " << id << ": " << tmpMessage;
 
-				chat->addMessage(ss.str(), time);
+				chat->addMessage(ss.str());
 				//std::cout << "Player " << id << ": " << tmpMessage << std::endl;
 				break;
 			}

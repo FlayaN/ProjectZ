@@ -25,7 +25,6 @@ public:
 	std::string getCurrText(void);
 	std::vector<std::shared_ptr<TimeChat> > getChatLog(void);
 	void addMessage(std::string);
-	void addMessage(std::string, float);
 	bool isOpen(void);
 	void setOpen(bool);
 private:

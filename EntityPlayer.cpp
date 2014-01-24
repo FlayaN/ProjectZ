@@ -13,7 +13,7 @@ EntityPlayer::EntityPlayer(TypePlayer playerType)
 	bb = new RectangleShape(new glm::vec2(0, 0), 0.0, new glm::vec2(playerType.size.x, playerType.size.y/4)); //TODO BOUNDINGBOXES
 
 	inventory = std::make_shared<Inventory>(Inventory(27, glm::ivec2(200, 200)));
-	mouseItem = std::make_shared<MouseItem>(MouseItem());
+	mouseItem = std::make_shared<MouseItem>();
 	inventoryOpen = false;
 	draggingItem = false;
 }
@@ -59,7 +59,12 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 				}
 				if(ev->button.button == SDL_BUTTON_RIGHT)
 				{
-
+					inventory->pickupOneItem(mouseItem, glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
+					
+					if(mouseItem->getCurrItem() != nullptr)
+					{
+						draggingItem = true;
+					}
 				}
 			}
 			break;
