@@ -32,6 +32,7 @@ Game::Game(void) : _running(false)
 	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, tileTexture, tileTypes, itemTexture, itemTypes.size()));
 
 	net = std::make_shared<Network>(ip.c_str());
+	//net = std::make_shared<Network>("81.237.237.250");
 
 	online = net->getSuccess();
 	keyFocus = false;
@@ -263,8 +264,12 @@ void Game::loadJson(void)
 
 	if(!doc.Parse<0>(jsonString.c_str()).HasParseError());
 	{
-		if(doc.IsObject() && doc.HasMember("ip"))
-			ip = doc["ip"].GetString();
+		const rapidjson::Value& a = doc; // Using a reference for consecutive access is handy and faster.
+		for (rapidjson::SizeType i = 0; i < a.Size(); i++) // rapidjson uses SizeType instead of size_t.
+		{
+			ip = a[i]["ip"].GetString();
+			std::cout << "Connecting to: " << ip << std::endl;
+		}
 	}
 	
 	loadSettings();
