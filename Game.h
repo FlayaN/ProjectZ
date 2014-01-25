@@ -16,9 +16,9 @@
 #include <iostream>
 #include <memory>
 
-
 #include "lib/rapidjson/document.h"
 #include "lib/rapidjson/filestream.h"
+#include <curl/curl.h>
 
 #include "Defines.h"
 #include "Tile.h"
@@ -97,6 +97,7 @@ private:
 
 	//std::string tmpChat;
 	char buff[1400];
+	std::string ip;
 };
 
 #endif
