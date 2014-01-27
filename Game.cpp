@@ -268,6 +268,13 @@ void Game::loadJson(void)
 		for (rapidjson::SizeType i = 0; i < a.Size(); i++) // rapidjson uses SizeType instead of size_t.
 		{
 			ip = a[i]["ip"].GetString();
+			
+			std::string tmpIp = doWebRequest("http://icanhazip.com");
+			tmpIp = std::regex_replace(tmpIp,std::regex("\\s+"), "");
+
+			if(tmpIp == ip)
+				ip = "localhost";
+
 			std::cout << "Connecting to: " << ip << std::endl;
 		}
 	}

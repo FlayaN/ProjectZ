@@ -15,6 +15,7 @@
 #include <sstream>
 #include <iostream>
 #include <memory>
+#include <regex>
 
 #include "lib/rapidjson/document.h"
 #include "lib/rapidjson/filestream.h"
