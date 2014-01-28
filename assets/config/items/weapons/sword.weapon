@@ -1,0 +1,7 @@
+{
+	"name" : "Sword",
+	"texture" : "sword.png",
+	"desc" : "TODO add description",
+	"stackSize" : 1,
+	"damage" : 1.0
+}
