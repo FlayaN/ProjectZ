@@ -46,6 +46,7 @@
 		97C2EA2B18756F1000EC5B3C /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C2EA2A18756F1000EC5B3C /* SDL2_mixer.framework */; };
 		97E077401876034F007BD29E /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E0773F1876034F007BD29E /* CoreFoundation.framework */; };
 		97E077431876A396007BD29E /* ChunkUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97E077411876A396007BD29E /* ChunkUtility.cpp */; };
+		97E97B1818979A380068E69C /* libcurl.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E97B1718979A380068E69C /* libcurl.4.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -499,6 +500,7 @@
 		97E0773F1876034F007BD29E /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		97E077411876A396007BD29E /* ChunkUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChunkUtility.cpp; sourceTree = "<group>"; };
 		97E077421876A396007BD29E /* ChunkUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChunkUtility.h; sourceTree = "<group>"; };
+		97E97B1718979A380068E69C /* libcurl.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.4.dylib; path = usr/lib/libcurl.4.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -506,6 +508,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97E97B1818979A380068E69C /* libcurl.4.dylib in Frameworks */,
 				975C84861892683B00A29D8D /* libenet.2.dylib in Frameworks */,
 				975C84841892679F00A29D8D /* libGLEW.1.10.0.dylib in Frameworks */,
 				975C84821892604500A29D8D /* OpenGL.framework in Frameworks */,
@@ -1079,6 +1082,7 @@
 		9766950D18437968004E8ED6 = {
 			isa = PBXGroup;
 			children = (
+				97E97B1718979A380068E69C /* libcurl.4.dylib */,
 				975C84851892683B00A29D8D /* libenet.2.dylib */,
 				975C84831892679F00A29D8D /* libGLEW.1.10.0.dylib */,
 				975C84811892604500A29D8D /* OpenGL.framework */,
