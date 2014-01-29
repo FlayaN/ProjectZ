@@ -1,7 +1,12 @@
-#include "Game.h"
+#include "State.h"
 
 int main(int argc, char* argv[])
 {
-	Game game;
-	return game.run();
+	State state;
+
+	while (state.isRunning())
+	{
+		state.loop();
+	}
+	return 0;
 }

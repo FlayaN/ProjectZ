@@ -27,7 +27,9 @@ Graphics::Graphics(void)
 	std::cout << "Using GLEW: " << glewGetString(GLEW_VERSION) << std::endl;
 	std::cout << "Using OpenGL: " << (char*)glGetString(GL_VERSION) << std::endl;
 	
+#if DEBUG
 	printError("Graphics|Graphics");
+#endif
 }
 
 Graphics& Graphics::getInstance(void)

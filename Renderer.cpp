@@ -35,14 +35,15 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
-	//glDisable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	
+#if DEBUG
 	printError("Renderer|Renderer");
+#endif
 }
 
 Renderer::~Renderer(void) 
@@ -150,7 +151,9 @@ void Renderer::renderItem(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chun
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
 		}
 	}
+#if DEBUG
 	printError("Renderer|renderItem");
+#endif
 }
 
 void Renderer::renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player)
@@ -178,7 +181,9 @@ void Renderer::renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chun
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelTile->getNumVertices());
 		}
 	}
+#if DEBUG
 	printError("Renderer|renderTile");
+#endif
 }
 
 void Renderer::renderGrid(EntityPlayer player)
@@ -234,7 +239,9 @@ void Renderer::renderPlayer(EntityPlayer player)
 	glBindVertexArray(modelPlayer->getVAO());
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, modelPlayer->getNumVertices());
+#if DEBUG
 	printError("Renderer|renderPlayer");
+#endif
 }
 
 void Renderer::renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> > players, EntityPlayer player)
@@ -255,8 +262,9 @@ void Renderer::renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> > playe
 		
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, modelOnlinePlayer->getNumVertices());
 	}
-	
+#if DEBUG
 	printError("Renderer|renderOnlinePlayers");
+#endif
 }
 
 void Renderer::renderGui(EntityPlayer player)
@@ -328,7 +336,9 @@ void Renderer::renderGui(EntityPlayer player)
 			sfDrawString(tmpPos.x, Settings::Graphics::screenHeight - tmpPos.y, buff);
 		}
 	}
+#if DEBUG
 	printError("Renderer|renderGui");
+#endif
 }
 
 void Renderer::renderChat(Chat chat)
@@ -370,6 +380,9 @@ void Renderer::renderChat(Chat chat)
 			sfDrawString(10, Settings::Graphics::screenHeight - (15*((chatLog.size()-i)+1)), buff);
 		}
 	}
+#if DEBUG
+	printError("Renderer|renderChat");
+#endif
 }
 
 void Renderer::renderTimedChat(Chat chat)
@@ -402,6 +415,9 @@ void Renderer::renderTimedChat(Chat chat)
 			}
 		}
 	}
+#if DEBUG
+	printError("Renderer|renderTimedChat");
+#endif
 }
 
 GLuint Renderer::pathToOGLTexture(std::string path)
@@ -449,7 +465,10 @@ GLuint Renderer::pathToOGLTexture(std::string path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+#if DEBUG
 	printError("Renderer|pathToOGLTexture");
+#endif
+
 	return texture;
 }
 
@@ -493,7 +512,10 @@ GLuint Renderer::surfaceToOGLTexture(SDL_Surface tex)
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    
+
+#if DEBUG
 	printError("Renderer|surfaceToOGLTexture");
+#endif
+
 	return texture;
 }

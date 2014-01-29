@@ -362,10 +362,10 @@ void sfDrawString(int h, int v, char *s)
 	GLint tex;
 	GLint saveprogram;
 
-	char saveZ = glIsEnabled(GL_DEPTH_TEST);
+	/*char saveZ = glIsEnabled(GL_DEPTH_TEST);
 	char saveCull = glIsEnabled(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);*/
 	
 	glGetIntegerv(GL_TEXTURE_BINDING_2D, &tex);
 	glBindTexture(GL_TEXTURE_2D, fontTexture);
@@ -386,8 +386,6 @@ void sfDrawString(int h, int v, char *s)
 	}
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glUseProgram(saveprogram);
-	if (saveZ) glEnable(GL_DEPTH_TEST);
-	if (saveCull) glEnable(GL_CULL_FACE);
-
-
+	//if (saveZ) glEnable(GL_DEPTH_TEST);
+	//if (saveCull) glEnable(GL_CULL_FACE);
 }

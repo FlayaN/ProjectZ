@@ -92,6 +92,7 @@
     <ClCompile Include="GL_utilities.c" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="GroundItem.cpp" />
+    <ClCompile Include="Json.cpp" />
     <ClCompile Include="MouseItem.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="simplefont.c" />
     <ClCompile Include="SimplexNoise.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
@@ -126,6 +128,7 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="GroundItem.h" />
+    <ClInclude Include="Json.h" />
     <ClInclude Include="MouseItem.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="ItemStack.h" />
@@ -144,6 +147,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shape.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TypeClothing.h" />
     <ClInclude Include="TypeConsumable.h" />
