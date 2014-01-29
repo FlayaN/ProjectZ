@@ -36,19 +36,13 @@ class Game
 public:
 	Game(std::shared_ptr<Json>);
 	~Game(void);
-	void onEvent(SDL_Event* ev, const Uint8*);
+	void onEvent(SDL_Event*, const Uint8*);
 	bool isRunning(void);
 	void update(float, const Uint8*);
 	void render(void);
 	void collision(void);
-
-	/*void loadJson(void);
-	void loadSettings(void);
-	void loadTiles(void);
-	void loadItems(void);
-
-	void combineTileTextures(void);
-	void combineItemTextures(void);*/
+	bool hasNewState(void);
+	STATE requestStateChange(void);
 private:
 	std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks;
 	std::vector<std::shared_ptr<PlayerMP> > players;
@@ -60,25 +54,17 @@ private:
 	std::shared_ptr<Json> json;
 
 	std::unique_ptr<Renderer> renderer;
-	
-	/*std::vector<TypeTile> tileTypes;
-	std::vector<std::shared_ptr<TypeItem> > itemTypes;
-
-	TypePlayer playerType;
-	
-	SDL_Surface tileTexture;
-	SDL_Surface itemTexture;*/
 
 	Mix_Chunk* music;
 
 	bool running;
 	bool online;
 	bool keyFocus;
-	int state;
 
-	char buff[1400];
-	std::string ip;
 	float tmpTime;
+
+	bool newState;
+	STATE state;
 };
 
 #endif

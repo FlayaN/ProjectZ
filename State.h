@@ -3,13 +3,8 @@
 
 #include "Game.h"
 #include "Json.h"
-
-enum class STATE
-{
-	MAINMENU,
-	SERVERLIST,
-	GAME
-};
+#include "MainMenu.h"
+#include "Defines.h"
 
 class State
 {
@@ -22,9 +17,11 @@ public:
 	void onEvent(SDL_Event*);
 	bool isRunning(void);
 	void setState(STATE);
+	void requestStateChange(void);
 private:
 	std::shared_ptr<Game> game;
 	std::shared_ptr<Json> json;
+	std::shared_ptr<MainMenu> mainMenu;
 	bool running;
 	SDL_Event ev;
 	STATE state;

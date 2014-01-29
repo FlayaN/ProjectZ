@@ -15,7 +15,7 @@ State::State(void)
 	json = std::make_shared<Json>();
 
 	Graphics::getInstance();
-	setState(STATE::GAME);
+	setState(STATE::MAINMENU);
 
 	tmpTime = 0;
 	currTime = SDL_GetTicks();
@@ -28,10 +28,14 @@ void State::setState(STATE newState)
 	switch (newState)
 	{
 	case STATE::MAINMENU:
+		std::cout << "Starting menu" << std::endl;
+		SDL_SetRenderTarget(Graphics::getInstance().getRenderer(), NULL);
+		mainMenu = std::make_shared<MainMenu>();
 		break;
 	case STATE::SERVERLIST:
 		break;
 	case STATE::GAME:
+		std::cout << "Starting game" << std::endl;
 		game = std::make_shared<Game>(json);
 		break;
 	default:
@@ -54,6 +58,8 @@ void State::loop(void)
 	update(delta);
 
 	render();
+
+	requestStateChange();
 }
 
 void State::render(void)
@@ -61,6 +67,7 @@ void State::render(void)
 	switch (state)
 	{
 	case STATE::MAINMENU:
+		mainMenu->render();
 		break;
 	case STATE::SERVERLIST:
 		break;
@@ -77,6 +84,7 @@ void State::update(float delta)
 	switch (state)
 	{
 	case STATE::MAINMENU:
+		mainMenu->update(delta, keyStates);
 		break;
 	case STATE::SERVERLIST:
 		break;
@@ -93,6 +101,7 @@ void State::onEvent(SDL_Event* ev)
 	switch (state)
 	{
 	case STATE::MAINMENU:
+		mainMenu->onEvent(ev, keyStates);
 		break;
 	case STATE::SERVERLIST:
 		break;
@@ -104,11 +113,31 @@ void State::onEvent(SDL_Event* ev)
 	}
 }
 
+void State::requestStateChange(void)
+{
+	switch (state)
+	{
+	case STATE::MAINMENU:
+		if(mainMenu->hasNewState())
+			setState(mainMenu->requestStateChange());
+		break;
+	case STATE::SERVERLIST:
+		break;
+	case STATE::GAME:
+		if(game->hasNewState())
+			setState(game->requestStateChange());
+		break;
+	default:
+		break;
+	}
+}
+
 bool State::isRunning(void)
 {
 	switch (state)
 	{
 	case STATE::MAINMENU:
+		return mainMenu->isRunning();
 		break;
 	case STATE::SERVERLIST:
 		break;

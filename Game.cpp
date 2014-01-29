@@ -4,9 +4,6 @@ Game::Game(std::shared_ptr<Json> jsonIn) : running(true), json(jsonIn)
 {
 	//music = Mix_LoadWAV("../assets/music/CSLIVE.wav");
 
-	//Load json files
-	//loadJson();
-
 	PerlinNoise::getInstance().SetValues(0.25, 6.0, (double)json->getTileTypes().size(), 1, 1337);
 	SimplexNoise::init();
 
@@ -14,7 +11,7 @@ Game::Game(std::shared_ptr<Json> jsonIn) : running(true), json(jsonIn)
 	cam = std::make_shared<Camera>(player);
 	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, json->getTileTexture(), json->getTileTypes(), json->getItemTexture(), json->getItemTypes().size()));
 
-	net = std::make_shared<Network>(ip.c_str());
+	net = std::make_shared<Network>(json->getIp().c_str());
 
 	online = net->getSuccess();
 	keyFocus = false;
@@ -22,6 +19,8 @@ Game::Game(std::shared_ptr<Json> jsonIn) : running(true), json(jsonIn)
 	chat = std::make_shared<Chat>(10);
 
 	tmpTime = 0;
+	newState = false;
+	state = STATE::GAME;
 }
 
 Game::~Game(void)
@@ -41,7 +40,8 @@ void Game::onEvent(SDL_Event* ev, const Uint8* keyStates)
 		{
 			if(ev->key.keysym.sym == SDLK_ESCAPE)
 			{
-				running = false;
+				newState = true;
+				state = STATE::MAINMENU;
 			}
 			else if(ev->key.keysym.sym == SDLK_RETURN)
 			{
@@ -171,4 +171,13 @@ void Game::collision(void)
 			}
 		}
 	}
+}
+
+bool Game::hasNewState(void)
+{
+	return newState;
+}
+STATE Game::requestStateChange(void)
+{
+	return state;
 }
