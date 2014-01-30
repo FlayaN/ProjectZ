@@ -34,7 +34,7 @@
 class Game
 {
 public:
-	Game(std::shared_ptr<Json>);
+	Game(std::shared_ptr<Json>, std::string);
 	~Game(void);
 	void onEvent(SDL_Event*, const Uint8*);
 	bool isRunning(void);

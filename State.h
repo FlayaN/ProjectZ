@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Json.h"
 #include "MainMenu.h"
+#include "ServerList.h"
 #include "Defines.h"
 
 class State
@@ -22,6 +23,7 @@ private:
 	std::shared_ptr<Game> game;
 	std::shared_ptr<Json> json;
 	std::shared_ptr<MainMenu> mainMenu;
+	std::shared_ptr<ServerList> serverList;
 	bool running;
 	SDL_Event ev;
 	STATE state;
@@ -30,6 +32,7 @@ private:
 	float delta;
 	float tmpTime;
 	const Uint8* keyStates;
+	std::string ip;
 };
 
 #endif

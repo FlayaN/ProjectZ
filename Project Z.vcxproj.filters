@@ -67,6 +67,12 @@
     <Filter Include="Source Files\Window">
       <UniqueIdentifier>{8cc76d1f-8c40-4d0b-82fc-9a0a21d945e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Gui">
+      <UniqueIdentifier>{198f9784-1ea9-45e0-aa00-49e4361ef69d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui">
+      <UniqueIdentifier>{8f5ca85e-7e83-416e-9adf-9e9bf9f24b9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -170,6 +176,21 @@
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiButton.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiText.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseWindow.cpp">
+      <Filter>Source Files\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerList.cpp">
+      <Filter>Source Files\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiServerList.cpp">
+      <Filter>Source Files\Gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +319,21 @@
     </ClInclude>
     <ClInclude Include="MainMenu.h">
       <Filter>Header Files\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiButton.h">
+      <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiText.h">
+      <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseWindow.h">
+      <Filter>Header Files\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerList.h">
+      <Filter>Header Files\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiServerList.h">
+      <Filter>Header Files\Gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,6 @@
 
 #include <string>
 #include <memory>
-#include <regex>
 
 #include <curl/curl.h>
 #include "lib/rapidjson/document.h"
@@ -38,7 +37,6 @@ public:
 	TypePlayer getPlayerType(void);
 	SDL_Surface getTileTexture(void);
 	SDL_Surface getItemTexture(void);
-	std::string getIp(void);
 private:
 	void loadJson(void);
 	void loadSettings(void);
@@ -55,7 +53,6 @@ private:
 	
 	SDL_Surface tileTexture;
 	SDL_Surface itemTexture;
-	std::string ip;
 };
 
 #endif

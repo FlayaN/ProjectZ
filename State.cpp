@@ -21,10 +21,26 @@ State::State(void)
 	currTime = SDL_GetTicks();
 	keyStates = SDL_GetKeyboardState(NULL);
 	running = true;
+	ip = "localhost";
 }
 
 void State::setState(STATE newState)
 {
+	switch (state)
+	{
+	case STATE::MAINMENU:
+		mainMenu.reset();
+		break;
+	case STATE::SERVERLIST:
+		serverList.reset();
+		break;
+	case STATE::GAME:
+		game.reset();
+		break;
+	default:
+		break;
+	}
+
 	switch (newState)
 	{
 	case STATE::MAINMENU:
@@ -33,14 +49,17 @@ void State::setState(STATE newState)
 		mainMenu = std::make_shared<MainMenu>();
 		break;
 	case STATE::SERVERLIST:
+		std::cout << "Loading serverlist" << std::endl;
+		serverList = std::make_shared<ServerList>();
 		break;
 	case STATE::GAME:
 		std::cout << "Starting game" << std::endl;
-		game = std::make_shared<Game>(json);
+		game = std::make_shared<Game>(json, ip);
 		break;
 	default:
 		break;
 	}
+
 	state = newState;
 }
 
@@ -70,6 +89,7 @@ void State::render(void)
 		mainMenu->render();
 		break;
 	case STATE::SERVERLIST:
+		serverList->render();
 		break;
 	case STATE::GAME:
 		game->render();
@@ -87,6 +107,7 @@ void State::update(float delta)
 		mainMenu->update(delta, keyStates);
 		break;
 	case STATE::SERVERLIST:
+		serverList->update(delta, keyStates);
 		break;
 	case STATE::GAME:
 		game->update(delta, keyStates);
@@ -104,6 +125,7 @@ void State::onEvent(SDL_Event* ev)
 		mainMenu->onEvent(ev, keyStates);
 		break;
 	case STATE::SERVERLIST:
+		serverList->onEvent(ev, keyStates);
 		break;
 	case STATE::GAME:
 		game->onEvent(ev, keyStates);
@@ -122,6 +144,11 @@ void State::requestStateChange(void)
 			setState(mainMenu->requestStateChange());
 		break;
 	case STATE::SERVERLIST:
+		if(serverList->hasNewState())
+		{
+			ip = serverList->getIp();
+			setState(serverList->requestStateChange());
+		}
 		break;
 	case STATE::GAME:
 		if(game->hasNewState())
@@ -140,6 +167,7 @@ bool State::isRunning(void)
 		return mainMenu->isRunning();
 		break;
 	case STATE::SERVERLIST:
+		return serverList->isRunning();
 		break;
 	case STATE::GAME:
 		return game->isRunning();

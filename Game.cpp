@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(std::shared_ptr<Json> jsonIn) : running(true), json(jsonIn)
+Game::Game(std::shared_ptr<Json> jsonIn, std::string ip) : running(true), json(jsonIn)
 {
 	//music = Mix_LoadWAV("../assets/music/CSLIVE.wav");
 
@@ -11,7 +11,7 @@ Game::Game(std::shared_ptr<Json> jsonIn) : running(true), json(jsonIn)
 	cam = std::make_shared<Camera>(player);
 	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, json->getTileTexture(), json->getTileTypes(), json->getItemTexture(), json->getItemTypes().size()));
 
-	net = std::make_shared<Network>(json->getIp().c_str());
+	net = std::make_shared<Network>(ip.c_str());
 
 	online = net->getSuccess();
 	keyFocus = false;
