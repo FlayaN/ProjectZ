@@ -9,9 +9,10 @@ ServerList::ServerList(void) : BaseWindow()
 	texts.push_back(GuiText(font, fontColor, renderer, "Ping", 1100, 20));
 	buttons.push_back(GuiButton(font, fontColor, renderer, "BACK", 100, 600, 55, 24, STATE::MAINMENU));
 	buttons.push_back(GuiButton(font, fontColor, renderer, "Refresh", 600, 600, 70, 24, STATE::SERVERLIST));
-	loadServerList();
+	
 	yourIp = Utility::doWebRequest("http://icanhazip.com");
 	yourIp = std::regex_replace(yourIp,std::regex("\\s+"), "");
+	loadServerList();
 }
 
 void ServerList::renderBody(void)
@@ -42,17 +43,26 @@ void ServerList::loadServerList(void)
     {
         fprintf (stderr, "An error occurred while initializing ENet.\n");
     }
-	ENetHost* client = enet_host_create(NULL, 1, 2, 57600 / 8, 14400 / 8);
-
-	if(client == NULL)
-	{
-		fprintf (stderr, "An error occurred while trying to create an ENet client host.\n");
-	}
 
 	for(int i = 0; i < serverList.size(); i++)
 	{
+		ENetHost* client = enet_host_create(NULL, 1, 2, 57600 / 8, 14400 / 8);
+
+		if(client == NULL)
+		{
+			fprintf (stderr, "An error occurred while trying to create an ENet client host.\n");
+		}
+
 		ENetAddress address;
-		enet_address_set_host(&address, serverList[i].getIp().c_str());
+
+		std::string tmpIp = serverList[i].getIp();
+
+		if(yourIp == tmpIp)
+		{
+			tmpIp = "localhost";
+		}
+
+		enet_address_set_host(&address, tmpIp.c_str());
 		address.port = 1234;
 
 		ENetPeer* server = enet_host_connect(client, &address, 2, 0);
@@ -93,13 +103,13 @@ void ServerList::loadServerList(void)
 				sscanf((char*)event.packet->data, "3 %d %d", &playerCount, &maxPlayers);
 				serverList[i].setPlayerCount(playerCount, maxPlayers);
 			}
+			enet_peer_disconnect(server, 0);
 		}
 		else
 		{
 			std::cout << "Failed to connect to server" << std::endl;
 		}
-		enet_host_flush(client);
-		enet_peer_disconnect(server, 0);
+		
 	}
 }
 
