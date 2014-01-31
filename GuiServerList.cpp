@@ -1,6 +1,6 @@
 #include "GuiServerList.h"
 
-GuiServerList::GuiServerList(TTF_Font* font, SDL_Color fontColor, SDL_Renderer* renderer, std::string ipIn, std::string nameIn, std::string descriptionIn, std::string pingIn, int yIn)
+GuiServerList::GuiServerList(TTF_Font* font, SDL_Color fontColor, SDL_Renderer* renderer, std::string ipIn, std::string nameIn, std::string descriptionIn, int yIn)
 {
 	edgeTexture = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/edge.png").c_str());
 	texture = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/border.png").c_str());
@@ -10,7 +10,8 @@ GuiServerList::GuiServerList(TTF_Font* font, SDL_Color fontColor, SDL_Renderer* 
 	ipGuiText = new GuiText(font, fontColor, renderer, ipIn, 100, yIn);
 	nameGuiText = new GuiText(font, fontColor, renderer, nameIn, 300, yIn);
 	descGuiText = new GuiText(font, fontColor, renderer, descriptionIn, 500, yIn);
-	pingGuiText = new GuiText(font, fontColor, renderer, pingIn, 1100, yIn);
+	playerCountGuiText = new GuiText(font, fontColor, renderer, "NaN", 900, yIn);
+	pingGuiText = new GuiText(font, fontColor, renderer, "NaN", 1100, yIn);
 
 	int x = 20;
 	int y = yIn;
@@ -85,6 +86,7 @@ void GuiServerList::render(void)
 	ipGuiText->render();
 	nameGuiText->render();
 	descGuiText->render();
+	playerCountGuiText->render();
 	pingGuiText->render();
 }
 
@@ -158,4 +160,9 @@ bool GuiServerList::hasClicked(void)
 void GuiServerList::setPing(int pingIn)
 {
 	pingGuiText->setText(std::to_string(pingIn));
+}
+
+void GuiServerList::setPlayerCount(int curr, int max)
+{
+	playerCountGuiText->setText(std::to_string(curr) + "/" + std::to_string(max));
 }

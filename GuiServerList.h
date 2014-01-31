@@ -6,7 +6,7 @@
 class GuiServerList
 {
 public:
-	GuiServerList(TTF_Font*, SDL_Color, SDL_Renderer*, std::string, std::string, std::string, std::string, int);
+	GuiServerList(TTF_Font*, SDL_Color, SDL_Renderer*, std::string, std::string, std::string, int);
 
 	enum BUTTONSTATE
 	{
@@ -21,7 +21,7 @@ public:
 	SDL_Rect getRect(void);
 	STATE getOnClick(void);
 	void setPing(int);
-
+	void setPlayerCount(int, int);
 	void render(void);
 	void onEvent(SDL_Event*, const Uint8*);
 	bool hasClicked(void);
@@ -29,6 +29,7 @@ private:
 	GuiText* ipGuiText;
 	GuiText* nameGuiText;
 	GuiText* descGuiText;
+	GuiText* playerCountGuiText;
 	GuiText* pingGuiText;
 	SDL_Texture* edgeTexture;
 	SDL_Texture* texture;

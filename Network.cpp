@@ -48,7 +48,6 @@ Network::~Network(void)
 {
 	ENetPacket* packet = enet_packet_create("1", 2, ENET_PACKET_FLAG_RELIABLE);
 	enet_peer_send(server, 0, packet);
-	enet_peer_disconnect(server, 0);
 	enet_host_flush(client);
 }
 
@@ -59,7 +58,7 @@ bool Network::getSuccess(void)
 
 void Network::sendMessage(EntityPlayer player, TimeChat timeChat)
 {
-	sprintf(tmp, "4 %d %f %s", player.getId(), timeChat.time, timeChat.chat.c_str());
+	sprintf(tmp, "5 %d %f %s", player.getId(), timeChat.time, timeChat.chat.c_str());
 
 	ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
 	enet_peer_send(server, 0, packet);
@@ -72,7 +71,7 @@ void Network::send(EntityPlayer player, int ticks)
 	{
 		glm::vec2 pos = player.getPosition();
 		//3 id posX posY
-		sprintf(tmp, "3 %d %f %f %d", player.getId(), pos.x, pos.y, ticks);
+		sprintf(tmp, "4 %d %f %f %d", player.getId(), pos.x, pos.y, ticks);
 
 		ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
 		enet_peer_send(server, 0, packet);
@@ -89,7 +88,7 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 		int type, id;
 		sscanf((char*)event.packet->data, "%d %d", &type, &id);
 
-		if(type!=1)
+		if(type != 4)
 			std::cout << "Packet of type: " << type << " was recieved from id: " << id << std::endl;
 
 		switch (type)
@@ -114,7 +113,7 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 				}
 				break;
 			}
-			case 3:
+			case 4:
 			{
 				int i;
 				for(i = 0; i < players.size(); i++)
@@ -124,7 +123,7 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 						int tmp2;
 						float x, y;
 						int tick;
-						sscanf((char*)event.packet->data, "3 %d %f %f %d", &tmp2, &x, &y, &tick);
+						sscanf((char*)event.packet->data, "4 %d %f %f %d", &tmp2, &x, &y, &tick);
 						players[i]->setLatestSnapShot(x, y, tick);
 						break;
 					}	
@@ -139,12 +138,12 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 				}
 				break;
 			}
-			case 4:
+			case 5:
 			{
 				int tmp2;
 				char* tmpMessage = (char*)malloc(strlen(tmp)+1);
 				float time;
-				sscanf((char*)event.packet->data, "4 %d %f %[0-9a-öA-Ö?*/ ]s", &tmp2, &time, tmpMessage);
+				sscanf((char*)event.packet->data, "5 %d %f %[0-9a-öA-Ö?*/ ]s", &tmp2, &time, tmpMessage);
 				
 				std::stringstream ss;
 				ss << "Player " << id << ": " << tmpMessage;

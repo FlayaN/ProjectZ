@@ -5,6 +5,7 @@ ServerList::ServerList(void) : BaseWindow()
 	texts.push_back(GuiText(font, fontColor, renderer, "IP", 100, 20));
 	texts.push_back(GuiText(font, fontColor, renderer, "Name", 300, 20));
 	texts.push_back(GuiText(font, fontColor, renderer, "Description", 500, 20));
+	texts.push_back(GuiText(font, fontColor, renderer, "PlayerCount", 900, 20));
 	texts.push_back(GuiText(font, fontColor, renderer, "Ping", 1100, 20));
 	buttons.push_back(GuiButton(font, fontColor, renderer, "BACK", 100, 600, 55, 24, STATE::MAINMENU));
 	buttons.push_back(GuiButton(font, fontColor, renderer, "Refresh", 600, 600, 70, 24, STATE::SERVERLIST));
@@ -33,7 +34,7 @@ void ServerList::loadServerList(void)
 		const rapidjson::Value& a = doc;
 		for (rapidjson::SizeType i = 0; i < a.Size(); i++)
 		{
-			serverList.push_back(GuiServerList(font, fontColor, renderer, a[i]["ip"].GetString(), a[i]["name"].GetString(), a[i]["description"].GetString(), "NaN", 50+50*(i+1)));
+			serverList.push_back(GuiServerList(font, fontColor, renderer, a[i]["ip"].GetString(), a[i]["name"].GetString(), a[i]["description"].GetString(), 50+50*(i+1)));
 		}
 	}
 
@@ -67,6 +68,7 @@ void ServerList::loadServerList(void)
 		{
 			std::cout << "Pinging server..." << std::endl;
 			char tmp[1400];
+
 			sprintf(tmp, "2 %d", SDL_GetTicks());
 			ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
 			enet_peer_send(server, 0, packet);
@@ -77,6 +79,19 @@ void ServerList::loadServerList(void)
 				int time;
 				sscanf((char*)event.packet->data, "2 %d", &time);
 				serverList[i].setPing(SDL_GetTicks()-time);
+			}
+
+			std::cout << "Getting playercount..." << std::endl;
+
+			packet = enet_packet_create("3", 2, ENET_PACKET_FLAG_RELIABLE);
+			enet_peer_send(server, 0, packet);
+			enet_host_flush(client);
+
+			if(enet_host_service(client, &event, 1000) > 0 && event.type == ENET_EVENT_TYPE_RECEIVE)
+			{
+				int playerCount, maxPlayers;
+				sscanf((char*)event.packet->data, "3 %d %d", &playerCount, &maxPlayers);
+				serverList[i].setPlayerCount(playerCount, maxPlayers);
 			}
 		}
 		else
