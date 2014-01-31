@@ -14,10 +14,6 @@ public:
 		HOVER,
 		CLICK
 	};
-
-	SDL_Texture* getTexture(void);
-	SDL_Texture* getTextureHover(void);
-	SDL_Texture* getTextureClick(void);
 	void setState(int);
 	int getState(void);
 	GuiText* getGuiText(void);
@@ -29,12 +25,16 @@ public:
 	bool hasClicked(void);
 private:
 	GuiText* text;
+	SDL_Texture* edgeTexture;
 	SDL_Texture* texture;
 	SDL_Texture* textureHover;
 	SDL_Texture* textureClick;
 	int state;
 	STATE onClick;
-	SDL_Rect dest;
+	SDL_Rect middle;
+	SDL_Rect leftEdge;
+	SDL_Rect rightEdge;
+	SDL_Rect rect;
 	bool clicked;
 };
 

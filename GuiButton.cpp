@@ -2,32 +2,35 @@
 
 GuiButton::GuiButton(TTF_Font* font, SDL_Color fontColor, SDL_Renderer* renderer, std::string textIn, int x, int y, int width, int height, STATE onClickIn)
 {
-	texture = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/button.png").c_str());
-	textureHover = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/buttonHover.png").c_str());
-	textureClick = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/buttonClick.png").c_str());
+	edgeTexture = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/edge.png").c_str());
+	texture = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/border.png").c_str());
+	textureHover = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/borderHover.png").c_str());
+	textureClick = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/borderClick.png").c_str());
 	text = new GuiText(font, fontColor, renderer, textIn, x, y);
-	dest.x = x;
-	dest.y = y;
-	dest.h = height;
-	dest.w = width;
+
+	leftEdge.x = x;
+	leftEdge.y = y;
+	leftEdge.h = height;
+	leftEdge.w = 2;
+
+	rightEdge.x = x+width-2;
+	rightEdge.y = y;
+	rightEdge.h = height;
+	rightEdge.w = 2;
+
+	middle.x = x+2;
+	middle.y = y;
+	middle.h = height;
+	middle.w = width-4;
+
+	rect.x = x;
+	rect.y = y;
+	rect.h = height;
+	rect.w = width;
+
 	state = NORMAL;
 	onClick = onClickIn;
 	clicked = false;
-}
-
-SDL_Texture* GuiButton::getTexture(void)
-{
-	return texture;
-}
-
-SDL_Texture* GuiButton::getTextureHover(void)
-{
-	return textureHover;
-}
-
-SDL_Texture* GuiButton::getTextureClick(void)
-{
-	return textureClick;
 }
 
 void GuiButton::setState(int stateIn)
@@ -45,11 +48,6 @@ GuiText* GuiButton::getGuiText(void)
 	return text;
 }
 
-SDL_Rect GuiButton::getRect(void)
-{
-	return dest;
-}
-
 STATE GuiButton::getOnClick(void)
 {
 	return onClick;
@@ -57,16 +55,18 @@ STATE GuiButton::getOnClick(void)
 
 void GuiButton::render(void)
 {
+	SDL_RenderCopy(Graphics::getInstance().getRenderer(), edgeTexture, NULL, &leftEdge);
+	SDL_RenderCopyEx(Graphics::getInstance().getRenderer(), edgeTexture, NULL, &rightEdge, 0.0, NULL, SDL_FLIP_HORIZONTAL);
 	switch (state)
 	{
 	case BUTTONSTATE::NORMAL:
-		SDL_RenderCopy(Graphics::getInstance().getRenderer(), texture, NULL, &dest);
+		SDL_RenderCopy(Graphics::getInstance().getRenderer(), texture, NULL, &middle);
 		break;
 	case BUTTONSTATE::HOVER:
-		SDL_RenderCopy(Graphics::getInstance().getRenderer(), textureHover, NULL, &dest);
+		SDL_RenderCopy(Graphics::getInstance().getRenderer(), textureHover, NULL, &middle);
 		break;
 	case BUTTONSTATE::CLICK:
-		SDL_RenderCopy(Graphics::getInstance().getRenderer(), textureClick, NULL, &dest);
+		SDL_RenderCopy(Graphics::getInstance().getRenderer(), textureClick, NULL, &middle);
 		break;
 	default:
 		break;
@@ -89,7 +89,7 @@ void GuiButton::onEvent(SDL_Event* ev, const Uint8*)
 			
 			if(state != GuiButton::BUTTONSTATE::CLICK)
 			{
-				if(SDL_HasIntersection(&mouse, &dest))
+				if(SDL_HasIntersection(&mouse, &rect))
 					state = GuiButton::BUTTONSTATE::HOVER;
 				else
 					state = GuiButton::BUTTONSTATE::NORMAL;
@@ -106,7 +106,7 @@ void GuiButton::onEvent(SDL_Event* ev, const Uint8*)
 				mouse.w = 1;
 				mouse.h = 1;
 				
-				if(SDL_HasIntersection(&mouse, &dest))
+				if(SDL_HasIntersection(&mouse, &rect))
 					state = GuiButton::BUTTONSTATE::CLICK;
 				else
 					state = GuiButton::BUTTONSTATE::NORMAL;
@@ -124,7 +124,7 @@ void GuiButton::onEvent(SDL_Event* ev, const Uint8*)
 				mouse.h = 1;
 				if(state == GuiButton::BUTTONSTATE::CLICK)
 				{
-					if(SDL_HasIntersection(&mouse, &dest))
+					if(SDL_HasIntersection(&mouse, &rect))
 					{
 						clicked = true;
 					}

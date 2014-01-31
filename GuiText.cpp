@@ -1,14 +1,13 @@
 #include "GuiText.h"
 
-GuiText::GuiText(TTF_Font* font, SDL_Color fontColor, SDL_Renderer* renderer, std::string text, int x, int y)
+GuiText::GuiText(TTF_Font* fontIn, SDL_Color fontColorIn, SDL_Renderer* rendererIn, std::string text, int x, int y)
 {
-	SDL_Surface* textImage = TTF_RenderText_Solid(font, text.c_str(), fontColor);
+	font = fontIn;
+	fontColor = fontColorIn;
+	renderer = rendererIn;
 	dest.x = x;
 	dest.y = y;
-	dest.w = textImage->w;
-	dest.h = textImage->h;
-	texture = SDL_CreateTextureFromSurface(renderer, textImage);
-	SDL_FreeSurface(textImage);
+	setText(text);
 }
 
 SDL_Texture* GuiText::getTexture(void)
@@ -24,4 +23,13 @@ SDL_Rect GuiText::getRect(void)
 void GuiText::render(void)
 {
 	SDL_RenderCopy(Graphics::getInstance().getRenderer(), texture, NULL, &dest);
+}
+
+void GuiText::setText(std::string text)
+{
+	SDL_Surface* textImage = TTF_RenderText_Solid(font, text.c_str(), fontColor);
+	dest.w = textImage->w;
+	dest.h = textImage->h;
+	texture = SDL_CreateTextureFromSurface(renderer, textImage);
+	SDL_FreeSurface(textImage);
 }

@@ -5,7 +5,7 @@ BaseWindow::BaseWindow(void)
 	TTF_Init();
 	font = TTF_OpenFont(std::string(Utility::getBasePath() + "assets/fonts/arial.ttf").c_str(), 20);
 	fontColor.r = 0;
-	fontColor.g = 0xff;
+	fontColor.g = 0;
 	fontColor.b = 0;
 
 	renderer = Graphics::getInstance().getRenderer();
