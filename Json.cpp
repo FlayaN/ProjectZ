@@ -182,8 +182,6 @@ void Json::loadItems(void)
 	DIR* dir;
 	struct dirent* ent;
 
-	int curId = 0;
-
 	//CLOTHING
 
 	dir = opendir(clothingPath.c_str());
@@ -215,7 +213,8 @@ void Json::loadItems(void)
 				assert(doc["stackSize"].IsInt());
 				tmp->stackSize = doc["stackSize"].GetInt();
 
-				tmp->id = curId++;
+				assert(doc["id"].IsInt());
+				tmp->id = doc["id"].GetInt();
 
 				itemTypes.push_back(tmp);
 				
@@ -259,7 +258,8 @@ void Json::loadItems(void)
 				assert(doc["stackSize"].IsInt());
 				tmp->stackSize = doc["stackSize"].GetInt();
 
-				tmp->id = curId++;
+				assert(doc["id"].IsInt());
+				tmp->id = doc["id"].GetInt();
 
 				itemTypes.push_back(tmp);
 
@@ -303,7 +303,8 @@ void Json::loadItems(void)
 				assert(doc["stackSize"].IsInt());
 				tmp->stackSize = doc["stackSize"].GetInt();
 
-				tmp->id = curId++;
+				assert(doc["id"].IsInt());
+				tmp->id = doc["id"].GetInt();
 
 				itemTypes.push_back(tmp);
 
@@ -350,7 +351,8 @@ void Json::loadItems(void)
 				assert(doc["stackSize"].IsInt());
 				tmp->stackSize = doc["stackSize"].GetInt();
 
-				tmp->id = curId++;
+				assert(doc["id"].IsInt());
+				tmp->id = doc["id"].GetInt();
 
 				itemTypes.push_back(tmp);
 

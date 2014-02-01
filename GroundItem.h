@@ -3,14 +3,14 @@
 
 #include "lib/glm/vec2.hpp"
 
-#include "Item.h"
-
-class GroundItem : public Item
+class GroundItem
 {
 public:
-	GroundItem(glm::vec2, std::string, int, int);
+	GroundItem(int, glm::vec2);
 	glm::vec2 getPosition(void);
+	int getId();
 private:
+	int id;
 	glm::vec2 pos;
 };
 #endif

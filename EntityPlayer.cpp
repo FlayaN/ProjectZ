@@ -16,6 +16,7 @@ EntityPlayer::EntityPlayer(TypePlayer playerType)
 	mouseItem = std::make_shared<MouseItem>();
 	inventoryOpen = false;
 	draggingItem = false;
+	dropItem = false;
 }
 
 EntityPlayer::~EntityPlayer(void)
@@ -42,7 +43,11 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 				{
 					if(mouseItem->getCurrItem() != nullptr)
 					{
-						inventory->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), mouseItem);
+						if(!inventory->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), mouseItem))
+						{
+							dropItem = true;
+							droppedItem = std::make_shared<GroundItem>(mouseItem->getCurrItem()->getItem()->getId(), position);
+						}
 						if(mouseItem->getCurrItem() == nullptr)
 						{
 							draggingItem = false;
@@ -241,4 +246,19 @@ bool EntityPlayer::isDraggingItem(void)
 std::shared_ptr<MouseItem> EntityPlayer::getMouseItem(void)
 {
 	return mouseItem;
+}
+
+std::shared_ptr<GroundItem> EntityPlayer::getDroppedItem(void)
+{
+	return droppedItem;
+}
+
+void EntityPlayer::setDropItem(bool dropItemIn)
+{
+	dropItem = dropItemIn;
+}
+
+bool EntityPlayer::getDropItem(void)
+{
+	return dropItem;
 }

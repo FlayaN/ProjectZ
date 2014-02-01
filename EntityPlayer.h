@@ -12,6 +12,7 @@
 #include "Inventory.h"
 #include "Settings.h"
 #include "MouseItem.h"
+#include "GroundItem.h"
 
 class EntityPlayer : public MovingEntity
 {
@@ -40,6 +41,10 @@ public:
 	bool hasInventoryOpen(void);
 	bool isDraggingItem(void);
 	std::shared_ptr<MouseItem> getMouseItem(void);
+
+	std::shared_ptr<GroundItem> getDroppedItem(void);
+	void setDropItem(bool);
+	bool getDropItem(void);
 private:
 	int id;
 	bool online;
@@ -50,6 +55,9 @@ private:
 	std::string texture;
 
 	bool draggingItem;
+	bool dropItem;
+
+	std::shared_ptr<GroundItem> droppedItem;
 
 	glm::vec2 size;
 	RectangleShape* bb;

@@ -125,7 +125,7 @@ void Inventory::pickupOneItem(std::shared_ptr<MouseItem> currMouseItem, glm::ive
 	}
 }
 
-void Inventory::placeItem(glm::ivec2 mouse, std::shared_ptr<MouseItem> mouseItem)
+bool Inventory::placeItem(glm::ivec2 mouse, std::shared_ptr<MouseItem> mouseItem)
 {
 	int index = mousePosToIndex(mouse);
 
@@ -152,7 +152,9 @@ void Inventory::placeItem(glm::ivec2 mouse, std::shared_ptr<MouseItem> mouseItem
 				mouseItem->setCurrItem(tmp);
 			}
 		}
+		return true;
 	}
+	return false;
 }
 
 int Inventory::mousePosToIndex(glm::ivec2 mouse)

@@ -24,7 +24,8 @@ public:
 
 	std::shared_ptr<Tile> getTile(const glm::ivec2& pos);
 	std::vector<std::shared_ptr<GroundItem> > getGroundItems(void);
-	void removeGroundItem(std::shared_ptr<GroundItem>);
+	void addGroundItem(std::shared_ptr<GroundItem>);
+	void removeGroundItem(int id, glm::vec2 pos);
 
     glm::ivec2 getCoord(void);
 

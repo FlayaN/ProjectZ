@@ -22,7 +22,7 @@ public:
 	int mousePosToIndex(glm::ivec2 mouse);
 
 	std::shared_ptr<MouseItem> pickupItem(glm::ivec2);
-	void placeItem(glm::ivec2, std::shared_ptr<MouseItem>);
+	bool placeItem(glm::ivec2, std::shared_ptr<MouseItem>);
 	void pickupOneItem(std::shared_ptr<MouseItem>, glm::ivec2);
 
 private:

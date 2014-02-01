@@ -21,8 +21,7 @@ Chunk::Chunk(glm::ivec2 coord, std::vector<TypeTile> tileTypes, std::vector<std:
 			tiles[x][y] = std::make_shared<Tile>(Tile(i, tileTypes[i].friction, glm::ivec2(TileAmount*coord.x+x, TileAmount*coord.y+y)));
 		}
 	}
-	int id = Utility::getRandInt(0, itemTypes.size()-1);
-	groundItems.push_back(std::make_shared<GroundItem>(GroundItem(glm::vec2(TileAmount*coord.x+Utility::getRandInt(0, TileAmount-1), TileAmount*coord.y+Utility::getRandInt(0, TileAmount-1)), itemTypes[id]->name, itemTypes[id]->stackSize, itemTypes[id]->id)));
+	addGroundItem(std::make_shared<GroundItem>(Utility::getRandInt(0, itemTypes.size()-1), glm::vec2((TileAmount*coord.x + Utility::getRandInt(0, TileAmount-1))*Settings::Tile::width, (TileAmount*coord.y + Utility::getRandInt(0, TileAmount-1))*Settings::Tile::height)));
 }
 
 Chunk::~Chunk(void)
@@ -45,7 +44,20 @@ std::vector<std::shared_ptr<GroundItem> > Chunk::getGroundItems(void)
 	return groundItems;
 }
 
-void Chunk::removeGroundItem(std::shared_ptr<GroundItem> item)
+void Chunk::removeGroundItem(int id, glm::vec2 pos)
 {
-	groundItems.erase(std::find(groundItems.begin(), groundItems.end(), item));
+	std::shared_ptr<GroundItem> tmpGroundItem = nullptr;
+	for(int i = 0; i < groundItems.size(); i++)
+	{
+		if(groundItems[i]->getId() == id && groundItems[i]->getPosition() == pos)
+			tmpGroundItem = groundItems[i];
+	}
+
+	if(tmpGroundItem != nullptr)
+		groundItems.erase(std::find(groundItems.begin(), groundItems.end(), tmpGroundItem));
+}
+
+void Chunk::addGroundItem(std::shared_ptr<GroundItem> item)
+{
+	groundItems.push_back(item);
 }

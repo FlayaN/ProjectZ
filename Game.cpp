@@ -102,7 +102,15 @@ void Game::update(float delta, const Uint8* keyStates)
 			net->send(*player, SDL_GetTicks());
 			tmpTime = 0;
 		}
-		net->recv(players, player, SDL_GetTicks(), chat);
+		net->recv(chunks, players, player, SDL_GetTicks(), chat);
+	}
+	if(player->getDropItem())
+	{
+		if(online)
+			net->placeItem(player->getDroppedItem());
+		else
+			chunks[Utility::inChunkCoord(player->getDroppedItem()->getPosition())]->addGroundItem(player->getDroppedItem());
+		player->setDropItem(false);
 	}
 }
 
@@ -144,6 +152,8 @@ void Game::collision(void)
 		}
 	}
 
+	std::vector<std::shared_ptr<TypeItem> > tmpItemTypes = json->getItemTypes();
+
 	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player->getCenterPosition());
 
 	for(int x = centerPosInChunk.x - 1; x <= centerPosInChunk.x + 1; x++)
@@ -159,13 +169,22 @@ void Game::collision(void)
 				for(int i = 0; i < t2.size(); i++)
 				{
 					glm::vec2 playerPos = player->getCenterPosition();
-					glm::vec2 itemPos = glm::vec2(t2[i]->getPosition().x * Settings::Tile::width, t2[i]->getPosition().y * Settings::Tile::height);
+					glm::vec2 itemPos = t2[i]->getPosition();
 					glm::ivec2 chunkPos = Utility::inChunkCoord(itemPos);
 
 					if(	playerPos.x > (itemPos.x - 100) && playerPos.x < (itemPos.x + 100) && playerPos.y > (itemPos.y - 100) && playerPos.y < (itemPos.y + 100))
 					{
-						if(player->getInventory()->addItem(t2[i]))
-							tmpChunk->removeGroundItem(t2[i]);
+						int tmpId = t2[i]->getId();
+						if(player->getInventory()->addItem(std::make_shared<Item>(tmpItemTypes[tmpId]->name, tmpItemTypes[tmpId]->stackSize, tmpItemTypes[tmpId]->id)))
+						{
+							if(online)
+							{
+								tmpChunk->removeGroundItem(t2[i]->getId(), t2[i]->getPosition());
+								net->pickupItem(t2[i]);
+							}
+							else
+								tmpChunk->removeGroundItem(t2[i]->getId(), t2[i]->getPosition());
+						}
 					}
 				}
 			}

@@ -65,6 +65,30 @@ void Network::sendMessage(EntityPlayer player, TimeChat timeChat)
 	enet_host_flush(client);
 }
 
+void Network::placeItem(std::shared_ptr<GroundItem> item)
+{
+	if(success)
+	{
+		sprintf(tmp, "6 %d %f %f", item->getId(), item->getPosition().x, item->getPosition().y);
+
+		ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(server, 0, packet);
+		enet_host_flush(client);
+	}
+}
+
+void Network::pickupItem(std::shared_ptr<GroundItem> item)
+{
+	if(success)
+	{
+		sprintf(tmp, "7 %d %f %f", item->getId(), item->getPosition().x, item->getPosition().y);
+
+		ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send(server, 0, packet);
+		enet_host_flush(client);
+	}
+}
+
 void Network::send(EntityPlayer player, int ticks)
 {
 	if(player.isOnline())
@@ -79,7 +103,7 @@ void Network::send(EntityPlayer player, int ticks)
 	}
 }
 
-void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared_ptr<EntityPlayer> player, int ticks, std::shared_ptr<Chat> chat)
+void Network::recv(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, std::vector<std::shared_ptr<PlayerMP> >& players, std::shared_ptr<EntityPlayer> player, int ticks, std::shared_ptr<Chat> chat)
 {
 	ENetEvent event;
 	while(enet_host_service(client, &event, 0) && event.type == ENET_EVENT_TYPE_RECEIVE)
@@ -149,6 +173,30 @@ void Network::recv(std::vector<std::shared_ptr<PlayerMP> >& players, std::shared
 				ss << "Player " << id << ": " << tmpMessage;
 
 				chat->addMessage(ss.str());
+				break;
+			}
+			case 6:
+			{
+				int itemId;
+				glm::vec2 pos;
+				sscanf((char*)event.packet->data, "6 %d %f %f", &itemId, &pos.x, &pos.y);
+
+				std::cout << "X : " << pos.x << " Y: " << pos.y << std::endl;
+
+				chunks[Utility::inChunkCoord(pos)]->addGroundItem(std::make_shared<GroundItem>(itemId, pos));
+
+				break;
+			}
+			case 7:
+			{
+				int itemId;
+				glm::vec2 pos;
+				sscanf((char*)event.packet->data, "7 %d %f %f", &itemId, &pos.x, &pos.y);
+
+				std::cout << "X : " << pos.x << " Y: " << pos.y << std::endl;
+
+				chunks[Utility::inChunkCoord(pos)]->removeGroundItem(itemId, pos);
+
 				break;
 			}
 		}

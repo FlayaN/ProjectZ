@@ -1,4 +1,5 @@
 {
+	"id" : 2,
 	"name" : "Can(Empty)",
 	"texture" : "can(empty).png",
 	"desc" : "TODO add description",

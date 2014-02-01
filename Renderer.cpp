@@ -140,8 +140,8 @@ void Renderer::renderItem(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chun
 		if(item != nullptr)
 		{
 			glm::mat4 modelMat(1.0);
-			modelMat = glm::translate(modelMat, glm::vec3(item->getPosition().x*Settings::Tile::width + playerOffset.x, item->getPosition().y*Settings::Tile::height + playerOffset.y, -0.5));
-			sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
+			modelMat = glm::translate(modelMat, glm::vec3(item->getPosition().x + playerOffset.x, item->getPosition().y + playerOffset.y, -0.5));
+			//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
 			modelMat = glm::scale(modelMat, glm::vec3(32, 32, 1.0));
 			glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
 			glUniform1i(modelItem->getUniform("textureId"), item->getId());

@@ -1,4 +1,5 @@
 {
+	"id" : 1,
 	"name" : "Baked Beans",
 	"texture" : "baked_beans.png",
 	"desc" : "TODO add description",
