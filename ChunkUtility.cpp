@@ -30,9 +30,9 @@ std::vector<std::shared_ptr<Tile> > ChunkUtility::getSurroundingTiles(std::HashM
 	return t;
 }
 
-std::vector<std::shared_ptr<GroundItem> > ChunkUtility::getSurroundingItems(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player)
+std::vector<std::shared_ptr<GroundItemStack> > ChunkUtility::getSurroundingItems(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player)
 {
-	std::vector<std::shared_ptr<GroundItem> > t;
+	std::vector<std::shared_ptr<GroundItemStack> > t;
 
 	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player.getCenterPosition());
 
@@ -44,7 +44,7 @@ std::vector<std::shared_ptr<GroundItem> > ChunkUtility::getSurroundingItems(std:
 			
 			if(tmpChunk != nullptr)
 			{
-				std::vector<std::shared_ptr<GroundItem> > t2 = tmpChunk->getGroundItems();
+				std::vector<std::shared_ptr<GroundItemStack> > t2 = tmpChunk->getGroundItemStacks();
 				t.insert(t.end(), t2.begin(), t2.end());
 			}
 		}

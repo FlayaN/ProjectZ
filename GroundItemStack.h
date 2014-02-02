@@ -1,12 +1,12 @@
-#ifndef GROUNDITEM_H
-#define GROUNDITEM_H
+#ifndef GROUNDITEMSTACK_H
+#define GROUNDITEMSTACK_H
 
 #include "lib/glm/vec2.hpp"
 
-class GroundItem
+class GroundItemStack
 {
 public:
-	GroundItem(int, glm::vec2, int);
+	GroundItemStack(int, glm::vec2, int);
 	glm::vec2 getPosition(void);
 	int getId();
 	int getAmount();

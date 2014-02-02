@@ -156,9 +156,6 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
-    <ClCompile Include="GroundItem.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
     <ClCompile Include="MouseItem.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
@@ -191,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="GuiServerList.cpp">
       <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundItemStack.cpp">
+      <Filter>Source Files\Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -299,9 +299,6 @@
     <ClInclude Include="Inventory.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
-    <ClInclude Include="GroundItem.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
     <ClInclude Include="MouseItem.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
@@ -334,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="GuiServerList.h">
       <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundItemStack.h">
+      <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

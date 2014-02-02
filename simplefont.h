@@ -1,5 +1,5 @@
-#ifndef _SIMPLEFONT_
-#define _SIMPLEFONT_
+#ifndef SIMPLEFONT_H
+#define SIMPLEFONT_H
 
 #ifdef __cplusplus
 extern "C" {

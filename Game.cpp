@@ -108,9 +108,9 @@ void Game::update(float delta, const Uint8* keyStates)
 	if(player->getDropItem())
 	{
 		if(online)
-			net->placeItem(player->getDroppedItem());
+			net->placeItem(player->getDroppedItemStack());
 		else
-			chunks[Utility::inChunkCoord(player->getDroppedItem()->getPosition())]->addGroundItem(player->getDroppedItem());
+			chunks[Utility::inChunkCoord(player->getDroppedItemStack()->getPosition())]->addGroundItem(player->getDroppedItemStack());
 		player->setDropItem(false);
 	}
 }
@@ -165,23 +165,22 @@ void Game::collision(void)
 			
 			if(tmpChunk != nullptr)
 			{
-				std::vector<std::shared_ptr<GroundItem> > tmpGroundItem = tmpChunk->getGroundItems();
+				std::vector<std::shared_ptr<GroundItemStack> > tmpGroundItemStack = tmpChunk->getGroundItemStacks();
 				
-				for(int i = 0; i < tmpGroundItem.size(); i++)
+				for(int i = 0; i < tmpGroundItemStack.size(); i++)
 				{
 					glm::vec2 playerPos = player->getCenterPosition();
-					glm::vec2 itemPos = tmpGroundItem[i]->getPosition();
+					glm::vec2 itemPos = tmpGroundItemStack[i]->getPosition();
 					glm::ivec2 chunkPos = Utility::inChunkCoord(itemPos);
 
 					if(	playerPos.x > (itemPos.x - 100) && playerPos.x < (itemPos.x + 100) && playerPos.y > (itemPos.y - 100) && playerPos.y < (itemPos.y + 100))
 					{
-						int tmpId = tmpGroundItem[i]->getId();
-						int tmpAmount = tmpGroundItem[i]->getAmount();
-						glm::vec2 tmpPos = tmpGroundItem[i]->getPosition();
+						int tmpId = tmpGroundItemStack[i]->getId();
+						int tmpAmount = tmpGroundItemStack[i]->getAmount();
+						glm::vec2 tmpPos = tmpGroundItemStack[i]->getPosition();
 
 						std::shared_ptr<Item> tmpItem = std::make_shared<Item>(tmpItemTypes[tmpId]->name, tmpItemTypes[tmpId]->stackSize, tmpItemTypes[tmpId]->id);
-						std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(tmpItemTypes[tmpId]->stackSize);
-						tmpItemStack->setItem(tmpItem);
+						std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(tmpItem, tmpItemTypes[tmpId]->stackSize);
 						for(int j = 0; j < tmpAmount; j++)
 						{
 							tmpItemStack->increaseStack();
@@ -190,7 +189,7 @@ void Game::collision(void)
 						if(player->getInventory()->addItemStack(tmpItemStack))
 						{
 							if(online)
-								net->pickupItem(tmpGroundItem[i]);
+								net->pickupItem(tmpGroundItemStack[i]);
 							tmpChunk->removeGroundItem(tmpId, tmpPos, tmpAmount);
 						}
 					}

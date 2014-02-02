@@ -65,7 +65,7 @@ void Network::sendMessage(EntityPlayer player, TimeChat timeChat)
 	enet_host_flush(client);
 }
 
-void Network::placeItem(std::shared_ptr<GroundItem> item)
+void Network::placeItem(std::shared_ptr<GroundItemStack> item)
 {
 	if(success)
 	{
@@ -77,7 +77,7 @@ void Network::placeItem(std::shared_ptr<GroundItem> item)
 	}
 }
 
-void Network::pickupItem(std::shared_ptr<GroundItem> item)
+void Network::pickupItem(std::shared_ptr<GroundItemStack> item)
 {
 	if(success)
 	{
@@ -180,7 +180,7 @@ void Network::recv(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, st
 				int itemId, amount;
 				glm::vec2 pos;
 				sscanf((char*)event.packet->data, "6 %d %f %f %d", &itemId, &pos.x, &pos.y, &amount);
-				chunks[Utility::inChunkCoord(pos)]->addGroundItem(std::make_shared<GroundItem>(itemId, pos, amount));
+				chunks[Utility::inChunkCoord(pos)]->addGroundItem(std::make_shared<GroundItemStack>(itemId, pos, amount));
 
 				break;
 			}

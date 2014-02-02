@@ -327,12 +327,12 @@ void Renderer::renderGui(EntityPlayer player)
 			//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
 			modelMat = glm::scale(modelMat, glm::vec3(32, 32, 1.0));
 			glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
-			glUniform1i(modelItem->getUniform("textureId"), tmpMouseItem->getCurrItem()->getItem()->getId());
+			glUniform1i(modelItem->getUniform("textureId"), tmpMouseItem->getCurrItemStack()->getItem()->getId());
 			
 			glBindVertexArray(modelItem->getVAO());
 
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
-			sprintf(buff, "%d", tmpMouseItem->getCurrItem()->getCurrSize());
+			sprintf(buff, "%d", tmpMouseItem->getCurrItemStack()->getCurrSize());
 			sfDrawString(tmpPos.x, Settings::Graphics::screenHeight - tmpPos.y, buff);
 		}
 	}

@@ -92,7 +92,7 @@
     <ClCompile Include="EntityPlayer.cpp" />
     <ClCompile Include="GL_utilities.c" />
     <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="GroundItem.cpp" />
+    <ClCompile Include="GroundItemStack.cpp" />
     <ClCompile Include="GuiButton.cpp" />
     <ClCompile Include="GuiServerList.cpp" />
     <ClCompile Include="GuiText.cpp" />
@@ -134,7 +134,7 @@
     <ClInclude Include="GL_utilities.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="GroundItem.h" />
+    <ClInclude Include="GroundItemStack.h" />
     <ClInclude Include="GuiButton.h" />
     <ClInclude Include="GuiServerList.h" />
     <ClInclude Include="GuiText.h" />

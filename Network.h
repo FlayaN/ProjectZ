@@ -1,5 +1,5 @@
-#ifndef NETWORK_H2
-#define NETWORK_H2
+#ifndef NETWORK_H
+#define NETWORK_H
 
 #include <string>
 #include <cstring>
@@ -22,8 +22,8 @@ public:
 	~Network(void);
 	void send(EntityPlayer, int);
 	void sendMessage(EntityPlayer, TimeChat);
-	void placeItem(std::shared_ptr<GroundItem>);
-	void pickupItem(std::shared_ptr<GroundItem>);
+	void placeItem(std::shared_ptr<GroundItemStack>);
+	void pickupItem(std::shared_ptr<GroundItemStack>);
 
 	void recv(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >&, std::vector<std::shared_ptr<PlayerMP> >&, std::shared_ptr<EntityPlayer>, int, std::shared_ptr<Chat>);
 	bool getSuccess(void);

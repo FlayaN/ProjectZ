@@ -42,28 +42,28 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 			{
 				if(ev->button.button == SDL_BUTTON_LEFT)
 				{
-					if(mouseItem->getCurrItem() != nullptr)
+					if(mouseItem->getCurrItemStack() != nullptr)
 					{
 						if(!inventory->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), mouseItem))
 						{
 							dropItem = true;
-							droppedItem = std::make_shared<GroundItem>(mouseItem->getCurrItem()->getItem()->getId(), position, mouseItem->getCurrItem()->getCurrSize());
-							mouseItem->setCurrItem(nullptr);
+							droppedItemStack = std::make_shared<GroundItemStack>(mouseItem->getCurrItemStack()->getItem()->getId(), position, mouseItem->getCurrItemStack()->getCurrSize());
+							mouseItem->setCurrItemStack(nullptr);
 						}
-						if(mouseItem->getCurrItem() == nullptr)
+						if(mouseItem->getCurrItemStack() == nullptr)
 							draggingItem = false;
 					}
 					else
 					{
 						mouseItem = inventory->pickupItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-						if(mouseItem->getCurrItem() != nullptr)
+						if(mouseItem->getCurrItemStack() != nullptr)
 							draggingItem = true;
 					}
 				}
 				if(ev->button.button == SDL_BUTTON_RIGHT)
 				{
 					inventory->pickupOneItem(mouseItem, glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-					if(mouseItem->getCurrItem() != nullptr)
+					if(mouseItem->getCurrItemStack() != nullptr)
 						draggingItem = true;
 				}
 			}
@@ -248,9 +248,9 @@ std::shared_ptr<MouseItem> EntityPlayer::getMouseItem(void)
 	return mouseItem;
 }
 
-std::shared_ptr<GroundItem> EntityPlayer::getDroppedItem(void)
+std::shared_ptr<GroundItemStack> EntityPlayer::getDroppedItemStack(void)
 {
-	return droppedItem;
+	return droppedItemStack;
 }
 
 void EntityPlayer::setDropItem(bool dropItemIn)

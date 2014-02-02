@@ -21,7 +21,7 @@ Chunk::Chunk(glm::ivec2 coord, std::vector<TypeTile> tileTypes, std::vector<std:
 			tiles[x][y] = std::make_shared<Tile>(Tile(i, tileTypes[i].friction, glm::ivec2(TileAmount*coord.x+x, TileAmount*coord.y+y)));
 		}
 	}
-	addGroundItem(std::make_shared<GroundItem>(Utility::getRandInt(0, itemTypes.size()-1), glm::vec2((TileAmount*coord.x + Utility::getRandInt(0, TileAmount-1))*Settings::Tile::width, (TileAmount*coord.y + Utility::getRandInt(0, TileAmount-1))*Settings::Tile::height), 1));
+	addGroundItem(std::make_shared<GroundItemStack>(Utility::getRandInt(0, itemTypes.size()-1), glm::vec2((TileAmount*coord.x + Utility::getRandInt(0, TileAmount-1))*Settings::Tile::width, (TileAmount*coord.y + Utility::getRandInt(0, TileAmount-1))*Settings::Tile::height), 1));
 }
 
 Chunk::~Chunk(void)
@@ -39,25 +39,25 @@ glm::ivec2 Chunk::getCoord(void)
 	return coord;
 }
 
-std::vector<std::shared_ptr<GroundItem> > Chunk::getGroundItems(void)
+std::vector<std::shared_ptr<GroundItemStack> > Chunk::getGroundItemStacks(void)
 {
-	return groundItems;
+	return groundItemStacks;
 }
 
 void Chunk::removeGroundItem(int id, glm::vec2 pos, int amount)
 {
-	std::shared_ptr<GroundItem> tmpGroundItem = nullptr;
-	for(int i = 0; i < groundItems.size(); i++)
+	std::shared_ptr<GroundItemStack> tmpGroundItemStack = nullptr;
+	for(int i = 0; i < groundItemStacks.size(); i++)
 	{
-		if(groundItems[i]->getId() == id && groundItems[i]->getPosition() == pos && groundItems[i]->getAmount() == amount)
-			tmpGroundItem = groundItems[i];
+		if(groundItemStacks[i]->getId() == id && groundItemStacks[i]->getPosition() == pos && groundItemStacks[i]->getAmount() == amount)
+			tmpGroundItemStack = groundItemStacks[i];
 	}
 
-	if(tmpGroundItem != nullptr)
-		groundItems.erase(std::find(groundItems.begin(), groundItems.end(), tmpGroundItem));
+	if(tmpGroundItemStack != nullptr)
+		groundItemStacks.erase(std::find(groundItemStacks.begin(), groundItemStacks.end(), tmpGroundItemStack));
 }
 
-void Chunk::addGroundItem(std::shared_ptr<GroundItem> item)
+void Chunk::addGroundItem(std::shared_ptr<GroundItemStack> groundItemStack)
 {
-	groundItems.push_back(item);
+	groundItemStacks.push_back(groundItemStack);
 }

@@ -5,9 +5,9 @@ MouseItem::MouseItem(void)
 
 }
 
-void MouseItem::setCurrItem(std::shared_ptr<ItemStack> currItemIn)
+void MouseItem::setCurrItemStack(std::shared_ptr<ItemStack> currItemStackIn)
 {
-	currItem = currItemIn;
+	currItemStack = currItemStackIn;
 }
 
 void MouseItem::setPosition(glm::vec2 posIn)
@@ -15,9 +15,9 @@ void MouseItem::setPosition(glm::vec2 posIn)
 	pos = posIn;
 }
 
-std::shared_ptr<ItemStack> MouseItem::getCurrItem(void)
+std::shared_ptr<ItemStack> MouseItem::getCurrItemStack(void)
 {
-	return currItem;
+	return currItemStack;
 }
 
 glm::vec2 MouseItem::getPosition(void)
