@@ -25,7 +25,13 @@ Game::Game(std::shared_ptr<Json> jsonIn, std::string ip) : running(true), json(j
 
 Game::~Game(void)
 {
-
+	chunks.clear();
+	players.clear();
+	cam.reset();
+	player.reset();
+	chat.reset();
+	json.reset();
+	renderer.reset();
 }
 
 void Game::onEvent(SDL_Event* ev, const Uint8* keyStates)
@@ -138,18 +144,6 @@ void Game::collision(void)
 			{
 				player->setFriction(tile->getFriction());
 			}
-			/*SDL_Rect* bb = currTile->getBB();
-			if(bb != nullptr)
-			{
-				bb->x = (tileCoord.x)*bb->w;
-				bb->y = (tileCoord.y)*(bb->h);
-			}
-			//CollisionHandler::intersects(&playerBB, bb);
-
-			if(CollisionHandler::intersects(player->getBB(), bb))
-			{
-				//std::cout << "Collision at X: " << bb->x << " Y: " << bb->y << std::endl;
-			}*/
 		}
 	}
 
@@ -180,7 +174,7 @@ void Game::collision(void)
 						glm::vec2 tmpPos = tmpGroundItemStack[i]->getPosition();
 
 						std::shared_ptr<Item> tmpItem = std::make_shared<Item>(tmpItemTypes[tmpId]->name, tmpItemTypes[tmpId]->stackSize, tmpItemTypes[tmpId]->id);
-						std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(tmpItem, tmpItemTypes[tmpId]->stackSize);
+						std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(tmpItem);
 						for(int j = 0; j < tmpAmount; j++)
 						{
 							tmpItemStack->increaseStack();

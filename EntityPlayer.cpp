@@ -21,7 +21,9 @@ EntityPlayer::EntityPlayer(TypePlayer playerType)
 
 EntityPlayer::~EntityPlayer(void)
 {
-
+	droppedItemStack.reset();
+	inventory.reset();
+	mouseItem.reset();
 }
 
 void EntityPlayer::onEvent(SDL_Event* ev)

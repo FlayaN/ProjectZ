@@ -5,11 +5,11 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 {
 	cam = camIn;
 
-	modelPlayer = new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag");
-	modelOnlinePlayer = new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag");
-	modelTile = new ModelSquare("assets/shaders/tile.vert", "assets/shaders/tile.frag");
-	modelItem = new ModelSquare("assets/shaders/item.vert", "assets/shaders/item.frag");
-	modelGui = new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag");
+	modelPlayer = std::unique_ptr<ModelSquare>(new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag"));
+	modelOnlinePlayer = std::unique_ptr<ModelSquare>(new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag"));
+	modelTile = std::unique_ptr<ModelSquare>(new ModelSquare("assets/shaders/tile.vert", "assets/shaders/tile.frag"));
+	modelItem = std::unique_ptr<ModelSquare>(new ModelSquare("assets/shaders/item.vert", "assets/shaders/item.frag"));
+	modelGui = std::unique_ptr<ModelSquare>(new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag"));
 	initShaders();
 
 	glUseProgram(modelTile->getProg());
@@ -48,7 +48,12 @@ Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surfa
 
 Renderer::~Renderer(void) 
 {
-
+	modelPlayer.reset();
+	modelOnlinePlayer.reset();
+	modelTile.reset();
+	modelItem.reset();
+	modelGui.reset();
+	cam.reset();
 }
 
 void Renderer::initShaders(void)

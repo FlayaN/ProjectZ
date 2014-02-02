@@ -14,7 +14,6 @@ void Chat::handleKeyInput(SDL_Event* ev, const Uint8* keyStates)
 	{
 		case SDL_TEXTINPUT:
 		{
-			//ev->text
 			currText += ev->text.text;
 			break;
 		}

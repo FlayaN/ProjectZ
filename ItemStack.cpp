@@ -1,26 +1,24 @@
 #include "ItemStack.h"
 
-ItemStack::ItemStack(std::shared_ptr<Item> itemIn, int maxSizeIn) : item(itemIn), maxSize(maxSizeIn), currSize(0)
+ItemStack::ItemStack(std::shared_ptr<Item> itemIn) : item(itemIn), currSize(0)
 {
 
+}
+
+ItemStack::~ItemStack(void)
+{
+	item.reset();
 }
 
 ItemStack::ItemStack(const ItemStack& other)
 {
 	item = other.item;
-	maxSize = other.maxSize;
 	currSize = 0;
-}
-
-void ItemStack::setItem(std::shared_ptr<Item> itemIn)
-{
-	item = itemIn;
 }
 
 std::shared_ptr<ItemStack> ItemStack::addItemStack(std::shared_ptr<ItemStack> itemStackIn)
 {
 	std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(*itemStackIn);
-	tmpItemStack->setItem(itemStackIn->getItem());
 
 	int cnt = 0;
 	for(int i = 0; i < itemStackIn->getCurrSize(); i++)
@@ -48,7 +46,7 @@ void ItemStack::decreaseStack(void)
 
 bool ItemStack::increaseStack(void)
 {
-	if(getCurrSize() < maxSize)
+	if(getCurrSize() < item->getStackSize())
 	{
 		currSize++;
 		return true;
@@ -64,9 +62,4 @@ int ItemStack::getCurrSize(void)
 std::shared_ptr<Item> ItemStack::getItem(void)
 {
 	return item;
-}
-
-int ItemStack::getMaxSize(void)
-{
-	return maxSize;
 }

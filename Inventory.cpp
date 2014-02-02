@@ -37,8 +37,7 @@ bool Inventory::addItem(std::shared_ptr<Item> item)
 		{
 			if(inv.at(i) == nullptr)
 			{
-				std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(ItemStack(item, item->getStackSize()));
-				//tmpItemStack->setItem(item);
+				std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(item);
 				inv.at(i) = tmpItemStack;
 				return inv.at(i)->increaseStack();
 			}

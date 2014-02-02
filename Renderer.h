@@ -42,19 +42,19 @@ private:
 
 	int w, h;
 
-	ModelSquare* modelPlayer;
+	std::unique_ptr<ModelSquare> modelPlayer;
 	GLint texPlayer;
 
-	ModelSquare* modelOnlinePlayer;
+	std::unique_ptr<ModelSquare> modelOnlinePlayer;
 	GLuint texOnlinePlayer;
 
-	ModelSquare* modelTile;
+	std::unique_ptr<ModelSquare> modelTile;
 	GLuint texTile;
 
-	ModelSquare* modelItem;
+	std::unique_ptr<ModelSquare> modelItem;
 	GLuint texItem;
 
-	ModelSquare* modelGui;
+	std::unique_ptr<ModelSquare> modelGui;
 	GLuint texGui;
 
 	GLuint texChat;
