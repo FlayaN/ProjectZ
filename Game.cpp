@@ -81,10 +81,11 @@ void Game::update(float delta, const Uint8* keyStates)
 	//logic
 	ChunkUtility::generateSurroundingChunk(chunks, Settings::Engine::chunkDistance, *player, json->getTileTypes(), json->getItemTypes());
 	collision();
-	if(keyFocus)
-		player->update2(delta);
-	else
+	if(!keyFocus)
 		player->update(delta, keyStates);
+	else
+		player->updateNoKey(delta);
+
 	if(online)
 	{
 		for(auto p : players)
@@ -164,26 +165,33 @@ void Game::collision(void)
 			
 			if(tmpChunk != nullptr)
 			{
-				std::vector<std::shared_ptr<GroundItem> > t2 = tmpChunk->getGroundItems();
+				std::vector<std::shared_ptr<GroundItem> > tmpGroundItem = tmpChunk->getGroundItems();
 				
-				for(int i = 0; i < t2.size(); i++)
+				for(int i = 0; i < tmpGroundItem.size(); i++)
 				{
 					glm::vec2 playerPos = player->getCenterPosition();
-					glm::vec2 itemPos = t2[i]->getPosition();
+					glm::vec2 itemPos = tmpGroundItem[i]->getPosition();
 					glm::ivec2 chunkPos = Utility::inChunkCoord(itemPos);
 
 					if(	playerPos.x > (itemPos.x - 100) && playerPos.x < (itemPos.x + 100) && playerPos.y > (itemPos.y - 100) && playerPos.y < (itemPos.y + 100))
 					{
-						int tmpId = t2[i]->getId();
-						if(player->getInventory()->addItem(std::make_shared<Item>(tmpItemTypes[tmpId]->name, tmpItemTypes[tmpId]->stackSize, tmpItemTypes[tmpId]->id)))
+						int tmpId = tmpGroundItem[i]->getId();
+						int tmpAmount = tmpGroundItem[i]->getAmount();
+						glm::vec2 tmpPos = tmpGroundItem[i]->getPosition();
+
+						std::shared_ptr<Item> tmpItem = std::make_shared<Item>(tmpItemTypes[tmpId]->name, tmpItemTypes[tmpId]->stackSize, tmpItemTypes[tmpId]->id);
+						std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(tmpItemTypes[tmpId]->stackSize);
+						tmpItemStack->setItem(tmpItem);
+						for(int j = 0; j < tmpAmount; j++)
+						{
+							tmpItemStack->increaseStack();
+						}
+
+						if(player->getInventory()->addItemStack(tmpItemStack))
 						{
 							if(online)
-							{
-								tmpChunk->removeGroundItem(t2[i]->getId(), t2[i]->getPosition());
-								net->pickupItem(t2[i]);
-							}
-							else
-								tmpChunk->removeGroundItem(t2[i]->getId(), t2[i]->getPosition());
+								net->pickupItem(tmpGroundItem[i]);
+							tmpChunk->removeGroundItem(tmpId, tmpPos, tmpAmount);
 						}
 					}
 				}

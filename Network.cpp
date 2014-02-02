@@ -69,7 +69,7 @@ void Network::placeItem(std::shared_ptr<GroundItem> item)
 {
 	if(success)
 	{
-		sprintf(tmp, "6 %d %f %f", item->getId(), item->getPosition().x, item->getPosition().y);
+		sprintf(tmp, "6 %d %f %f %d", item->getId(), item->getPosition().x, item->getPosition().y, item->getAmount());
 
 		ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
 		enet_peer_send(server, 0, packet);
@@ -81,7 +81,7 @@ void Network::pickupItem(std::shared_ptr<GroundItem> item)
 {
 	if(success)
 	{
-		sprintf(tmp, "7 %d %f %f", item->getId(), item->getPosition().x, item->getPosition().y);
+		sprintf(tmp, "7 %d %f %f %d", item->getId(), item->getPosition().x, item->getPosition().y, item->getAmount());
 
 		ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
 		enet_peer_send(server, 0, packet);
@@ -177,25 +177,20 @@ void Network::recv(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, st
 			}
 			case 6:
 			{
-				int itemId;
+				int itemId, amount;
 				glm::vec2 pos;
-				sscanf((char*)event.packet->data, "6 %d %f %f", &itemId, &pos.x, &pos.y);
-
-				std::cout << "X : " << pos.x << " Y: " << pos.y << std::endl;
-
-				chunks[Utility::inChunkCoord(pos)]->addGroundItem(std::make_shared<GroundItem>(itemId, pos));
+				sscanf((char*)event.packet->data, "6 %d %f %f %d", &itemId, &pos.x, &pos.y, &amount);
+				chunks[Utility::inChunkCoord(pos)]->addGroundItem(std::make_shared<GroundItem>(itemId, pos, amount));
 
 				break;
 			}
 			case 7:
 			{
-				int itemId;
+				int itemId, amount;
 				glm::vec2 pos;
-				sscanf((char*)event.packet->data, "7 %d %f %f", &itemId, &pos.x, &pos.y);
+				sscanf((char*)event.packet->data, "7 %d %f %f %d", &itemId, &pos.x, &pos.y, &amount);
 
-				std::cout << "X : " << pos.x << " Y: " << pos.y << std::endl;
-
-				chunks[Utility::inChunkCoord(pos)]->removeGroundItem(itemId, pos);
+				chunks[Utility::inChunkCoord(pos)]->removeGroundItem(itemId, pos, amount);
 
 				break;
 			}

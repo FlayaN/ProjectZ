@@ -14,6 +14,7 @@ class Inventory
 public:
 	Inventory(int, glm::ivec2);
 
+	bool addItemStack(std::shared_ptr<ItemStack>);
 	bool addItem(std::shared_ptr<Item>);
 	int getCurrSize(void);
 	std::vector<std::shared_ptr<ItemStack> > getItems(void);

@@ -1,6 +1,6 @@
 #include "GroundItem.h"
 
-GroundItem::GroundItem(int idIn, glm::vec2 posIn) : pos(posIn), id(idIn)
+GroundItem::GroundItem(int idIn, glm::vec2 posIn, int amountIn) : pos(posIn), id(idIn), amount(amountIn)
 {
 
 }
@@ -13,4 +13,9 @@ glm::vec2 GroundItem::getPosition(void)
 int GroundItem::getId(void)
 {
 	return id;
+}
+
+int GroundItem::getAmount()
+{
+	return amount;
 }

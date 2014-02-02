@@ -6,6 +6,16 @@ Inventory::Inventory(int maxSizeIn, glm::ivec2 posIn) : maxSize(maxSizeIn), pos(
 		inv.push_back(nullptr);
 }
 
+bool Inventory::addItemStack(std::shared_ptr<ItemStack> item)
+{
+	bool tmp = false;
+	for(int i = 0; i < item->getCurrSize(); i++)
+	{
+		tmp = addItem(item->getItem());
+	}
+	return tmp;
+}
+
 bool Inventory::addItem(std::shared_ptr<Item> item)
 {
 	if(getCurrSize() < maxSize)
@@ -65,9 +75,7 @@ std::shared_ptr<MouseItem> Inventory::pickupItem(glm::ivec2 mouse)
 		inv.at(index) = nullptr;
 	}
 	else
-	{
 		tmpMouseItem->setCurrItem(nullptr);
-	}
 	return tmpMouseItem;
 }
 
@@ -81,7 +89,6 @@ void Inventory::pickupOneItem(std::shared_ptr<MouseItem> currMouseItem, glm::ive
 		{
 			if(currMouseItem->getCurrItem() == nullptr)
 			{
-				//std::cout << "Pickup item" << std::endl;
 				std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(inv.at(index)->getMaxSize());
 				tmpItemStack->setItem(inv.at(index)->getItem());
 				tmpItemStack->increaseStack();
@@ -90,6 +97,7 @@ void Inventory::pickupOneItem(std::shared_ptr<MouseItem> currMouseItem, glm::ive
 				inv.at(index)->decreaseStack();
 				if(inv.at(index)->getCurrSize() < 1)
 					inv.at(index) = nullptr;
+					
 			}
 			else
 			{
@@ -105,23 +113,6 @@ void Inventory::pickupOneItem(std::shared_ptr<MouseItem> currMouseItem, glm::ive
 				}
 			}
 		}
-		/*else
-		{
-			if(currMouseItem->getCurrItem() != nullptr)
-			{
-				std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(currMouseItem->getCurrItem()->getMaxSize());
-				tmpItemStack->setItem(currMouseItem->getCurrItem()->getItem());
-				tmpItemStack->increaseStack();
-				inv.at(index) = tmpItemStack;
-				currMouseItem->getCurrItem()->decreaseStack();
-				if(currMouseItem->getCurrItem()->getCurrSize() < 1)
-					currMouseItem->setCurrItem(nullptr);
-			}
-		}*/
-	}
-	else
-	{
-		currMouseItem->setCurrItem(nullptr);
 	}
 }
 

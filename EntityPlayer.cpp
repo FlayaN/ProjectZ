@@ -37,6 +37,7 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 			break;
 		}
 		case SDL_MOUSEBUTTONDOWN:
+		{
 			if(inventoryOpen)
 			{
 				if(ev->button.button == SDL_BUTTON_LEFT)
@@ -46,34 +47,30 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 						if(!inventory->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), mouseItem))
 						{
 							dropItem = true;
-							droppedItem = std::make_shared<GroundItem>(mouseItem->getCurrItem()->getItem()->getId(), position);
+							droppedItem = std::make_shared<GroundItem>(mouseItem->getCurrItem()->getItem()->getId(), position, mouseItem->getCurrItem()->getCurrSize());
+							mouseItem->setCurrItem(nullptr);
 						}
 						if(mouseItem->getCurrItem() == nullptr)
-						{
 							draggingItem = false;
-						}
 					}
 					else
 					{
 						mouseItem = inventory->pickupItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
 						if(mouseItem->getCurrItem() != nullptr)
-						{
 							draggingItem = true;
-						}
 					}
 				}
 				if(ev->button.button == SDL_BUTTON_RIGHT)
 				{
 					inventory->pickupOneItem(mouseItem, glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-					
 					if(mouseItem->getCurrItem() != nullptr)
-					{
 						draggingItem = true;
-					}
 				}
 			}
 			break;
+		}
 		case SDL_MOUSEBUTTONUP:
+		{
 			if(inventoryOpen)
 			{
 				if(ev->button.button == SDL_BUTTON_LEFT)
@@ -86,12 +83,15 @@ void EntityPlayer::onEvent(SDL_Event* ev)
 				}
 			}
 			break;
+		}
 		case SDL_MOUSEMOTION:
+		{
 			if(draggingItem)
 			{
 				mouseItem->setPosition(glm::vec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
 			}
 			break;
+		}
 	}
 }
 
@@ -148,7 +148,7 @@ void EntityPlayer::update(float delta, const Uint8* keyCode)
 	position.y += velocity.y * delta;
 }
 
-void EntityPlayer::update2(float delta)
+void EntityPlayer::updateNoKey(float delta)
 {
 	if(abs(velocity.x) > maxSpeed)
 	{

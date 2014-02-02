@@ -22,10 +22,10 @@ public:
 	Chunk(glm::ivec2 coord, std::vector<TypeTile>, std::vector<std::shared_ptr<TypeItem> >);
 	~Chunk(void);
 
-	std::shared_ptr<Tile> getTile(const glm::ivec2& pos);
+	std::shared_ptr<Tile> getTile(glm::ivec2);
 	std::vector<std::shared_ptr<GroundItem> > getGroundItems(void);
 	void addGroundItem(std::shared_ptr<GroundItem>);
-	void removeGroundItem(int id, glm::vec2 pos);
+	void removeGroundItem(int, glm::vec2, int);
 
     glm::ivec2 getCoord(void);
 

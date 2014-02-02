@@ -6,11 +6,13 @@
 class GroundItem
 {
 public:
-	GroundItem(int, glm::vec2);
+	GroundItem(int, glm::vec2, int);
 	glm::vec2 getPosition(void);
 	int getId();
+	int getAmount();
 private:
 	int id;
+	int amount;
 	glm::vec2 pos;
 };
 #endif

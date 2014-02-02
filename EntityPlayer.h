@@ -23,7 +23,7 @@ public:
 	void onEvent(SDL_Event*);
 
 	void update(float, const Uint8*);
-	void update2(float);
+	void updateNoKey(float);
 
 	glm::vec2 getCenterPosition(void);
 
