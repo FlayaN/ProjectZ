@@ -58,6 +58,7 @@ bool Network::getSuccess(void)
 
 void Network::sendMessage(EntityPlayer player, TimeChat timeChat)
 {
+	//5 id time content
 	sprintf(tmp, "5 %d %f %s", player.getId(), timeChat.time, timeChat.chat.c_str());
 
 	ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
@@ -69,6 +70,7 @@ void Network::placeItem(std::shared_ptr<GroundItemStack> item)
 {
 	if(success)
 	{
+		//6 ItemId posX posY amount
 		sprintf(tmp, "6 %d %f %f %d", item->getId(), item->getPosition().x, item->getPosition().y, item->getAmount());
 
 		ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
@@ -81,6 +83,7 @@ void Network::pickupItem(std::shared_ptr<GroundItemStack> item)
 {
 	if(success)
 	{
+		//7 ItemId posX posY amount
 		sprintf(tmp, "7 %d %f %f %d", item->getId(), item->getPosition().x, item->getPosition().y, item->getAmount());
 
 		ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
@@ -94,7 +97,7 @@ void Network::send(EntityPlayer player, int ticks)
 	if(player.isOnline())
 	{
 		glm::vec2 pos = player.getPosition();
-		//3 id posX posY
+		//4 id posX posY time
 		sprintf(tmp, "4 %d %f %f %d", player.getId(), pos.x, pos.y, ticks);
 
 		ENetPacket* packet = enet_packet_create(tmp, strlen(tmp)+1, ENET_PACKET_FLAG_RELIABLE);
