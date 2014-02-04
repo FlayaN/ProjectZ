@@ -6,7 +6,7 @@
 class MainMenu : public BaseWindow
 {
 public:
-	MainMenu(void);
+	MainMenu(std::shared_ptr<Graphic>);
 };
 
 #endif

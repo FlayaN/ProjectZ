@@ -34,7 +34,7 @@
 class Game
 {
 public:
-	Game(std::shared_ptr<Json>, std::string);
+	Game(std::shared_ptr<Json>, std::string, std::shared_ptr<Graphic>);
 	~Game(void);
 	void onEvent(SDL_Event*, const Uint8*);
 	bool isRunning(void);
@@ -52,6 +52,7 @@ private:
 	std::shared_ptr<Network> net;
 	std::shared_ptr<Chat> chat;
 	std::shared_ptr<Json> json;
+    std::shared_ptr<Graphic> graphic;
 
 	std::unique_ptr<Renderer> renderer;
 

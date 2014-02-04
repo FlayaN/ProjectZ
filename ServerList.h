@@ -14,7 +14,7 @@
 class ServerList : public BaseWindow
 {
 public:
-	ServerList(void);
+	ServerList(std::shared_ptr<Graphic>);
 	void renderBody(void);
 	void onEvent(SDL_Event*, const Uint8*);
 	void update(float, const Uint8*);

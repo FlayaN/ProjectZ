@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "Graphics.h"
+#include "Graphic.h"
 #include "Settings.h"
 #include "Defines.h"
 #include "GuiButton.h"
@@ -11,7 +11,7 @@
 class BaseWindow
 {
 public:
-	BaseWindow(void);
+	BaseWindow(std::shared_ptr<Graphic>);
 	~BaseWindow(void);
 
 	virtual void renderBody(void);
@@ -22,7 +22,7 @@ public:
 	virtual STATE requestStateChange(void);
 	virtual bool isRunning(void);
 protected:
-	SDL_Renderer* renderer;
+    std::shared_ptr<Graphic> graphic;
 	std::vector<GuiText> texts;
 	std::vector<GuiButton> buttons;
 	SDL_Color fontColor;

@@ -22,7 +22,7 @@ SDL_Rect GuiText::getRect(void)
 
 void GuiText::render(void)
 {
-	SDL_RenderCopy(Graphics::getInstance().getRenderer(), texture, NULL, &dest);
+	SDL_RenderCopy(renderer, texture, NULL, &dest);
 }
 
 void GuiText::setText(std::string text)

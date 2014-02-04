@@ -24,6 +24,7 @@ private:
 	std::shared_ptr<Json> json;
 	std::shared_ptr<MainMenu> mainMenu;
 	std::shared_ptr<ServerList> serverList;
+    std::shared_ptr<Graphic> graphic;
 	bool running;
 	SDL_Event ev;
 	STATE state;

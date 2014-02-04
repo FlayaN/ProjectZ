@@ -2,6 +2,7 @@
 
 State::State(void)
 {
+    
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		fprintf(stderr, "SDL_Init() failed: %s\n", SDL_GetError());
@@ -13,8 +14,8 @@ State::State(void)
 	}
 
 	json = std::make_shared<Json>();
-
-	Graphics::getInstance();
+    
+    graphic = std::make_shared<Graphic>(RenderType::SDL);
 	setState(STATE::MAINMENU);
 
 	tmpTime = 0;
@@ -26,6 +27,22 @@ State::State(void)
 
 void State::setState(STATE newState)
 {
+    if(state == STATE::MAINMENU && newState == STATE::GAME)
+    {
+        mainMenu.reset();
+        graphic.reset();
+        std::cout << "Creating new Window, old graphic count: " << graphic.use_count() << std::endl;
+        graphic = std::make_shared<Graphic>(RenderType::OGL);
+    }
+    if(state == STATE::GAME && newState == STATE::MAINMENU)
+    {
+        game.reset();
+        graphic.reset();
+        std::cout << "Creating new Window, old graphic count: " << graphic.use_count() << std::endl;
+        graphic = std::make_shared<Graphic>(RenderType::SDL);
+    }
+    
+    
 	switch (state)
 	{
 	case STATE::MAINMENU:
@@ -35,7 +52,7 @@ void State::setState(STATE newState)
 		serverList.reset();
 		break;
 	case STATE::GAME:
-		game.reset();
+        game.reset();
 		break;
 	default:
 		break;
@@ -45,16 +62,15 @@ void State::setState(STATE newState)
 	{
 	case STATE::MAINMENU:
 		std::cout << "Starting menu" << std::endl;
-		SDL_SetRenderTarget(Graphics::getInstance().getRenderer(), NULL);
-		mainMenu = std::make_shared<MainMenu>();
+		mainMenu = std::make_shared<MainMenu>(graphic);
 		break;
 	case STATE::SERVERLIST:
-		std::cout << "Loading serverlist" << std::endl;
-		serverList = std::make_shared<ServerList>();
+        std::cout << "Loading serverlist" << std::endl;
+		serverList = std::make_shared<ServerList>(graphic);
 		break;
 	case STATE::GAME:
 		std::cout << "Starting game" << std::endl;
-		game = std::make_shared<Game>(json, ip);
+		game = std::make_shared<Game>(json, ip, graphic);
 		break;
 	default:
 		break;

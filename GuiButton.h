@@ -24,6 +24,7 @@ public:
 	void onEvent(SDL_Event*, const Uint8*);
 	bool hasClicked(void);
 private:
+    SDL_Renderer* renderer;
 	GuiText* text;
 	SDL_Texture* edgeTexture;
 	SDL_Texture* texture;

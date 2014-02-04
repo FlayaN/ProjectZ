@@ -1,14 +1,14 @@
 #include "ServerList.h"
 
-ServerList::ServerList(void) : BaseWindow()
+ServerList::ServerList(std::shared_ptr<Graphic> graphicIn) : BaseWindow(graphicIn)
 {
-	texts.push_back(GuiText(font, fontColor, renderer, "IP", 100, 20));
-	texts.push_back(GuiText(font, fontColor, renderer, "Name", 300, 20));
-	texts.push_back(GuiText(font, fontColor, renderer, "Description", 500, 20));
-	texts.push_back(GuiText(font, fontColor, renderer, "PlayerCount", 900, 20));
-	texts.push_back(GuiText(font, fontColor, renderer, "Ping", 1100, 20));
-	buttons.push_back(GuiButton(font, fontColor, renderer, "BACK", 100, 600, 55, 24, STATE::MAINMENU));
-	buttons.push_back(GuiButton(font, fontColor, renderer, "Refresh", 600, 600, 70, 24, STATE::SERVERLIST));
+	texts.push_back(GuiText(font, fontColor, graphic->getRenderer(), "IP", 100, 20));
+	texts.push_back(GuiText(font, fontColor, graphic->getRenderer(), "Name", 300, 20));
+	texts.push_back(GuiText(font, fontColor, graphic->getRenderer(), "Description", 500, 20));
+	texts.push_back(GuiText(font, fontColor, graphic->getRenderer(), "PlayerCount", 900, 20));
+	texts.push_back(GuiText(font, fontColor, graphic->getRenderer(), "Ping", 1100, 20));
+	buttons.push_back(GuiButton(font, fontColor, graphic->getRenderer(), "BACK", 100, 600, 55, 24, STATE::MAINMENU));
+	buttons.push_back(GuiButton(font, fontColor, graphic->getRenderer(), "Refresh", 600, 600, 70, 24, STATE::SERVERLIST));
 	
 	yourIp = Utility::doWebRequest("http://icanhazip.com");
 	yourIp = std::regex_replace(yourIp,std::regex("\\s+"), "");
@@ -35,7 +35,7 @@ void ServerList::loadServerList(void)
 		const rapidjson::Value& a = doc;
 		for (rapidjson::SizeType i = 0; i < a.Size(); i++)
 		{
-			serverList.push_back(GuiServerList(font, fontColor, renderer, a[i]["ip"].GetString(), a[i]["name"].GetString(), a[i]["description"].GetString(), 50+50*(i+1)));
+			serverList.push_back(GuiServerList(font, fontColor, graphic->getRenderer(), a[i]["ip"].GetString(), a[i]["name"].GetString(), a[i]["description"].GetString(), 50+50*(i+1)));
 		}
 	}
 

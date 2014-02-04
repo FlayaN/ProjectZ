@@ -1,7 +1,8 @@
 #include "GuiButton.h"
 
-GuiButton::GuiButton(TTF_Font* font, SDL_Color fontColor, SDL_Renderer* renderer, std::string textIn, int x, int y, int width, int height, STATE onClickIn)
+GuiButton::GuiButton(TTF_Font* font, SDL_Color fontColor, SDL_Renderer* rendererIn, std::string textIn, int x, int y, int width, int height, STATE onClickIn)
 {
+    renderer = rendererIn;
 	edgeTexture = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/edge.png").c_str());
 	texture = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/border.png").c_str());
 	textureHover = IMG_LoadTexture(renderer, std::string(Utility::getBasePath() + "assets/images/borderHover.png").c_str());
@@ -55,18 +56,18 @@ STATE GuiButton::getOnClick(void)
 
 void GuiButton::render(void)
 {
-	SDL_RenderCopy(Graphics::getInstance().getRenderer(), edgeTexture, NULL, &leftEdge);
-	SDL_RenderCopyEx(Graphics::getInstance().getRenderer(), edgeTexture, NULL, &rightEdge, 0.0, NULL, SDL_FLIP_HORIZONTAL);
+	SDL_RenderCopy(renderer, edgeTexture, NULL, &leftEdge);
+	SDL_RenderCopyEx(renderer, edgeTexture, NULL, &rightEdge, 0.0, NULL, SDL_FLIP_HORIZONTAL);
 	switch (state)
 	{
 	case BUTTONSTATE::NORMAL:
-		SDL_RenderCopy(Graphics::getInstance().getRenderer(), texture, NULL, &middle);
+		SDL_RenderCopy(renderer, texture, NULL, &middle);
 		break;
 	case BUTTONSTATE::HOVER:
-		SDL_RenderCopy(Graphics::getInstance().getRenderer(), textureHover, NULL, &middle);
+		SDL_RenderCopy(renderer, textureHover, NULL, &middle);
 		break;
 	case BUTTONSTATE::CLICK:
-		SDL_RenderCopy(Graphics::getInstance().getRenderer(), textureClick, NULL, &middle);
+		SDL_RenderCopy(renderer, textureClick, NULL, &middle);
 		break;
 	default:
 		break;

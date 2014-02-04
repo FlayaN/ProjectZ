@@ -1,8 +1,9 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surface tileTexture, std::vector<TypeTile> tileTypes, SDL_Surface itemTexture, int itemCount)
+Renderer::Renderer(std::shared_ptr<Graphic> graphicIn, EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surface tileTexture, std::vector<TypeTile> tileTypes, SDL_Surface itemTexture, int itemCount)
 {
+    graphic = graphicIn;
 	cam = camIn;
 
 	modelPlayer = std::unique_ptr<ModelSquare>(new ModelSquare("assets/shaders/basic.vert", "assets/shaders/basic.frag"));
@@ -107,7 +108,7 @@ void Renderer::initShaders(void)
 
 void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player, std::vector<std::shared_ptr<PlayerMP> > players, Chat chat)
 {
-	SDL_GetWindowSize(Graphics::getInstance().getWindow(), &w, &h);
+	SDL_GetWindowSize(graphic->getWindow(), &w, &h);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	
 	renderTile(chunks, player);
@@ -128,7 +129,7 @@ void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, 
 	sprintf(buff, "Y %0.1f", player.getPosition().y);
 	sfDrawString(10, 30, buff);
 
-	SDL_GL_SwapWindow(Graphics::getInstance().getWindow());
+	SDL_GL_SwapWindow(graphic->getWindow());
 }
 
 void Renderer::renderItem(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player)

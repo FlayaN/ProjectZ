@@ -1,6 +1,6 @@
 #include "BaseWindow.h"
 
-BaseWindow::BaseWindow(void)
+BaseWindow::BaseWindow(std::shared_ptr<Graphic> graphicIn)
 {
 	TTF_Init();
 	font = TTF_OpenFont(std::string(Utility::getBasePath() + "assets/fonts/arial.ttf").c_str(), 20);
@@ -8,7 +8,7 @@ BaseWindow::BaseWindow(void)
 	fontColor.g = 0;
 	fontColor.b = 0;
 
-	renderer = Graphics::getInstance().getRenderer();
+	graphic = graphicIn;
 	running = true;
 	newState = false;
 	state = STATE::MAINMENU;
@@ -34,12 +34,12 @@ void BaseWindow::renderBody(void)
 
 void BaseWindow::render(void)
 {
-	SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
-	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(graphic->getRenderer(), 0xff, 0xff, 0xff, 0xff);
+	SDL_RenderClear(graphic->getRenderer());
 
 	renderBody();
 
-	SDL_RenderPresent(renderer);
+	SDL_RenderPresent(graphic->getRenderer());
 }
 
 void BaseWindow::onEvent(SDL_Event* ev, const Uint8* keyStates)

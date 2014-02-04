@@ -6,7 +6,7 @@
 #include "lib/glm/gtc/matrix_transform.hpp"
 #include "simplefont.h"
 
-#include "Graphics.h"
+#include "Graphic.h"
 #include "Defines.h"
 #include "ChunkUtility.h"
 #include "EntityPlayer.h"
@@ -21,7 +21,7 @@
 class Renderer
 {
 public:
-	Renderer(EntityPlayer, std::shared_ptr<Camera>, SDL_Surface, std::vector<TypeTile>, SDL_Surface, int);
+	Renderer(std::shared_ptr<Graphic>, EntityPlayer, std::shared_ptr<Camera>, SDL_Surface, std::vector<TypeTile>, SDL_Surface, int);
 	~Renderer(void);
 	void render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > , EntityPlayer, std::vector<std::shared_ptr<PlayerMP> >, Chat);
 
@@ -60,7 +60,8 @@ private:
 	GLuint texChat;
 
 	std::shared_ptr<Camera> cam;
-
+    std::shared_ptr<Graphic> graphic;
+    
 	char buff[1400];
 };
 

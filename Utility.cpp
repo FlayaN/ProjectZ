@@ -10,7 +10,7 @@ int Utility::getRandInt(int min, int max)
 
 int Utility::clamp(int value, int minIn, int maxIn)
 {
-	return min(maxIn, max(minIn, value));
+	return std::min(maxIn, std::max(minIn, value));
 }
 
 int Utility::mod(int v, int m)

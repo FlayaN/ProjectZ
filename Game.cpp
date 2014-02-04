@@ -1,15 +1,16 @@
 #include "Game.h"
 
-Game::Game(std::shared_ptr<Json> jsonIn, std::string ip) : running(true), json(jsonIn)
+Game::Game(std::shared_ptr<Json> jsonIn, std::string ip, std::shared_ptr<Graphic> graphicIn) : running(true), json(jsonIn)
 {
 	//music = Mix_LoadWAV("../assets/music/CSLIVE.wav");
 
 	PerlinNoise::getInstance().SetValues(0.25, 6.0, (double)json->getTileTypes().size(), 1, 1337);
 	SimplexNoise::init();
 
+    graphic = graphicIn;
 	player = std::make_shared<EntityPlayer>(json->getPlayerType());
 	cam = std::make_shared<Camera>(player);
-	renderer = std::unique_ptr<Renderer>(new Renderer(*player, cam, json->getTileTexture(), json->getTileTypes(), json->getItemTexture(), json->getItemTypes().size()));
+	renderer = std::unique_ptr<Renderer>(new Renderer(graphic, *player, cam, json->getTileTexture(), json->getTileTypes(), json->getItemTexture(), json->getItemTypes().size()));
 
 	net = std::make_shared<Network>(ip.c_str());
 
