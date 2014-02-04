@@ -31,18 +31,21 @@ void State::setState(STATE newState)
     {
         mainMenu.reset();
         graphic.reset();
-        std::cout << "Creating new Window, old graphic count: " << graphic.use_count() << std::endl;
+        graphic = std::make_shared<Graphic>(RenderType::OGL);
+    }
+	if(state == STATE::SERVERLIST && newState == STATE::GAME)
+    {
+        serverList.reset();
+        graphic.reset();
         graphic = std::make_shared<Graphic>(RenderType::OGL);
     }
     if(state == STATE::GAME && newState == STATE::MAINMENU)
     {
         game.reset();
         graphic.reset();
-        std::cout << "Creating new Window, old graphic count: " << graphic.use_count() << std::endl;
         graphic = std::make_shared<Graphic>(RenderType::SDL);
     }
-    
-    
+
 	switch (state)
 	{
 	case STATE::MAINMENU:

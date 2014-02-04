@@ -10,7 +10,11 @@ int Utility::getRandInt(int min, int max)
 
 int Utility::clamp(int value, int minIn, int maxIn)
 {
+#ifdef __APPLE__
 	return std::min(maxIn, std::max(minIn, value));
+#else
+	return min(maxIn, max(minIn, value));
+#endif
 }
 
 int Utility::mod(int v, int m)

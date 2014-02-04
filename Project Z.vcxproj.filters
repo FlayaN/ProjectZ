@@ -90,9 +90,6 @@
     <ClCompile Include="EntityPlayer.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionHandler.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
@@ -192,6 +189,9 @@
     <ClCompile Include="GroundItemStack.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="Graphic.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -211,9 +211,6 @@
     </ClInclude>
     <ClInclude Include="EntityPlayer.h">
       <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="CollisionHandler.h">
       <Filter>Header Files\Utilities</Filter>
@@ -334,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="GroundItemStack.h">
       <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic.h">
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
