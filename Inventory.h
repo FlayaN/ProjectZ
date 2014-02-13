@@ -7,7 +7,7 @@
 #include "lib/glm/vec2.hpp"
 
 #include "ItemStack.h"
-#include "MouseItem.h"
+#include "Mouse.h"
 
 class Inventory
 {
@@ -22,14 +22,15 @@ public:
 
 	int mousePosToIndex(glm::ivec2 mouse);
 
-	std::shared_ptr<MouseItem> pickupItem(glm::ivec2);
-	bool placeItem(glm::ivec2, std::shared_ptr<MouseItem>);
-	void pickupOneItem(std::shared_ptr<MouseItem>, glm::ivec2);
-
+	std::shared_ptr<Mouse> pickupItem(glm::ivec2);
+	bool placeItem(glm::ivec2, std::shared_ptr<Mouse>);
+	void pickupOneItem(std::shared_ptr<Mouse>, glm::ivec2);
+	int getCurrHover(void);
 private:
 	std::vector<std::shared_ptr<ItemStack> > inv;
 	int maxSize;
 	glm::ivec2 pos;
+	int currHover;
 };
 
 #endif

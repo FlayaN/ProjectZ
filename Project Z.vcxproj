@@ -98,7 +98,7 @@
     <ClCompile Include="GuiText.cpp" />
     <ClCompile Include="Json.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="MouseItem.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemStack.cpp" />
@@ -140,7 +140,7 @@
     <ClInclude Include="GuiText.h" />
     <ClInclude Include="Json.h" />
     <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="MouseItem.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="ItemStack.h" />
     <ClInclude Include="Item.h" />

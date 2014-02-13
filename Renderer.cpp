@@ -24,7 +24,8 @@ Renderer::Renderer(std::shared_ptr<Graphic> graphicIn, EntityPlayer player, std:
 	texPlayer = pathToOGLTexture(player.getTexture());
 	texOnlinePlayer = pathToOGLTexture(player.getTexture());
 
-	texGui = pathToOGLTexture("assets/images/slot.png");
+	texSlot = pathToOGLTexture("assets/images/slot.png");
+	texSlotHover = pathToOGLTexture("assets/images/slotHover.png");
 	texChat = pathToOGLTexture("assets/images/chat.png");
 
 	texTile = surfaceToOGLTexture(tileTexture);
@@ -283,14 +284,18 @@ void Renderer::renderGui(EntityPlayer player)
 		std::vector<std::shared_ptr<ItemStack> > tmpItems = tmpInv->getItems();
 		glm::ivec2 invPos = tmpInv->getPosition();
 
-		
+		int currHover = tmpInv->getCurrHover();
+
 		//RENDER BG
 		glUseProgram(modelGui->getProg());
 		glUniformMatrix4fv(modelGui->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
-		glBindTexture(GL_TEXTURE_2D, texGui);
 
 		for(int i = 0; i < tmpItems.size(); i++)
 		{
+			if(i == currHover)
+				glBindTexture(GL_TEXTURE_2D, texSlotHover);
+			else
+				glBindTexture(GL_TEXTURE_2D, texSlot);
 			glm::mat4 modelMat(1.0);
 			modelMat = glm::translate(modelMat, glm::vec3(invPos.x + (i%9)*34, invPos.y + (i/9)*34, 0.0));
 			modelMat = glm::scale(modelMat, glm::vec3(34, 34, 1.0));
@@ -322,23 +327,21 @@ void Renderer::renderGui(EntityPlayer player)
 				sfDrawString(invPos.x + (i%9)*34, (Settings::Graphics::screenHeight - (invPos.y + (i/9)*34)), buff);
 			}
 		}
-
-		if(player.isDraggingItem())
+		std::shared_ptr<Mouse> tmpMouse = player.getMouse();
+		if(tmpMouse->hasItem())
 		{
-			std::shared_ptr<MouseItem> tmpMouseItem = player.getMouseItem();
-			glm::vec2 tmpPos = tmpMouseItem->getPosition();
-
+			glm::vec2 tmpPos = tmpMouse->getPosition();
 			glm::mat4 modelMat(1.0);
 			modelMat = glm::translate(modelMat, glm::vec3(tmpPos.x, tmpPos.y, 0.0));
 			//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
 			modelMat = glm::scale(modelMat, glm::vec3(32, 32, 1.0));
 			glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
-			glUniform1i(modelItem->getUniform("textureId"), tmpMouseItem->getCurrItemStack()->getItem()->getId());
+			glUniform1i(modelItem->getUniform("textureId"), tmpMouse->getCurrItemStack()->getItem()->getId());
 			
 			glBindVertexArray(modelItem->getVAO());
 
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
-			sprintf(buff, "%d", tmpMouseItem->getCurrItemStack()->getCurrSize());
+			sprintf(buff, "%d", tmpMouse->getCurrItemStack()->getCurrSize());
 			sfDrawString(tmpPos.x, Settings::Graphics::screenHeight - tmpPos.y, buff);
 		}
 	}

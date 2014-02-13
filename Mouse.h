@@ -5,17 +5,20 @@
 
 #include "ItemStack.h"
 
-class MouseItem
+class Mouse
 {
 public:
-	MouseItem(void);
+	Mouse(void);
 	
 	void setCurrItemStack(std::shared_ptr<ItemStack>);
 	void setPosition(glm::vec2);
 	
 	std::shared_ptr<ItemStack> getCurrItemStack(void);
 	glm::vec2 getPosition(void);
+
+	bool hasItem(void);
 private:
+	bool item;
 	std::shared_ptr<ItemStack> currItemStack;
 	glm::vec2 pos;
 };

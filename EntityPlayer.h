@@ -11,7 +11,7 @@
 #include "TypePlayer.h"
 #include "Inventory.h"
 #include "Settings.h"
-#include "MouseItem.h"
+#include "Mouse.h"
 #include "GroundItemStack.h"
 
 class EntityPlayer : public MovingEntity
@@ -39,8 +39,7 @@ public:
 	std::shared_ptr<Inventory> getInventory(void);
 
 	bool hasInventoryOpen(void);
-	bool isDraggingItem(void);
-	std::shared_ptr<MouseItem> getMouseItem(void);
+	std::shared_ptr<Mouse> getMouse(void);
 
 	std::shared_ptr<GroundItemStack> getDroppedItemStack(void);
 	void setDropItem(bool);
@@ -54,7 +53,6 @@ private:
 	float friction;
 	std::string texture;
 
-	bool draggingItem;
 	bool dropItem;
 
 	std::shared_ptr<GroundItemStack> droppedItemStack;
@@ -62,7 +60,7 @@ private:
 	glm::vec2 size;
 	RectangleShape* bb;
 	std::shared_ptr<Inventory> inventory;
-	std::shared_ptr<MouseItem> mouseItem;
+	std::shared_ptr<Mouse> mouse;
 };
 
 #endif

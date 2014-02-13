@@ -55,7 +55,8 @@ private:
 	GLuint texItem;
 
 	std::unique_ptr<ModelSquare> modelGui;
-	GLuint texGui;
+	GLuint texSlot;
+	GLuint texSlotHover;
 
 	GLuint texChat;
 
