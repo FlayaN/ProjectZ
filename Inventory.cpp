@@ -1,10 +1,12 @@
 #include "Inventory.h"
 
-Inventory::Inventory(int maxSizeIn, glm::ivec2 posIn) : maxSize(maxSizeIn), pos(posIn)
+Inventory::Inventory(int maxRowsIn, int maxColumnsIn, glm::ivec2 posIn) : maxRows(maxRowsIn), maxColumns(maxColumnsIn), pos(posIn)
 {
-	for(int i = 0; i < maxSize; i++)
-		inv.push_back(nullptr);
+	for(int i = 0; i < maxRowsIn; i++)
+		for(int j = 0; j < maxColumns; j++)
+			inv.push_back(nullptr);
 	currHover = -1;
+	maxSize = maxRows*maxColumns;
 }
 
 bool Inventory::addItemStack(std::shared_ptr<ItemStack> item)
@@ -69,29 +71,32 @@ std::shared_ptr<Mouse> Inventory::pickupItem(glm::ivec2 mousePos)
 
 	if(index != -1)
 	{
-		tmpMouse->setCurrItemStack(inv.at(index));
-		tmpMouse->setPosition((glm::vec2)mousePos);
-		inv.at(index) = nullptr;
+		if(inv.at(index) != nullptr)
+		{
+			tmpMouse->setCurrItemStack(inv.at(index));
+			tmpMouse->setPosition((glm::vec2)mousePos);
+			inv.at(index) = nullptr;
+		}
 	}
 	else
 		tmpMouse->setCurrItemStack(nullptr);
 	return tmpMouse;
 }
 
-void Inventory::pickupOneItem(std::shared_ptr<Mouse> currMouseItem, glm::ivec2 mouse)
+void Inventory::pickupOneItem(std::shared_ptr<Mouse> mouse, glm::ivec2 mousePos)
 {
-	int index = mousePosToIndex(mouse);
+	int index = mousePosToIndex(mousePos);
 
 	if(index != -1)
 	{
 		if(inv.at(index) != nullptr)
 		{
-			if(currMouseItem->getCurrItemStack() == nullptr)
+			if(mouse->getCurrItemStack() == nullptr)
 			{
 				std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(*inv.at(index));
 				tmpItemStack->increaseStack();
-				currMouseItem->setCurrItemStack(tmpItemStack);
-				currMouseItem->setPosition((glm::vec2)mouse);
+				mouse->setCurrItemStack(tmpItemStack);
+				mouse->setPosition((glm::vec2)mousePos);
 				inv.at(index)->decreaseStack();
 				if(inv.at(index)->getCurrSize() < 1)
 					inv.at(index) = nullptr;
@@ -99,10 +104,10 @@ void Inventory::pickupOneItem(std::shared_ptr<Mouse> currMouseItem, glm::ivec2 m
 			}
 			else
 			{
-				if(currMouseItem->getCurrItemStack()->getItem()->getId() == inv.at(index)->getItem()->getId())
+				if(mouse->getCurrItemStack()->getItem()->getId() == inv.at(index)->getItem()->getId())
 				{
 
-					if(currMouseItem->getCurrItemStack()->increaseStack())
+					if(mouse->getCurrItemStack()->increaseStack())
 					{
 						inv.at(index)->decreaseStack();
 						if(inv.at(index)->getCurrSize() < 1)
@@ -150,9 +155,9 @@ int Inventory::mousePosToIndex(glm::ivec2 mouse)
 	tmpPos.x = tmpPos.x >= 0 ? (tmpPos.x/34) : (tmpPos.x/34)-1;
 	tmpPos.y = tmpPos.y >= 0 ? (tmpPos.y/34) : (tmpPos.y/34)-1;
 
-	if(tmpPos.x >= 0 && tmpPos.x < 9 && tmpPos.y >= 0 && tmpPos.y < 3)
+	if(tmpPos.x >= 0 && tmpPos.x < maxColumns && tmpPos.y >= 0 && tmpPos.y < maxRows)
 	{
-		int tmpIndex = tmpPos.x + (tmpPos.y*9);
+		int tmpIndex = tmpPos.x + (tmpPos.y*maxColumns);
 		currHover = tmpIndex;
 		return tmpIndex;
 	}
@@ -163,4 +168,19 @@ int Inventory::mousePosToIndex(glm::ivec2 mouse)
 int Inventory::getCurrHover(void)
 {
 	return currHover;
+}
+
+int Inventory::getMaxRows(void)
+{
+	return maxRows;
+}
+
+int Inventory::getMaxColumns(void)
+{
+	return maxColumns;
+}
+
+int Inventory::getMaxSize(void)
+{
+	return maxSize;
 }

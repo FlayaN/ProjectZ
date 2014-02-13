@@ -12,7 +12,7 @@ EntityPlayer::EntityPlayer(TypePlayer playerType)
 	online = false;
 	bb = new RectangleShape(new glm::vec2(0, 0), 0.0, new glm::vec2(playerType.size.x, playerType.size.y/4)); //TODO BOUNDINGBOXES
 
-	inventory = std::make_shared<Inventory>(Inventory(27, glm::ivec2(200, 200)));
+	inventory = std::make_shared<Inventory>(Inventory(4, 9, glm::ivec2(200, 200)));
 	mouse = std::make_shared<Mouse>();
 	inventoryOpen = false;
 	dropItem = false;
