@@ -10,7 +10,7 @@ Json::~Json(void)
 
 }
 
-std::vector<TypeTile> Json::getTileTypes(void)
+std::vector<std::shared_ptr<TypeTile> > Json::getTileTypes(void)
 {
 	return tileTypes;
 }
@@ -18,6 +18,11 @@ std::vector<TypeTile> Json::getTileTypes(void)
 std::vector<std::shared_ptr<TypeItem> > Json::getItemTypes(void)
 {
 	return itemTypes;
+}
+
+std::vector<std::shared_ptr<TypeInventory> > Json::getInventoryTypes(void)
+{
+	return inventoryTypes;
 }
 
 TypePlayer Json::getPlayerType(void)
@@ -40,9 +45,58 @@ void Json::loadJson(void)
 	loadSettings();
 	loadTiles();
 	loadItems();
+	loadInventories();
 
 	combineTileTextures();
 	combineItemTextures();
+}
+
+void Json::loadInventories(void)
+{
+	std::string path = Utility::getBasePath() + "assets/config/inventories/";
+
+	DIR* dir;
+	struct dirent* ent;
+
+	dir = opendir(path.c_str());
+	if(dir != nullptr)
+	{
+		while((ent = readdir(dir)) != nullptr)
+		{
+			std::string tmpFile(ent->d_name);
+			std::string end = ".inv";
+			if(Utility::hasEnding(tmpFile, end))
+			{
+				FILE* pFile = fopen((path+tmpFile).c_str(), "rb");
+				rapidjson::Document doc;
+				rapidjson::FileStream fs(pFile);
+				doc.ParseStream<0>(fs);
+
+				
+				std::shared_ptr<TypeInventory> tmpInv = std::make_shared<TypeInventory>();
+
+				assert(doc["name"].IsString());
+				tmpInv->name = doc["name"].GetString();
+
+				assert(doc["rowCount"].IsInt());
+				tmpInv->rowCount = doc["rowCount"].GetInt();
+
+				assert(doc["columnCount"].IsInt());
+				tmpInv->columnCount = doc["columnCount"].GetInt();
+
+				assert(doc["pos"].IsObject());
+				tmpInv->startPos = glm::vec2(doc["pos"]["x"].GetInt(), doc["pos"]["y"].GetInt());
+
+				inventoryTypes.push_back(tmpInv);
+
+				fclose(pFile);
+			}
+		}
+	}
+	else
+	{
+		std::cout << "Cannot open dir" << std::endl;
+	}
 }
 
 void Json::loadSettings(void)
@@ -111,6 +165,9 @@ void Json::loadSettings(void)
 	assert(doc["bb"].IsString());
 	playerType.bb = doc["bb"].GetString();
 
+	assert(doc["inventory"].IsString());
+	playerType.inv = doc["inventory"].GetString();
+
 	fclose(pFile3);
 
 	std::cout << "----------Loading tile.json----------" << std::endl;
@@ -149,16 +206,16 @@ void Json::loadTiles(void)
 				doc.ParseStream<0>(fs);
 
 				
-				TypeTile tmpTile;
+				std::shared_ptr<TypeTile> tmpTile = std::make_shared<TypeTile>();
 
 				assert(doc["name"].IsString());
-				tmpTile.name = doc["name"].GetString();
+				tmpTile->name = doc["name"].GetString();
 
 				assert(doc["texture"].IsString());
-				tmpTile.texture = path+doc["texture"].GetString();
+				tmpTile->texture = path+doc["texture"].GetString();
 
 				assert(doc["friction"].IsDouble());
-				tmpTile.friction = (float)doc["friction"].GetDouble();
+				tmpTile->friction = (float)doc["friction"].GetDouble();
 
 				tileTypes.push_back(tmpTile);
 
@@ -389,7 +446,7 @@ void Json::combineTileTextures(void)
 
 	for(auto t : tileTypes)
 	{
-		SDL_Surface* tmp = IMG_Load(t.texture.c_str());
+		SDL_Surface* tmp = IMG_Load(t->texture.c_str());
 		if(tmp != nullptr)
 		{
 			SDL_BlitSurface(tmp, NULL, &tileTexture, &pos);

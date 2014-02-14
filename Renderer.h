@@ -21,7 +21,7 @@
 class Renderer
 {
 public:
-	Renderer(std::shared_ptr<Graphic>, EntityPlayer, std::shared_ptr<Camera>, SDL_Surface, std::vector<TypeTile>, SDL_Surface, int);
+	Renderer(std::shared_ptr<Graphic>, EntityPlayer, std::shared_ptr<Camera>, SDL_Surface, std::vector<std::shared_ptr<TypeTile> >, SDL_Surface, int);
 	~Renderer(void);
 	void render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > , EntityPlayer, std::vector<std::shared_ptr<PlayerMP> >, Chat);
 

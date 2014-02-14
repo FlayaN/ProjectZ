@@ -163,6 +163,7 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TypeClothing.h" />
     <ClInclude Include="TypeConsumable.h" />
+    <ClInclude Include="TypeInventory.h" />
     <ClInclude Include="TypeItem.h" />
     <ClInclude Include="TypeMaterial.h" />
     <ClInclude Include="TypePlayer.h" />

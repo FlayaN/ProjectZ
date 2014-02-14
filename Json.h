@@ -25,6 +25,7 @@
 #include "TypeWeapon.h"
 #include "TypeTile.h"
 #include "TypePlayer.h"
+#include "TypeInventory.h"
 
 class Json
 {
@@ -32,13 +33,15 @@ public:
 	Json(void);
 	~Json(void);
 
-	std::vector<TypeTile> getTileTypes(void);
+	std::vector<std::shared_ptr<TypeTile> > getTileTypes(void);
 	std::vector<std::shared_ptr<TypeItem> > getItemTypes(void);
+	std::vector<std::shared_ptr<TypeInventory> > getInventoryTypes(void);
 	TypePlayer getPlayerType(void);
 	SDL_Surface getTileTexture(void);
 	SDL_Surface getItemTexture(void);
 private:
 	void loadJson(void);
+	void loadInventories(void);
 	void loadSettings(void);
 	void loadTiles(void);
 	void loadItems(void);
@@ -46,9 +49,9 @@ private:
 	void combineTileTextures(void);
 	void combineItemTextures(void);
 
-	std::vector<TypeTile> tileTypes;
+	std::vector<std::shared_ptr<TypeTile> > tileTypes;
 	std::vector<std::shared_ptr<TypeItem> > itemTypes;
-
+	std::vector<std::shared_ptr<TypeInventory> > inventoryTypes;
 	TypePlayer playerType;
 	
 	SDL_Surface tileTexture;

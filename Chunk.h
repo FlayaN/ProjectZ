@@ -19,7 +19,7 @@
 class Chunk
 {
 public:
-	Chunk(glm::ivec2 coord, std::vector<TypeTile>, std::vector<std::shared_ptr<TypeItem> >);
+	Chunk(glm::ivec2 coord, std::vector<std::shared_ptr<TypeTile> >, std::vector<std::shared_ptr<TypeItem> >);
 	~Chunk(void);
 
 	std::shared_ptr<Tile> getTile(glm::ivec2);

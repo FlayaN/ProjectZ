@@ -335,6 +335,9 @@
     <ClInclude Include="Mouse.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
+    <ClInclude Include="TypeInventory.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\tile.frag">

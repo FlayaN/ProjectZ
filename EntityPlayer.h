@@ -9,6 +9,7 @@
 #include "RectangleShape.h"
 #include "MovingEntity.h"
 #include "TypePlayer.h"
+#include "TypeInventory.h"
 #include "Inventory.h"
 #include "Settings.h"
 #include "Mouse.h"
@@ -44,6 +45,8 @@ public:
 	std::shared_ptr<GroundItemStack> getDroppedItemStack(void);
 	void setDropItem(bool);
 	bool getDropItem(void);
+
+	void setInventory(std::shared_ptr<TypeInventory>);
 private:
 	int id;
 	bool online;

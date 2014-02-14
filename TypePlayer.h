@@ -14,6 +14,7 @@ struct TypePlayer
 	float acceleration;
 	float maxSpeed;
 	std::string bb;
+	std::string inv;
 };
 
 #endif

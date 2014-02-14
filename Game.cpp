@@ -9,6 +9,13 @@ Game::Game(std::shared_ptr<Json> jsonIn, std::string ip, std::shared_ptr<Graphic
 
     graphic = graphicIn;
 	player = std::make_shared<EntityPlayer>(json->getPlayerType());
+
+	for(int i = 0; i < json->getInventoryTypes().size(); i++)
+	{
+		if(json->getInventoryTypes()[i]->name == json->getPlayerType().inv)
+			player->setInventory(json->getInventoryTypes()[i]);
+	}
+
 	cam = std::make_shared<Camera>(player);
 	renderer = std::unique_ptr<Renderer>(new Renderer(graphic, *player, cam, json->getTileTexture(), json->getTileTypes(), json->getItemTexture(), json->getItemTypes().size()));
 

@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(std::shared_ptr<Graphic> graphicIn, EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surface tileTexture, std::vector<TypeTile> tileTypes, SDL_Surface itemTexture, int itemCount)
+Renderer::Renderer(std::shared_ptr<Graphic> graphicIn, EntityPlayer player, std::shared_ptr<Camera> camIn, SDL_Surface tileTexture, std::vector<std::shared_ptr<TypeTile> > tileTypes, SDL_Surface itemTexture, int itemCount)
 {
     graphic = graphicIn;
 	cam = camIn;
@@ -355,7 +355,7 @@ void Renderer::renderGui(EntityPlayer player)
 		}
 		//RENDER FG
 		glUseProgram(modelItem->getProg());
-		glUniformMatrix4fv(modelItem->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
+		//glUniformMatrix4fv(modelItem->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
 		glBindTexture(GL_TEXTURE_2D, texItem);
 
 		for(int i = 0; i < tmpItems.size(); i++)

@@ -1,8 +1,12 @@
 #include "Inventory.h"
 
-Inventory::Inventory(int maxRowsIn, int maxColumnsIn, glm::ivec2 posIn) : maxRows(maxRowsIn), maxColumns(maxColumnsIn), pos(posIn)
+Inventory::Inventory(std::shared_ptr<TypeInventory> inventoryType)
 {
-	for(int i = 0; i < maxRowsIn; i++)
+	maxRows = inventoryType->rowCount;
+	maxColumns = inventoryType->columnCount;
+	pos = inventoryType->startPos;
+
+	for(int i = 0; i < maxRows; i++)
 		for(int j = 0; j < maxColumns; j++)
 			inv.push_back(nullptr);
 	currHover = -1;

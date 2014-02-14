@@ -1,6 +1,6 @@
 #include "Chunk.h"
 
-Chunk::Chunk(glm::ivec2 coord, std::vector<TypeTile> tileTypes, std::vector<std::shared_ptr<TypeItem> > itemTypes) : coord(coord)
+Chunk::Chunk(glm::ivec2 coord, std::vector<std::shared_ptr<TypeTile> > tileTypes, std::vector<std::shared_ptr<TypeItem> > itemTypes) : coord(coord)
 {
 	for(int x = 0; x < TileAmount; x++)
 	{
@@ -18,7 +18,7 @@ Chunk::Chunk(glm::ivec2 coord, std::vector<TypeTile> tileTypes, std::vector<std:
 				i = 2;*/
 
 			int i = Utility::getRandInt(0, tileTypes.size()-1);
-			tiles[x][y] = std::make_shared<Tile>(Tile(i, tileTypes[i].friction, glm::ivec2(TileAmount*coord.x+x, TileAmount*coord.y+y)));
+			tiles[x][y] = std::make_shared<Tile>(i, tileTypes[i]->friction, glm::ivec2(TileAmount*coord.x+x, TileAmount*coord.y+y));
 		}
 	}
 	addGroundItem(std::make_shared<GroundItemStack>(Utility::getRandInt(0, itemTypes.size()-1), glm::vec2((TileAmount*coord.x + Utility::getRandInt(0, TileAmount-1))*Settings::Tile::width, (TileAmount*coord.y + Utility::getRandInt(0, TileAmount-1))*Settings::Tile::height), 1));

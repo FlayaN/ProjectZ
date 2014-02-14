@@ -13,7 +13,7 @@ namespace ChunkUtility
 {
 	std::vector<std::shared_ptr<Tile> > getSurroundingTiles(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >, int, EntityPlayer);
 	std::vector<std::shared_ptr<GroundItemStack> > getSurroundingItems(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >, EntityPlayer);
-	void generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >&, int, EntityPlayer, std::vector<TypeTile>, std::vector<std::shared_ptr<TypeItem> >);
+	void generateSurroundingChunk(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >&, int, EntityPlayer, std::vector<std::shared_ptr<TypeTile> >, std::vector<std::shared_ptr<TypeItem> >);
 };
 
 namespace std

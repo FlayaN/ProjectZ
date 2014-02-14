@@ -8,11 +8,12 @@
 
 #include "ItemStack.h"
 #include "Mouse.h"
+#include "TypeInventory.h"
 
 class Inventory
 {
 public:
-	Inventory(int, int, glm::ivec2);
+	Inventory(std::shared_ptr<TypeInventory>);
 
 	bool addItemStack(std::shared_ptr<ItemStack>);
 	bool addItem(std::shared_ptr<Item>);
