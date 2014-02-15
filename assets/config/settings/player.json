@@ -12,5 +12,5 @@
 	"acceleration" : 30.0,
 	"maxSpeed" : 100.0,
 	"bb" : "playerBB",
-	"inventory" : "4x9"
+	"inventory" : "2x9"
 }
