@@ -107,7 +107,7 @@ void Renderer::initShaders(void)
 	modelGui->addUniform("texUnit");
 }
 
-void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player, std::vector<std::shared_ptr<PlayerMP> > players, Chat chat)
+void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, EntityPlayer player, std::vector<std::shared_ptr<PlayerMP> > players, Chat chat, std::shared_ptr<InventoryManager> invManager)
 {
 	SDL_GetWindowSize(graphic->getWindow(), &w, &h);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -118,7 +118,7 @@ void Renderer::render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > chunks, 
 		renderOnlinePlayers(players, player);
 
 	renderItem(chunks, player);
-	renderGui(player);
+	renderGui(player, invManager);
 
 	if(chat.isOpen())
 		renderChat(chat);
@@ -274,23 +274,71 @@ void Renderer::renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> > playe
 #endif
 }
 
-void Renderer::renderGui(EntityPlayer player)
+
+void Renderer::renderInventory(std::shared_ptr<Inventory> inv)
 {
 	int slotSize = 34;
 	int itemSize = 32;
-	std::shared_ptr<Inventory> tmpInv = player.getInventory();
+	int maxColumns = inv->getMaxColumns();
+	int maxRows = inv->getMaxRows();
+	int maxSize = inv->getMaxSize();
+	glm::ivec2 invPos = inv->getPosition();
 
-	std::vector<std::shared_ptr<ItemStack> > tmpItems = tmpInv->getItems();
+	int currHover = inv->getCurrHover();
 
-	//RENDER HOTBAR
+	std::vector<std::shared_ptr<ItemStack> > tmpItems = inv->getItems();
+
+	//RENDER BG
+	glUseProgram(modelGui->getProg());
+	for(int i = 0; i < maxSize; i++)
+	{
+		if(i == currHover)
+			glBindTexture(GL_TEXTURE_2D, texSlotHover);
+		else
+			glBindTexture(GL_TEXTURE_2D, texSlot);
+		glm::mat4 modelMat(1.0);
+		modelMat = glm::translate(modelMat, glm::vec3(invPos.x + (i%maxColumns)*slotSize, invPos.y + (i/maxColumns)*slotSize, 0.0));
+		modelMat = glm::scale(modelMat, glm::vec3(slotSize, slotSize, 1.0));
+		glUniformMatrix4fv(modelGui->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+		glBindVertexArray(modelGui->getVAO());
+
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, modelGui->getNumVertices());
+	}
+	//RENDER FG
+	glUseProgram(modelItem->getProg());
+	glBindTexture(GL_TEXTURE_2D, texItem);
+
+	for(int i = 0; i < tmpItems.size(); i++)
+	{
+		if(tmpItems.at(i) != nullptr)
+		{
+			glm::mat4 modelMat(1.0);
+			modelMat = glm::translate(modelMat, glm::vec3(invPos.x + (i%maxColumns)*slotSize, invPos.y + (i/maxColumns)*slotSize, 0.0));
+			//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
+			modelMat = glm::scale(modelMat, glm::vec3(itemSize, itemSize, 1.0));
+			glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+			glUniform1i(modelItem->getUniform("textureId"), tmpItems.at(i)->getItem()->getId());
+				
+			glBindVertexArray(modelItem->getVAO());
+
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
+			sprintf(buff, "%d", tmpItems.at(i)->getCurrSize());
+			sfDrawString(invPos.x + (i%maxColumns)*slotSize, (Settings::Graphics::screenHeight - (invPos.y + (i/maxColumns)*slotSize)), buff);
+		}
+	}
+}
+
+void Renderer::renderHotbar(std::shared_ptr<Inventory> inv)
+{
+	int slotSize = 34;
+	int itemSize = 32;
+	int maxColumns = inv->getMaxColumns();
+	int maxRows = inv->getMaxRows();
+	int maxSize = inv->getMaxSize();
+
 	glUseProgram(modelGui->getProg());
 	glUniformMatrix4fv(modelGui->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
 	glBindTexture(GL_TEXTURE_2D, texSlot);
-
-
-	int maxColumns = tmpInv->getMaxColumns();
-	int maxRows = tmpInv->getMaxRows();
-	int maxSize = tmpInv->getMaxSize();
 
 	int xOffset = (Settings::Graphics::screenWidth/2) - ((maxColumns/2)*slotSize);
 	int yOffset = 25;
@@ -310,6 +358,8 @@ void Renderer::renderGui(EntityPlayer player)
 	glUniformMatrix4fv(modelItem->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
 	glBindTexture(GL_TEXTURE_2D, texItem);
 
+	std::vector<std::shared_ptr<ItemStack> > tmpItems = inv->getItems();
+
 	for(int i = 0; i < maxColumns; i++)
 	{
 		if(tmpItems.at(i) != nullptr)
@@ -328,70 +378,46 @@ void Renderer::renderGui(EntityPlayer player)
 			sfDrawString(xOffset + (i%maxColumns)*slotSize, (Settings::Graphics::screenHeight - (yOffset + (i/maxColumns)*slotSize)), buff);
 		}
 	}
+}
 
+void Renderer::renderMouseItem(std::shared_ptr<Mouse> mouse)
+{
+	int itemSize = 32;
+
+	glm::vec2 mousePos = mouse->getPosition();
+	glm::mat4 modelMat(1.0);
+	modelMat = glm::translate(modelMat, glm::vec3(mousePos.x - (itemSize/2), mousePos.y - (itemSize/2), 0.0));
+	//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
+	modelMat = glm::scale(modelMat, glm::vec3(itemSize, itemSize, 1.0));
+	glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+	glUniform1i(modelItem->getUniform("textureId"), mouse->getCurrItemStack()->getItem()->getId());
+			
+	glBindVertexArray(modelItem->getVAO());
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
+	sprintf(buff, "%d", mouse->getCurrItemStack()->getCurrSize());
+	sfDrawString(mousePos.x - (itemSize/2), Settings::Graphics::screenHeight - (mousePos.y - (itemSize/2)), buff);
+}
+
+void Renderer::renderGui(EntityPlayer player, std::shared_ptr<InventoryManager> invManager)
+{
+	std::shared_ptr<Inventory> tmpInv = player.getInventory();
+
+	renderHotbar(tmpInv);
 
 	if(player.hasInventoryOpen())
 	{
-
-		glm::ivec2 invPos = tmpInv->getPosition();
-
-		int currHover = tmpInv->getCurrHover();
-
-		//RENDER BG
-		glUseProgram(modelGui->getProg());
-		for(int i = 0; i < maxSize; i++)
+		std::vector<std::shared_ptr<Inventory> > inventories = invManager->getInventories();
+		for(int i = 0; i < inventories.size(); i++)
 		{
-			if(i == currHover)
-				glBindTexture(GL_TEXTURE_2D, texSlotHover);
-			else
-				glBindTexture(GL_TEXTURE_2D, texSlot);
-			glm::mat4 modelMat(1.0);
-			modelMat = glm::translate(modelMat, glm::vec3(invPos.x + (i%maxColumns)*slotSize, invPos.y + (i/maxColumns)*slotSize, 0.0));
-			modelMat = glm::scale(modelMat, glm::vec3(slotSize, slotSize, 1.0));
-			glUniformMatrix4fv(modelGui->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
-			glBindVertexArray(modelGui->getVAO());
-
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelGui->getNumVertices());
+			renderInventory(inventories[i]);
 		}
-		//RENDER FG
-		glUseProgram(modelItem->getProg());
-		//glUniformMatrix4fv(modelItem->getUniform("projMatrix"), 1, GL_FALSE, glm::value_ptr(cam->getOrthoMatrix()));
-		glBindTexture(GL_TEXTURE_2D, texItem);
 
-		for(int i = 0; i < tmpItems.size(); i++)
-		{
-			if(tmpItems.at(i) != nullptr)
-			{
-				glm::mat4 modelMat(1.0);
-				modelMat = glm::translate(modelMat, glm::vec3(invPos.x + (i%maxColumns)*slotSize, invPos.y + (i/maxColumns)*slotSize, 0.0));
-				//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
-				modelMat = glm::scale(modelMat, glm::vec3(itemSize, itemSize, 1.0));
-				glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
-				glUniform1i(modelItem->getUniform("textureId"), tmpItems.at(i)->getItem()->getId());
-				
-				glBindVertexArray(modelItem->getVAO());
+		std::shared_ptr<Mouse> tmpMouse = invManager->getMouse();
 
-				glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
-				sprintf(buff, "%d", tmpItems.at(i)->getCurrSize());
-				sfDrawString(invPos.x + (i%maxColumns)*slotSize, (Settings::Graphics::screenHeight - (invPos.y + (i/maxColumns)*slotSize)), buff);
-			}
-		}
-		std::shared_ptr<Mouse> tmpMouse = player.getMouse();
 		if(tmpMouse->hasItem())
 		{
-			glm::vec2 tmpPos = tmpMouse->getPosition();
-			glm::mat4 modelMat(1.0);
-			modelMat = glm::translate(modelMat, glm::vec3(tmpPos.x - (itemSize/2), tmpPos.y - (itemSize/2), 0.0));
-			//sfDrawString(item->getPosition().x*Settings::Tile::width + playerOffset.x - (item->getName().length()/2)*6, (Settings::Graphics::screenHeight - (item->getPosition().y*Settings::Tile::height + playerOffset.y + 34)), &item->getName()[0]);
-			modelMat = glm::scale(modelMat, glm::vec3(itemSize, itemSize, 1.0));
-			glUniformMatrix4fv(modelItem->getUniform("modelViewMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
-			glUniform1i(modelItem->getUniform("textureId"), tmpMouse->getCurrItemStack()->getItem()->getId());
-			
-			glBindVertexArray(modelItem->getVAO());
-
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, modelItem->getNumVertices());
-			sprintf(buff, "%d", tmpMouse->getCurrItemStack()->getCurrSize());
-			sfDrawString(tmpPos.x - (itemSize/2), Settings::Graphics::screenHeight - (tmpPos.y - (itemSize/2)), buff);
+			renderMouseItem(tmpMouse);
 		}
 	}
 #if DEBUG

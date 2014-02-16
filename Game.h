@@ -30,6 +30,7 @@
 #include "Chat.h"
 #include "Utility.h"
 #include "Json.h"
+#include "InventoryManager.h"
 
 class Game
 {
@@ -53,6 +54,7 @@ private:
 	std::shared_ptr<Chat> chat;
 	std::shared_ptr<Json> json;
     std::shared_ptr<Graphic> graphic;
+	std::shared_ptr<InventoryManager> invManager;
 
 	std::unique_ptr<Renderer> renderer;
 

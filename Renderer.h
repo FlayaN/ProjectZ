@@ -17,20 +17,25 @@
 #include "TypeTile.h"
 #include "TypeMaterial.h"
 #include "Chat.h"
+#include "InventoryManager.h"
 
 class Renderer
 {
 public:
 	Renderer(std::shared_ptr<Graphic>, EntityPlayer, std::shared_ptr<Camera>, SDL_Surface, std::vector<std::shared_ptr<TypeTile> >, SDL_Surface, int);
 	~Renderer(void);
-	void render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > , EntityPlayer, std::vector<std::shared_ptr<PlayerMP> >, Chat);
+	void render(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> > , EntityPlayer, std::vector<std::shared_ptr<PlayerMP> >, Chat, std::shared_ptr<InventoryManager>);
 
 	void renderItem(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >, EntityPlayer);
 	void renderTile(std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >, EntityPlayer);
 	void renderGrid(EntityPlayer);
 	void renderPlayer(EntityPlayer);
 	void renderOnlinePlayers(std::vector<std::shared_ptr<PlayerMP> >, EntityPlayer);
-	void renderGui(EntityPlayer);
+
+	void renderInventory(std::shared_ptr<Inventory>);
+	void renderHotbar(std::shared_ptr<Inventory>);
+	void renderMouseItem(std::shared_ptr<Mouse>);
+	void renderGui(EntityPlayer, std::shared_ptr<InventoryManager>);
 	void renderChat(Chat);
 	void renderTimedChat(Chat);
 

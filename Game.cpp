@@ -10,13 +10,8 @@ Game::Game(std::shared_ptr<Json> jsonIn, std::string ip, std::shared_ptr<Graphic
     graphic = graphicIn;
 	player = std::make_shared<EntityPlayer>(json->getPlayerType());
 
-	for(int i = 0; i < json->getInventoryTypes().size(); i++)
-	{
-		if(json->getInventoryTypes()[i]->name == json->getPlayerType().inv)
-			player->setInventory(json->getInventoryTypes()[i]);
-	}
-
 	cam = std::make_shared<Camera>(player);
+	invManager = std::make_shared<InventoryManager>(json->getInventoryTypes(), player);
 	renderer = std::unique_ptr<Renderer>(new Renderer(graphic, *player, cam, json->getTileTexture(), json->getTileTypes(), json->getItemTexture(), json->getItemTypes().size()));
 
 	net = std::make_shared<Network>(ip.c_str());
@@ -87,7 +82,7 @@ void Game::onEvent(SDL_Event* ev, const Uint8* keyStates)
 	if(keyFocus)
 		chat->handleKeyInput(ev, keyStates);
 	else
-		player->onEvent(ev);
+		invManager->onEvent(ev);
 }
 
 void Game::update(float delta, const Uint8* keyStates)
@@ -119,19 +114,19 @@ void Game::update(float delta, const Uint8* keyStates)
 		}
 		net->recv(chunks, players, player, SDL_GetTicks(), chat);
 	}
-	if(player->getDropItem())
+	if(invManager->getDropItem())
 	{
 		if(online)
-			net->placeItem(player->getDroppedItemStack());
+			net->placeItem(invManager->getDroppedItemStack());
 		else
-			chunks[Utility::inChunkCoord(player->getDroppedItemStack()->getPosition())]->addGroundItem(player->getDroppedItemStack());
-		player->setDropItem(false);
+			chunks[Utility::inChunkCoord(invManager->getDroppedItemStack()->getPosition())]->addGroundItem(invManager->getDroppedItemStack());
+		invManager->setDropItem(false);
 	}
 }
 
 void Game::render()
 {
-	renderer->render(chunks, *player, players, *chat);
+	renderer->render(chunks, *player, players, *chat, invManager);
 }
 
 bool Game::isRunning(void)
@@ -187,8 +182,8 @@ void Game::collision(void)
 						{
 							tmpItemStack->increaseStack();
 						}
-
-						if(player->getInventory()->addItemStack(tmpItemStack))
+						std::vector<std::shared_ptr<Inventory> > inventories = invManager->getInventories();
+						if(inventories[0]->addItemStack(tmpItemStack))
 						{
 							if(online)
 								net->pickupItem(tmpGroundItemStack[i]);

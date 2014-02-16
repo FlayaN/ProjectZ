@@ -21,8 +21,6 @@ public:
 	EntityPlayer(TypePlayer);
 	~EntityPlayer(void);
 
-	void onEvent(SDL_Event*);
-
 	void update(float, const Uint8*);
 	void updateNoKey(float);
 
@@ -40,13 +38,9 @@ public:
 	std::shared_ptr<Inventory> getInventory(void);
 
 	bool hasInventoryOpen(void);
-	std::shared_ptr<Mouse> getMouse(void);
 
-	std::shared_ptr<GroundItemStack> getDroppedItemStack(void);
-	void setDropItem(bool);
-	bool getDropItem(void);
-
-	void setInventory(std::shared_ptr<TypeInventory>);
+	void setInventory(std::shared_ptr<Inventory>);
+	void toggleInventory(void);
 private:
 	int id;
 	bool online;
@@ -56,14 +50,11 @@ private:
 	float friction;
 	std::string texture;
 
-	bool dropItem;
-
-	std::shared_ptr<GroundItemStack> droppedItemStack;
+	
 
 	glm::vec2 size;
 	RectangleShape* bb;
 	std::shared_ptr<Inventory> inventory;
-	std::shared_ptr<Mouse> mouse;
 };
 
 #endif

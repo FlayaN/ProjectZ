@@ -12,72 +12,23 @@ EntityPlayer::EntityPlayer(TypePlayer playerType)
 	online = false;
 	bb = new RectangleShape(new glm::vec2(0, 0), 0.0, new glm::vec2(playerType.size.x, playerType.size.y/4)); //TODO BOUNDINGBOXES
 	
-	mouse = std::make_shared<Mouse>();
 	inventoryOpen = false;
-	dropItem = false;
+
 }
 
 EntityPlayer::~EntityPlayer(void)
 {
-	droppedItemStack.reset();
 	inventory.reset();
-	mouse.reset();
 }
 
-void EntityPlayer::setInventory(std::shared_ptr<TypeInventory> inventoryType)
+void EntityPlayer::setInventory(std::shared_ptr<Inventory> inv)
 {
-	inventory = std::make_shared<Inventory>(inventoryType);
+	inventory = inv;
 }
 
-void EntityPlayer::onEvent(SDL_Event* ev)
+void EntityPlayer::toggleInventory(void)
 {
-	switch (ev->type)
-	{
-		case SDL_KEYUP:
-		{
-			if(ev->key.keysym.sym == SDLK_i)
-			{
-				inventoryOpen = !inventoryOpen;
-			}
-			break;
-		}
-		case SDL_MOUSEBUTTONDOWN:
-		{
-			if(inventoryOpen)
-			{
-				if(ev->button.button == SDL_BUTTON_LEFT)
-				{
-					if(mouse->hasItem())
-					{
-						if(!inventory->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), mouse))
-						{
-							dropItem = true;
-							droppedItemStack = std::make_shared<GroundItemStack>(mouse->getCurrItemStack()->getItem()->getId(), position, mouse->getCurrItemStack()->getCurrSize());
-							mouse->setCurrItemStack(nullptr);
-						}
-					}
-					else
-					{
-						mouse = inventory->pickupItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-					}
-				}
-				else if(ev->button.button == SDL_BUTTON_RIGHT)
-				{
-					inventory->pickupOneItem(mouse, glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-				}
-			}
-			break;
-		}
-		case SDL_MOUSEMOTION:
-		{
-			if(inventoryOpen)
-			{
-				mouse->setPosition(glm::vec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-				inventory->mousePosToIndex(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-			}
-			break;
-		}
-	}
+	inventoryOpen = !inventoryOpen;
 }
 
 void EntityPlayer::update(float delta, const Uint8* keyCode)
@@ -221,24 +172,4 @@ bool EntityPlayer::hasInventoryOpen(void)
 std::shared_ptr<Inventory> EntityPlayer::getInventory(void)
 {
 	return inventory;
-}
-
-std::shared_ptr<Mouse> EntityPlayer::getMouse(void)
-{
-	return mouse;
-}
-
-std::shared_ptr<GroundItemStack> EntityPlayer::getDroppedItemStack(void)
-{
-	return droppedItemStack;
-}
-
-void EntityPlayer::setDropItem(bool dropItemIn)
-{
-	dropItem = dropItemIn;
-}
-
-bool EntityPlayer::getDropItem(void)
-{
-	return dropItem;
 }

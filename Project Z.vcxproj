@@ -96,6 +96,7 @@
     <ClCompile Include="GuiButton.cpp" />
     <ClCompile Include="GuiServerList.cpp" />
     <ClCompile Include="GuiText.cpp" />
+    <ClCompile Include="InventoryManager.cpp" />
     <ClCompile Include="Json.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="GuiButton.h" />
     <ClInclude Include="GuiServerList.h" />
     <ClInclude Include="GuiText.h" />
+    <ClInclude Include="InventoryManager.h" />
     <ClInclude Include="Json.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Mouse.h" />

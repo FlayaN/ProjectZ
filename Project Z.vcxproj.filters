@@ -192,6 +192,9 @@
     <ClCompile Include="Mouse.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="InventoryManager.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -337,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="TypeInventory.h">
       <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryManager.h">
+      <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

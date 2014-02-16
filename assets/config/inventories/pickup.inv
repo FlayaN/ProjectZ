@@ -1,0 +1,9 @@
+{
+	"name" : "pickup",
+	"rowCount" : 4,
+	"columnCount" : 1,
+	"pos" : {
+		"x" : 50,
+		"y" : 300
+	}
+}
