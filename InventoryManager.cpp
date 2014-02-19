@@ -4,17 +4,18 @@ InventoryManager::InventoryManager(std::vector<std::shared_ptr<TypeInventory> > 
 {
 	player = playerIn;
 	player->setInventory(std::make_shared<Inventory>(typeInventories[0]));
+	pickupInventory = std::make_shared<InventoryPickup>(typeInventories[2]);
 
-	inventories.push_back(std::make_shared<Inventory>(typeInventories[2]));
+	inventories.push_back(pickupInventory);
 	inventories.push_back(player->getInventory());
 
 	mouse = std::make_shared<Mouse>();
-	dropItem = false;
+	//dropItem = false;
 }
 
 InventoryManager::~InventoryManager(void)
 {
-	droppedItemStack.reset();
+	//droppedItemStack.reset();
 	mouse.reset();
 }
 
@@ -23,12 +24,17 @@ std::vector<std::shared_ptr<Inventory> > InventoryManager::getInventories(void)
 	return inventories;
 }
 
+std::shared_ptr<InventoryPickup> InventoryManager::getPickupInventory(void)
+{
+	return pickupInventory;
+}
+
 std::shared_ptr<Mouse> InventoryManager::getMouse(void)
 {
 	return mouse;
 }
 
-void InventoryManager::onEvent(SDL_Event* ev)
+void InventoryManager::onEvent(SDL_Event* ev, std::HashMap<glm::ivec2, std::shared_ptr<Chunk> >& chunks, std::shared_ptr<Network> net)
 {
 	switch (ev->type)
 	{
@@ -52,20 +58,26 @@ void InventoryManager::onEvent(SDL_Event* ev)
 						
 						for(int i = 0; i < inventories.size(); i++)
 						{
-							if(!inventories[i]->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), mouse))
-								drop = true;
-							else
+							if(inventories[i] != pickupInventory)
 							{
-								drop = false;
-								break;
+								if(!inventories[i]->placeItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y), mouse))
+									drop = true;
+								else
+								{
+									drop = false;
+									break;
+								}
 							}
 						}
 
 						if(drop)
 						{
-							dropItem = true;
-							droppedItemStack = std::make_shared<GroundItemStack>(mouse->getCurrItemStack()->getItem()->getId(), player->getCenterPosition(), mouse->getCurrItemStack()->getCurrSize());
+							std::shared_ptr<GroundItemStack> tmpGroundItem = std::make_shared<GroundItemStack>(mouse->getCurrItemStack()->getItem()->getId(), player->getCenterPosition(), mouse->getCurrItemStack()->getCurrSize());
 							mouse->setCurrItemStack(nullptr);
+							if(net->getSuccess())
+								net->placeItem(tmpGroundItem);
+							else
+								chunks[Utility::inChunkCoord(player->getCenterPosition())]->addGroundItem(tmpGroundItem);
 						}
 					}
 					else
@@ -74,7 +86,17 @@ void InventoryManager::onEvent(SDL_Event* ev)
 						{
 							mouse = inventories[i]->pickupItem(glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
 							if(mouse->getCurrItemStack() != nullptr)
+							{
+								if(inventories[i] == pickupInventory)
+								{
+									std::shared_ptr<GroundItemStack> tmpGroundItem = pickupInventory->getGroundItems()[pickupInventory->getCurrHover()];
+									if(net->getSuccess())
+										net->pickupItem(tmpGroundItem);
+
+									chunks[Utility::inChunkCoord(tmpGroundItem->getPosition())]->removeGroundItem(tmpGroundItem->getId(), tmpGroundItem->getPosition(), tmpGroundItem->getAmount());
+								}
 								break;
+							}
 						}
 					}
 				}
@@ -105,7 +127,7 @@ void InventoryManager::onEvent(SDL_Event* ev)
 	}
 }
 
-std::shared_ptr<GroundItemStack> InventoryManager::getDroppedItemStack(void)
+/*std::shared_ptr<GroundItemStack> InventoryManager::getDroppedItemStack(void)
 {
 	return droppedItemStack;
 }
@@ -118,4 +140,4 @@ void InventoryManager::setDropItem(bool dropItemIn)
 bool InventoryManager::getDropItem(void)
 {
 	return dropItem;
-}
+}*/

@@ -82,7 +82,7 @@ void Game::onEvent(SDL_Event* ev, const Uint8* keyStates)
 	if(keyFocus)
 		chat->handleKeyInput(ev, keyStates);
 	else
-		invManager->onEvent(ev);
+		invManager->onEvent(ev, chunks, net);
 }
 
 void Game::update(float delta, const Uint8* keyStates)
@@ -114,14 +114,14 @@ void Game::update(float delta, const Uint8* keyStates)
 		}
 		net->recv(chunks, players, player, SDL_GetTicks(), chat);
 	}
-	if(invManager->getDropItem())
+	/*if(invManager->getDropItem())
 	{
 		if(online)
 			net->placeItem(invManager->getDroppedItemStack());
 		else
 			chunks[Utility::inChunkCoord(invManager->getDroppedItemStack()->getPosition())]->addGroundItem(invManager->getDroppedItemStack());
 		invManager->setDropItem(false);
-	}
+	}*/
 }
 
 void Game::render()
@@ -151,7 +151,8 @@ void Game::collision(void)
 	}
 
 	std::vector<std::shared_ptr<TypeItem> > tmpItemTypes = json->getItemTypes();
-
+	std::shared_ptr<InventoryPickup> pickupInv = invManager->getPickupInventory();
+	pickupInv->clearInv();
 	glm::ivec2 centerPosInChunk = Utility::inChunkCoord(player->getCenterPosition());
 
 	for(int x = centerPosInChunk.x - 1; x <= centerPosInChunk.x + 1; x++)
@@ -168,27 +169,22 @@ void Game::collision(void)
 				{
 					glm::vec2 playerPos = player->getCenterPosition();
 					glm::vec2 itemPos = tmpGroundItemStack[i]->getPosition();
-					glm::ivec2 chunkPos = Utility::inChunkCoord(itemPos);
+					//glm::ivec2 chunkPos = Utility::inChunkCoord(itemPos);
 
 					if(	playerPos.x > (itemPos.x - 100) && playerPos.x < (itemPos.x + 100) && playerPos.y > (itemPos.y - 100) && playerPos.y < (itemPos.y + 100))
 					{
 						int tmpId = tmpGroundItemStack[i]->getId();
-						int tmpAmount = tmpGroundItemStack[i]->getAmount();
-						glm::vec2 tmpPos = tmpGroundItemStack[i]->getPosition();
+						//int tmpAmount = tmpGroundItemStack[i]->getAmount();
+						//glm::vec2 tmpPos = tmpGroundItemStack[i]->getPosition();
 
 						std::shared_ptr<Item> tmpItem = std::make_shared<Item>(tmpItemTypes[tmpId]->name, tmpItemTypes[tmpId]->stackSize, tmpItemTypes[tmpId]->id);
-						std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(tmpItem);
-						for(int j = 0; j < tmpAmount; j++)
-						{
-							tmpItemStack->increaseStack();
-						}
-						std::vector<std::shared_ptr<Inventory> > inventories = invManager->getInventories();
-						if(inventories[0]->addItemStack(tmpItemStack))
-						{
-							if(online)
-								net->pickupItem(tmpGroundItemStack[i]);
-							tmpChunk->removeGroundItem(tmpId, tmpPos, tmpAmount);
-						}
+
+						pickupInv->addItemStack(tmpGroundItemStack[i], tmpItem);
+						
+						/*if(online)
+							net->pickupItem(tmpGroundItemStack[i]);
+						tmpChunk->removeGroundItem(tmpId, tmpPos, tmpAmount);*/
+						
 					}
 				}
 			}

@@ -19,3 +19,8 @@ int GroundItemStack::getAmount()
 {
 	return amount;
 }
+
+bool GroundItemStack::operator==(const GroundItemStack &other) const
+{
+	return pos == other.pos && id == other.id && amount == other.amount;
+}

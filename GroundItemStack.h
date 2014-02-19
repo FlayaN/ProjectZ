@@ -10,9 +10,12 @@ public:
 	glm::vec2 getPosition(void);
 	int getId();
 	int getAmount();
+
+	bool operator==(const GroundItemStack &other) const;
 private:
 	int id;
 	int amount;
 	glm::vec2 pos;
 };
+
 #endif

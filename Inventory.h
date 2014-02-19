@@ -31,7 +31,7 @@ public:
 	int getCurrSize(void);
 	std::vector<std::shared_ptr<ItemStack> > getItems(void);
 	glm::ivec2 getPosition(void);
-private:
+protected:
 	std::vector<std::shared_ptr<ItemStack> > inv;
 	int maxRows;
 	int maxColumns;

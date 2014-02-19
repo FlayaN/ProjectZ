@@ -73,6 +73,12 @@
     <Filter Include="Source Files\Gui">
       <UniqueIdentifier>{8f5ca85e-7e83-416e-9adf-9e9bf9f24b9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Inventory">
+      <UniqueIdentifier>{5b8f03df-3898-44e6-9e40-af9e95b5a9d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Inventory">
+      <UniqueIdentifier>{a59e36d5-88d3-49d7-a54d-de3229421938}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -150,9 +156,6 @@
     <ClCompile Include="ItemStack.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
     <ClCompile Include="Chat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -192,8 +195,14 @@
     <ClCompile Include="Mouse.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Source Files\Inventory</Filter>
+    </ClCompile>
     <ClCompile Include="InventoryManager.cpp">
-      <Filter>Source Files\Items</Filter>
+      <Filter>Source Files\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryPickup.cpp">
+      <Filter>Source Files\Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,9 +305,6 @@
     <ClInclude Include="ItemStack.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
     <ClInclude Include="Chat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -341,8 +347,14 @@
     <ClInclude Include="TypeInventory.h">
       <Filter>Header Files\Types</Filter>
     </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Header Files\Inventory</Filter>
+    </ClInclude>
     <ClInclude Include="InventoryManager.h">
-      <Filter>Header Files\Items</Filter>
+      <Filter>Header Files\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryPickup.h">
+      <Filter>Header Files\Inventory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
