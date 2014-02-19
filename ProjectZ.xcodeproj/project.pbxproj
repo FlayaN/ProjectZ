@@ -34,7 +34,6 @@
 		975C83541892561100A29D8D /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975C81A81892561000A29D8D /* Item.cpp */; };
 		975C83551892561100A29D8D /* ItemStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975C81AA1892561000A29D8D /* ItemStack.cpp */; };
 		975C83691892561100A29D8D /* ModelSquare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975C832A1892561100A29D8D /* ModelSquare.cpp */; };
-		975C836A1892561100A29D8D /* MouseItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975C832C1892561100A29D8D /* MouseItem.cpp */; };
 		975C836B1892561100A29D8D /* MovingEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975C832E1892561100A29D8D /* MovingEntity.cpp */; };
 		975C836C1892561100A29D8D /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975C83301892561100A29D8D /* Network.cpp */; };
 		975C836D1892561100A29D8D /* PerlinNoise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975C83321892561100A29D8D /* PerlinNoise.cpp */; };
@@ -53,6 +52,8 @@
 		9766954418437EBE004E8ED6 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9766953E18437EBE004E8ED6 /* Tile.cpp */; };
 		97C2EA0518756B6B00EC5B3C /* Graphic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C2E9FC18756B6B00EC5B3C /* Graphic.cpp */; };
 		97C2EA2B18756F1000EC5B3C /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C2EA2A18756F1000EC5B3C /* SDL2_mixer.framework */; };
+		97C7952118B2DB7E00838625 /* InventoryManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C7951C18B2DB7E00838625 /* InventoryManager.cpp */; };
+		97C7952218B2DB7E00838625 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C7951E18B2DB7E00838625 /* Mouse.cpp */; };
 		97E077401876034F007BD29E /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E0773F1876034F007BD29E /* CoreFoundation.framework */; };
 		97E077431876A396007BD29E /* ChunkUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97E077411876A396007BD29E /* ChunkUtility.cpp */; };
 		97E97B1818979A380068E69C /* libcurl.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E97B1718979A380068E69C /* libcurl.4.dylib */; };
@@ -233,8 +234,6 @@
 		975C83291892561100A29D8D /* SDL2test.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = SDL2test.lib; sourceTree = "<group>"; };
 		975C832A1892561100A29D8D /* ModelSquare.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ModelSquare.cpp; sourceTree = "<group>"; };
 		975C832B1892561100A29D8D /* ModelSquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelSquare.h; sourceTree = "<group>"; };
-		975C832C1892561100A29D8D /* MouseItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseItem.cpp; sourceTree = "<group>"; };
-		975C832D1892561100A29D8D /* MouseItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseItem.h; sourceTree = "<group>"; };
 		975C832E1892561100A29D8D /* MovingEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MovingEntity.cpp; sourceTree = "<group>"; };
 		975C832F1892561100A29D8D /* MovingEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovingEntity.h; sourceTree = "<group>"; };
 		975C83301892561100A29D8D /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
@@ -523,6 +522,11 @@
 		97C2E9FC18756B6B00EC5B3C /* Graphic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Graphic.cpp; sourceTree = "<group>"; };
 		97C2E9FD18756B6B00EC5B3C /* Graphic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graphic.h; sourceTree = "<group>"; };
 		97C2EA2A18756F1000EC5B3C /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../../../../Library/Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
+		97C7951C18B2DB7E00838625 /* InventoryManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InventoryManager.cpp; sourceTree = "<group>"; };
+		97C7951D18B2DB7E00838625 /* InventoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InventoryManager.h; sourceTree = "<group>"; };
+		97C7951E18B2DB7E00838625 /* Mouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mouse.cpp; sourceTree = "<group>"; };
+		97C7951F18B2DB7E00838625 /* Mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mouse.h; sourceTree = "<group>"; };
+		97C7952018B2DB7E00838625 /* TypeInventory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypeInventory.h; sourceTree = "<group>"; };
 		97E0773F1876034F007BD29E /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		97E077411876A396007BD29E /* ChunkUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChunkUtility.cpp; sourceTree = "<group>"; };
 		97E077421876A396007BD29E /* ChunkUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChunkUtility.h; sourceTree = "<group>"; };
@@ -1160,13 +1164,16 @@
 				975C81AC1892561000A29D8D /* lib */,
 				975C832A1892561100A29D8D /* ModelSquare.cpp */,
 				975C832B1892561100A29D8D /* ModelSquare.h */,
-				975C832C1892561100A29D8D /* MouseItem.cpp */,
-				975C832D1892561100A29D8D /* MouseItem.h */,
 				975C832E1892561100A29D8D /* MovingEntity.cpp */,
 				975C832F1892561100A29D8D /* MovingEntity.h */,
 				975C83301892561100A29D8D /* Network.cpp */,
 				975C83311892561100A29D8D /* Network.h */,
 				975C83321892561100A29D8D /* PerlinNoise.cpp */,
+				97C7951C18B2DB7E00838625 /* InventoryManager.cpp */,
+				97C7951D18B2DB7E00838625 /* InventoryManager.h */,
+				97C7951E18B2DB7E00838625 /* Mouse.cpp */,
+				97C7951F18B2DB7E00838625 /* Mouse.h */,
+				97C7952018B2DB7E00838625 /* TypeInventory.h */,
 				975C83331892561100A29D8D /* PerlinNoise.h */,
 				975C83341892561100A29D8D /* PlayerMP.cpp */,
 				975C83351892561100A29D8D /* PlayerMP.h */,
@@ -1272,8 +1279,10 @@
 				975C83541892561100A29D8D /* Item.cpp in Sources */,
 				975C836C1892561100A29D8D /* Network.cpp in Sources */,
 				975C83511892561100A29D8D /* GL_utilities.c in Sources */,
+				97C7952218B2DB7E00838625 /* Mouse.cpp in Sources */,
 				975C83711892561100A29D8D /* simplefont.c in Sources */,
 				97C2EA0518756B6B00EC5B3C /* Graphic.cpp in Sources */,
+				97C7952118B2DB7E00838625 /* InventoryManager.cpp in Sources */,
 				975C836F1892561100A29D8D /* RectangleShape.cpp in Sources */,
 				970E167218A13BB1008F9135 /* ServerList.cpp in Sources */,
 				975C83551892561100A29D8D /* ItemStack.cpp in Sources */,
@@ -1294,7 +1303,6 @@
 				9757B427185EF4C000F64CDE /* Game.cpp in Sources */,
 				975C83721892561100A29D8D /* SimplexNoise.cpp in Sources */,
 				970E167318A13BB1008F9135 /* State.cpp in Sources */,
-				975C836A1892561100A29D8D /* MouseItem.cpp in Sources */,
 				9757B428185EF4C000F64CDE /* Material.cpp in Sources */,
 				970E167118A13BB1008F9135 /* MainMenu.cpp in Sources */,
 				9757B429185EF4C000F64CDE /* Renderer.cpp in Sources */,
