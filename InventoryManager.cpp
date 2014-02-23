@@ -3,8 +3,8 @@
 InventoryManager::InventoryManager(std::vector<std::shared_ptr<TypeInventory> > typeInventories, std::shared_ptr<EntityPlayer> playerIn)
 {
 	player = playerIn;
-	player->setInventory(std::make_shared<Inventory>(typeInventories[0]));
-	pickupInventory = std::make_shared<InventoryPickup>(typeInventories[2]);
+	player->setInventory(std::make_shared<Inventory>(typeInventories[1]));
+	pickupInventory = std::make_shared<InventoryPickup>(typeInventories[0]);
 
 	inventories.push_back(pickupInventory);
 	inventories.push_back(player->getInventory());
@@ -105,8 +105,6 @@ void InventoryManager::onEvent(SDL_Event* ev, std::HashMap<glm::ivec2, std::shar
 					for(int i = 0; i < inventories.size(); i++)
 					{
 						inventories[i]->pickupOneItem(mouse, glm::ivec2(ev->button.x, Settings::Graphics::screenHeight - ev->button.y));
-						if(mouse->getCurrItemStack() != nullptr)
-							break;
 					}
 				}
 			}

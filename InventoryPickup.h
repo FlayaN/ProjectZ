@@ -12,8 +12,10 @@ public:
 	void addItemStack(std::shared_ptr<GroundItemStack>, std::shared_ptr<Item>);
 	std::vector<std::shared_ptr<GroundItemStack> > getGroundItems(void);
 	void clearInv(void);
+	void increaseRowCount(void);
 private:
 	std::vector<std::shared_ptr<GroundItemStack> > groundItems;
+	//std::vector<std::vector<int> > invItemIds;
 	int groundItemsIndex;
 };
 

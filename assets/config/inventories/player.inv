@@ -1,6 +1,6 @@
 {
-	"name" : "4x9",
-	"rowCount" : 4,
+	"name" : "playerInv",
+	"rowCount" : 3,
 	"columnCount" : 9,
 	"pos" : {
 		"x" : 400,

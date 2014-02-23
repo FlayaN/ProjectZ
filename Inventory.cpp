@@ -25,24 +25,18 @@ bool Inventory::addItemStack(std::shared_ptr<ItemStack> item)
 
 bool Inventory::addItem(std::shared_ptr<Item> item)
 {
-	if(getCurrSize() < maxSize)
+	if(getCurrSize() <= maxSize)
 	{
 		for(int i = 0; i < inv.size(); i++)
 		{
-			if(inv.at(i) != nullptr)
+			if(inv.at(i) != nullptr) //Already items in slot
 			{
-				if(inv.at(i)->getItem()->getId() == item->getId())
+				if(inv.at(i)->getItem()->getId() == item->getId()) //Same item?
 				{
-					bool tmp = inv.at(i)->increaseStack();
-					if(tmp)
-						return tmp;
+					return inv.at(i)->increaseStack();
 				}
 			}
-		}
-		
-		for(int i = 0; i < inv.size(); i++)
-		{
-			if(inv.at(i) == nullptr)
+			else  //Add item to empty slot
 			{
 				std::shared_ptr<ItemStack> tmpItemStack = std::make_shared<ItemStack>(item);
 				inv.at(i) = tmpItemStack;
